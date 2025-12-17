@@ -391,9 +391,6 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
             row.RowFormat.AllowBreakAcrossPages = true;
             table.AppendChild(row);
 
-            // We can now apply any auto fit settings.
-            table.AutoFit(AutoFitBehavior.FixedColumnWidths);
-
             Cell cell = new Cell(doc);
             cell.CellFormat.Shading.BackgroundPatternColor = Color.LightBlue;
             cell.CellFormat.Width = 80;
@@ -407,7 +404,10 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
             row.AppendChild(cell.Clone(false));
             row.LastCell.AppendChild(new Paragraph(doc));
             row.LastCell.FirstParagraph.AppendChild(new Run(doc, "Row 1, Cell 2 Text"));
-            
+
+            // We can now apply any auto fit settings.
+            table.AutoFit(AutoFitBehavior.FixedColumnWidths);
+
             doc.Save(ArtifactsDir + "WorkingWithTables.InsertTableDirectly.docx");
             //ExEnd:InsertTableDirectly
         }
@@ -623,7 +623,6 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
             firstTable.ParentNode.InsertAfter(new Paragraph(doc), firstTable);
 
             Row currentRow;
-
             do
             {
                 currentRow = firstTable.LastRow;
@@ -797,31 +796,6 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
             //ExEnd:MergeCellRange
         }
 
-        [Test]
-        public void PrintHorizontalAndVerticalMerged()
-        {
-            //ExStart:PrintHorizontalAndVerticalMerged
-            //GistId:93de23a2f74a7f2e4971ed203874c983
-            Document doc = new Document(MyDir + "Table with merged cells.docx");
-
-            SpanVisitor visitor = new SpanVisitor(doc);
-            doc.Accept(visitor);
-            //ExEnd:PrintHorizontalAndVerticalMerged
-        }
-
-        [Test]
-        public void ConvertToHorizontallyMergedCells()
-        {
-            //ExStart:ConvertToHorizontallyMergedCells
-            //GistId:93de23a2f74a7f2e4971ed203874c983
-            Document doc = new Document(MyDir + "Table with merged cells.docx");
-
-            Table table = doc.FirstSection.Body.Tables[0];
-            // Now merged cells have appropriate merge flags.
-            table.ConvertToHorizontallyMergedCells();
-            //ExEnd:ConvertToHorizontallyMergedCells
-        }
-
         //ExStart:MergeCells
         //GistId:93de23a2f74a7f2e4971ed203874c983
         internal void MergeCells(Cell startCell, Cell endCell)
@@ -856,6 +830,31 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
             }
         }
         //ExEnd:MergeCells
+
+        [Test]
+        public void PrintHorizontalAndVerticalMerged()
+        {
+            //ExStart:PrintHorizontalAndVerticalMerged
+            //GistId:93de23a2f74a7f2e4971ed203874c983
+            Document doc = new Document(MyDir + "Table with merged cells.docx");
+
+            SpanVisitor visitor = new SpanVisitor(doc);
+            doc.Accept(visitor);
+            //ExEnd:PrintHorizontalAndVerticalMerged
+        }
+
+        [Test]
+        public void ConvertToHorizontallyMergedCells()
+        {
+            //ExStart:ConvertToHorizontallyMergedCells
+            //GistId:93de23a2f74a7f2e4971ed203874c983
+            Document doc = new Document(MyDir + "Table with merged cells.docx");
+
+            Table table = doc.FirstSection.Body.Tables[0];
+            // Now merged cells have appropriate merge flags.
+            table.ConvertToHorizontallyMergedCells();
+            //ExEnd:ConvertToHorizontallyMergedCells
+        }
 
         //ExStart:HorizontalAndVerticalMergeHelperClasses
         //GistId:93de23a2f74a7f2e4971ed203874c983
@@ -1048,8 +1047,6 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Insert a table row made up of three cells which have different preferred widths.
-            builder.StartTable();
-
             // Insert an absolute sized cell.
             builder.InsertCell();
             builder.CellFormat.PreferredWidth = PreferredWidth.FromPoints(40);
@@ -1157,7 +1154,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
         [Test]
         public void RelativeHorizontalOrVerticalPosition()
         {
-            //ExStart:RelativeHorizontalOrVerticalPosition            
+            //ExStart:RelativeHorizontalOrVerticalPosition
             Document doc = new Document(MyDir + "Table wrapped by text.docx");
 
             Table table = doc.FirstSection.Body.Tables[0];

@@ -1,4 +1,4 @@
-﻿namespace Aspose.Words.ApiExamples.HelperClasses.TestClasses
+﻿namespace ApiExamples.TestData.TestClasses
 {
     public class ShareTestClass
     {

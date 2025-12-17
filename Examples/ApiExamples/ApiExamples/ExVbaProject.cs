@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2024 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -49,19 +49,19 @@ namespace ApiExamples
 
             project = new Document(ArtifactsDir + "VbaProject.CreateVBAMacros.docm").VbaProject;
 
-            Assert.AreEqual("Aspose.Project", project.Name);
+            Assert.That(project.Name, Is.EqualTo("Aspose.Project"));
 
             VbaModuleCollection modules = doc.VbaProject.Modules;
 
-            Assert.AreEqual(2, modules.Count);
+            Assert.That(modules.Count, Is.EqualTo(2));
 
-            Assert.AreEqual("ThisDocument", modules[0].Name);
-            Assert.AreEqual(VbaModuleType.DocumentModule, modules[0].Type);
-            Assert.Null(modules[0].SourceCode);
+            Assert.That(modules[0].Name, Is.EqualTo("ThisDocument"));
+            Assert.That(modules[0].Type, Is.EqualTo(VbaModuleType.DocumentModule));
+            Assert.That(modules[0].SourceCode, Is.Null);
 
-            Assert.AreEqual("Aspose.Module", modules[1].Name);
-            Assert.AreEqual(VbaModuleType.ProceduralModule, modules[1].Type);
-            Assert.AreEqual("New source code", modules[1].SourceCode);
+            Assert.That(modules[1].Name, Is.EqualTo("Aspose.Module"));
+            Assert.That(modules[1].Type, Is.EqualTo(VbaModuleType.ProceduralModule));
+            Assert.That(modules[1].SourceCode, Is.EqualTo("New source code"));
         }
 
         [Test]
@@ -89,27 +89,30 @@ namespace ApiExamples
 
             VbaProject originalVbaProject = new Document(ArtifactsDir + "VbaProject.CloneVbaProject.docm").VbaProject;
 
-            Assert.AreEqual(copyVbaProject.Name, originalVbaProject.Name);
-            Assert.AreEqual(copyVbaProject.CodePage, originalVbaProject.CodePage);
-            Assert.AreEqual(copyVbaProject.IsSigned, originalVbaProject.IsSigned);
-            Assert.AreEqual(copyVbaProject.Modules.Count, originalVbaProject.Modules.Count);
+            Assert.That(originalVbaProject.Name, Is.EqualTo(copyVbaProject.Name));
+            Assert.That(originalVbaProject.CodePage, Is.EqualTo(copyVbaProject.CodePage));
+            Assert.That(originalVbaProject.IsSigned, Is.EqualTo(copyVbaProject.IsSigned));
+            Assert.That(originalVbaProject.Modules.Count, Is.EqualTo(copyVbaProject.Modules.Count));
 
             for (int i = 0; i < originalVbaProject.Modules.Count; i++)
             {
-                Assert.AreEqual(copyVbaProject.Modules[i].Name, originalVbaProject.Modules[i].Name);
-                Assert.AreEqual(copyVbaProject.Modules[i].Type, originalVbaProject.Modules[i].Type);
-                Assert.AreEqual(copyVbaProject.Modules[i].SourceCode, originalVbaProject.Modules[i].SourceCode);
+                Assert.That(originalVbaProject.Modules[i].Name, Is.EqualTo(copyVbaProject.Modules[i].Name));
+                Assert.That(originalVbaProject.Modules[i].Type, Is.EqualTo(copyVbaProject.Modules[i].Type));
+                Assert.That(originalVbaProject.Modules[i].SourceCode, Is.EqualTo(copyVbaProject.Modules[i].SourceCode));
             }
         }
 
         //ExStart
         //ExFor:VbaReference
+        //ExFor:VbaReference.Type
         //ExFor:VbaReference.LibId
         //ExFor:VbaReferenceCollection
+        //ExFor:VbaReferenceCollection.Item(Int32)
         //ExFor:VbaReferenceCollection.Count
         //ExFor:VbaReferenceCollection.RemoveAt(int)
         //ExFor:VbaReferenceCollection.Remove(VbaReference)
         //ExFor:VbaReferenceType
+        //ExFor:VbaProject.References
         //ExSummary:Shows how to get/remove an element from the VBA reference collection.
         [Test]//ExSkip
         public void RemoveVbaReference()
@@ -118,7 +121,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "VBA project.docm");
             
             VbaReferenceCollection references = doc.VbaProject.References;
-            Assert.AreEqual(5 ,references.Count);
+            Assert.That(references.Count, Is.EqualTo(5 ));
             
             for (int i = references.Count - 1; i >= 0; i--)
             {
@@ -128,14 +131,14 @@ namespace ApiExamples
                 if (path == brokenPath)
                     references.RemoveAt(i);
             }
-            Assert.AreEqual(4 ,references.Count);
-            
+            Assert.That(references.Count, Is.EqualTo(4 ));
+
             references.Remove(references[1]);
-            Assert.AreEqual(3 ,references.Count);
- 
+            Assert.That(references.Count, Is.EqualTo(3 ));
+
             doc.Save(ArtifactsDir + "VbaProject.RemoveVbaReference.docm"); 
         }
- 
+
         /// <summary>
         /// Returns string representing LibId path of a specified reference. 
         /// </summary>
@@ -177,5 +180,17 @@ namespace ApiExamples
             return libIdProject != null ? libIdProject.Substring(3) : "";
         }
         //ExEnd
+
+        [Test]
+        public void IsProtected()
+        {
+            //ExStart:IsProtected
+            //GistId:ac8ba4eb35f3fbb8066b48c999da63b0
+            //ExFor:VbaProject.IsProtected
+            //ExSummary:Shows whether the VbaProject is password protected.
+            Document doc = new Document(MyDir + "Vba protected.docm");
+            Assert.That(doc.VbaProject.IsProtected, Is.True);
+            //ExEnd:IsProtected
+        }
     }
 }

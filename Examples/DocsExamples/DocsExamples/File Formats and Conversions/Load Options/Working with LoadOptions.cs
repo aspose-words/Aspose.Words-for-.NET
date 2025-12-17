@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Drawing;
 using System.Text;
 using Aspose.Words;
@@ -15,6 +15,7 @@ namespace DocsExamples.File_Formats_and_Conversions.Load_Options
         public void UpdateDirtyFields()
         {
             //ExStart:UpdateDirtyFields
+            //GistId:08db64c4d86842c4afd1ecb925ed07c4
             LoadOptions loadOptions = new LoadOptions { UpdateDirtyFields = true };
 
             Document doc = new Document(MyDir + "Dirty field.docx", loadOptions);
@@ -29,6 +30,7 @@ namespace DocsExamples.File_Formats_and_Conversions.Load_Options
             //ExStart:LoadSaveEncryptedDocument
             //GistId:af95c7a408187bb25cf9137465fe5ce6
             //ExStart:OpenEncryptedDocument
+            //GistId:40be8275fc43f78f5e5877212e4e1bf3
             Document doc = new Document(MyDir + "Encrypted.docx", new LoadOptions("docPassword"));
             //ExEnd:OpenEncryptedDocument
 
@@ -52,6 +54,7 @@ namespace DocsExamples.File_Formats_and_Conversions.Load_Options
         public void ConvertShapeToOfficeMath()
         {
             //ExStart:ConvertShapeToOfficeMath
+            //GistId:ad463bf5f128fe6e6c1485df3c046a4c
             LoadOptions loadOptions = new LoadOptions { ConvertShapeToOfficeMath = true };
 
             Document doc = new Document(MyDir + "Office math.docx", loadOptions);
@@ -63,7 +66,8 @@ namespace DocsExamples.File_Formats_and_Conversions.Load_Options
         [Test]
         public void SetMsWordVersion()
         {
-            //ExStart:SetMSWordVersion
+            //ExStart:SetMsWordVersion
+            //GistId:40be8275fc43f78f5e5877212e4e1bf3
             // Create a new LoadOptions object, which will load documents according to MS Word 2019 specification by default
             // and change the loading version to Microsoft Word 2010.
             LoadOptions loadOptions = new LoadOptions { MswVersion = MsWordVersion.Word2010 };
@@ -71,30 +75,33 @@ namespace DocsExamples.File_Formats_and_Conversions.Load_Options
             Document doc = new Document(MyDir + "Document.docx", loadOptions);
 
             doc.Save(ArtifactsDir + "WorkingWithLoadOptions.SetMsWordVersion.docx");
-            //ExEnd:SetMSWordVersion
+            //ExEnd:SetMsWordVersion
         }
 
         [Test]
-        public void UseTempFolder()
+        public void TempFolder()
         {
-            //ExStart:UseTempFolder  
+            //ExStart:TempFolder
+            //GistId:40be8275fc43f78f5e5877212e4e1bf3
             LoadOptions loadOptions = new LoadOptions { TempFolder = ArtifactsDir };
 
             Document doc = new Document(MyDir + "Document.docx", loadOptions);
-            //ExEnd:UseTempFolder  
+            //ExEnd:TempFolder
         }
         
         [Test]
         public void WarningCallback()
         {
             //ExStart:WarningCallback
+            //GistId:40be8275fc43f78f5e5877212e4e1bf3
             LoadOptions loadOptions = new LoadOptions { WarningCallback = new DocumentLoadingWarningCallback() };
             
             Document doc = new Document(MyDir + "Document.docx", loadOptions);
             //ExEnd:WarningCallback
         }
 
-        //ExStart:DocumentLoadingWarningCallback
+        //ExStart:IWarningCallback
+        //GistId:40be8275fc43f78f5e5877212e4e1bf3
         public class DocumentLoadingWarningCallback : IWarningCallback
         {
             public void Warning(WarningInfo info)
@@ -104,13 +111,14 @@ namespace DocsExamples.File_Formats_and_Conversions.Load_Options
                 Console.WriteLine($"\tDescription: {info.Description}");
             }
         }
-        //ExEnd:DocumentLoadingWarningCallback
-        
-#if NET48
+        //ExEnd:IWarningCallback
+
+#if NET48 || JAVA
         [Test]
         public void ResourceLoadingCallback()
         {
             //ExStart:ResourceLoadingCallback
+            //GistId:40be8275fc43f78f5e5877212e4e1bf3
             LoadOptions loadOptions = new LoadOptions { ResourceLoadingCallback = new HtmlLinkedResourceLoadingCallback() };
 
             // When we open an Html document, external resources such as references to CSS stylesheet files
@@ -121,7 +129,8 @@ namespace DocsExamples.File_Formats_and_Conversions.Load_Options
             //ExEnd:ResourceLoadingCallback
         }
 
-        //ExStart:HtmlLinkedResourceLoadingCallback
+        //ExStart:IResourceLoadingCallback
+        //GistId:40be8275fc43f78f5e5877212e4e1bf3
         private class HtmlLinkedResourceLoadingCallback : IResourceLoadingCallback
         {
             public ResourceLoadingAction ResourceLoading(ResourceLoadingArgs args)
@@ -160,13 +169,14 @@ namespace DocsExamples.File_Formats_and_Conversions.Load_Options
                 }
             }
         }
-        //ExEnd:HtmlLinkedResourceLoadingCallback
+        //ExEnd:IResourceLoadingCallback
 #endif
 
         [Test]
         public void LoadWithEncoding()
         {
             //ExStart:LoadWithEncoding
+            //GistId:40be8275fc43f78f5e5877212e4e1bf3
             LoadOptions loadOptions = new LoadOptions { Encoding = Encoding.ASCII };
 
             // Load the document while passing the LoadOptions object, then verify the document's contents.

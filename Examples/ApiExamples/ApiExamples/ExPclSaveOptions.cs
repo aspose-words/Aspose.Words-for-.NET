@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2024 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -49,7 +49,7 @@ namespace ApiExamples
 
             PclSaveOptions saveOptions = new PclSaveOptions();
             saveOptions.FallbackFontName = "Times New Roman";
-            
+
             // This document will instruct the printer to apply "Times New Roman" to the text with the missing font.
             // Should "Times New Roman" also be unavailable, the printer will default to the "Arial" font.
             doc.Save(ArtifactsDir + "PclSaveOptions.SetPrinterFont.pcl", saveOptions);
@@ -85,7 +85,7 @@ namespace ApiExamples
 
             // Paper tray information is now preserved when saving document to PCL format.
             // Following information is transferred from document's model to PCL file.
-            foreach (Section section in doc.Sections.OfType<Section>())
+            foreach (Section section in doc.Sections)
             {
                 section.PageSetup.FirstPageTray = 15;
                 section.PageSetup.OtherPagesTray = 12;

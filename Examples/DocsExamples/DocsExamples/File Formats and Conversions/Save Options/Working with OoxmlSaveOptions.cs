@@ -34,15 +34,16 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
         }
 
         [Test]
-        public void UpdateLastSavedTimeProperty()
+        public void UpdateLastSavedTime()
         {
-            //ExStart:UpdateLastSavedTimeProperty
+            //ExStart:UpdateLastSavedTime
+            //GistId:83e5c469d0e72b5114fb8a05a1d01977
             Document doc = new Document(MyDir + "Document.docx");
 
             OoxmlSaveOptions saveOptions = new OoxmlSaveOptions { UpdateLastSavedTimeProperty = true };
 
-            doc.Save(ArtifactsDir + "WorkingWithOoxmlSaveOptions.UpdateLastSavedTimeProperty.docx", saveOptions);
-            //ExEnd:UpdateLastSavedTimeProperty
+            doc.Save(ArtifactsDir + "WorkingWithOoxmlSaveOptions.UpdateLastSavedTime.docx", saveOptions);
+            //ExEnd:UpdateLastSavedTime
         }
 
         [Test]

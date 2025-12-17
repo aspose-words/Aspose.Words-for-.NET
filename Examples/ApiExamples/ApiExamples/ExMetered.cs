@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2024 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -28,11 +28,15 @@ namespace ApiExamples
             //ExFor:Metered.GetConsumptionCredit
             //ExFor:Metered.GetConsumptionQuantity
             //ExFor:Metered.SetMeteredKey(String, String)
+            //ExFor:Metered.IsMeteredLicensed
+            //ExFor:Metered.GetProductName
             //ExSummary:Shows how to activate a Metered license and track credit/consumption.
             // Create a new Metered license, and then print its usage statistics.
             Metered metered = new Metered();
             metered.SetMeteredKey("MyPublicKey", "MyPrivateKey");
-            
+
+            Console.WriteLine($"Is metered license accepted: {Metered.IsMeteredLicensed()}");
+            Console.WriteLine($"Product name: {metered.GetProductName()}");
             Console.WriteLine($"Credit before operation: {Metered.GetConsumptionCredit()}");
             Console.WriteLine($"Consumption quantity before operation: {Metered.GetConsumptionQuantity()}");
 

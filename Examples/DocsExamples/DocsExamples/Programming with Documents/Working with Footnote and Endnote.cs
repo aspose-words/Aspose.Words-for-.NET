@@ -7,35 +7,38 @@ namespace DocsExamples.Programming_with_Documents
     internal class WorkingWithFootnotes : DocsExamplesBase
     {
         [Test]
-        public void SetFootNoteColumns()
+        public void SetFootnoteColumns()
         {
-            //ExStart:SetFootNoteColumns
+            //ExStart:SetFootnoteColumns
+            //GistId:3b39c2019380ee905e7d9596494916a4
             Document doc = new Document(MyDir + "Document.docx");
 
             // Specify the number of columns with which the footnotes area is formatted.
             doc.FootnoteOptions.Columns = 3;
             
-            doc.Save(ArtifactsDir + "WorkingWithFootnotes.SetFootNoteColumns.docx");
-            //ExEnd:SetFootNoteColumns
+            doc.Save(ArtifactsDir + "WorkingWithFootnotes.SetFootnoteColumns.docx");
+            //ExEnd:SetFootnoteColumns
         }
 
         [Test]
-        public void SetFootnoteAndEndNotePosition()
+        public void SetFootnoteAndEndnotePosition()
         {
-            //ExStart:SetFootnoteAndEndNotePosition
+            //ExStart:SetFootnoteAndEndnotePosition
+            //GistId:3b39c2019380ee905e7d9596494916a4
             Document doc = new Document(MyDir + "Document.docx");
 
             doc.FootnoteOptions.Position = FootnotePosition.BeneathText;
             doc.EndnoteOptions.Position = EndnotePosition.EndOfSection;
             
-            doc.Save(ArtifactsDir + "WorkingWithFootnotes.SetFootnoteAndEndNotePosition.docx");
-            //ExEnd:SetFootnoteAndEndNotePosition
+            doc.Save(ArtifactsDir + "WorkingWithFootnotes.SetFootnoteAndEndnotePosition.docx");
+            //ExEnd:SetFootnoteAndEndnotePosition
         }
 
         [Test]
         public void SetEndnoteOptions()
         {
             //ExStart:SetEndnoteOptions
+            //GistId:3b39c2019380ee905e7d9596494916a4
             Document doc = new Document(MyDir + "Document.docx");
             DocumentBuilder builder = new DocumentBuilder(doc);
             

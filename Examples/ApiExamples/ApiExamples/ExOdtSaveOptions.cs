@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2024 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -24,6 +24,8 @@ namespace ApiExamples
             //ExFor:OdtSaveOptions
             //ExFor:OdtSaveOptions.#ctor
             //ExFor:OdtSaveOptions.IsStrictSchema11
+            //ExFor:OdtSaveOptions.MeasureUnit
+            //ExFor:MeasurementUnits
             //ExSummary:Shows how to make a saved document conform to an older ODT schema.
             Document doc = new Document(MyDir + "Rendering.docx");
 
@@ -34,24 +36,23 @@ namespace ApiExamples
             };
 
             doc.Save(ArtifactsDir + "OdtSaveOptions.Odt11Schema.odt", saveOptions);
-            //ExEnd
-            
-            doc = new Document(ArtifactsDir + "OdtSaveOptions.Odt11Schema.odt");
 
-            Assert.AreEqual(Aspose.Words.MeasurementUnits.Centimeters, doc.LayoutOptions.RevisionOptions.MeasurementUnit);
+            doc = new Document(ArtifactsDir + "OdtSaveOptions.Odt11Schema.odt");
+            Assert.That(doc.LayoutOptions.RevisionOptions.MeasurementUnit, Is.EqualTo(Aspose.Words.MeasurementUnits.Centimeters));
+            //ExEnd
 
             if (exportToOdt11Specs)
             {
-                Assert.AreEqual(2, doc.Range.FormFields.Count);
-                Assert.AreEqual(FieldType.FieldFormTextInput, doc.Range.FormFields[0].Type);
-                Assert.AreEqual(FieldType.FieldFormCheckBox, doc.Range.FormFields[1].Type);
+                Assert.That(doc.Range.FormFields.Count, Is.EqualTo(2));
+                Assert.That(doc.Range.FormFields[0].Type, Is.EqualTo(FieldType.FieldFormTextInput));
+                Assert.That(doc.Range.FormFields[1].Type, Is.EqualTo(FieldType.FieldFormCheckBox));
             }
             else
             {
-                Assert.AreEqual(3, doc.Range.FormFields.Count);
-                Assert.AreEqual(FieldType.FieldFormTextInput, doc.Range.FormFields[0].Type);
-                Assert.AreEqual(FieldType.FieldFormCheckBox, doc.Range.FormFields[1].Type);
-                Assert.AreEqual(FieldType.FieldFormDropDown, doc.Range.FormFields[2].Type);
+                Assert.That(doc.Range.FormFields.Count, Is.EqualTo(3));
+                Assert.That(doc.Range.FormFields[0].Type, Is.EqualTo(FieldType.FieldFormTextInput));
+                Assert.That(doc.Range.FormFields[1].Type, Is.EqualTo(FieldType.FieldFormCheckBox));
+                Assert.That(doc.Range.FormFields[2].Type, Is.EqualTo(FieldType.FieldFormDropDown));
             }
         }
 
@@ -118,14 +119,14 @@ namespace ApiExamples
 
             FileFormatInfo docInfo = FileFormatUtil.DetectFileFormat(ArtifactsDir + "OdtSaveOptions.Encrypt" + extensionString);
 
-            Assert.IsTrue(docInfo.IsEncrypted);
+            Assert.That(docInfo.IsEncrypted, Is.True);
 
             // If we wish to open or edit this document again using Aspose.Words,
             // we will have to provide a LoadOptions object with the correct password to the loading constructor.
             doc = new Document(ArtifactsDir + "OdtSaveOptions.Encrypt" + extensionString,
                 new LoadOptions("@sposeEncrypted_1145"));
 
-            Assert.AreEqual("Hello world!", doc.GetText().Trim());
+            Assert.That(doc.GetText().Trim(), Is.EqualTo("Hello world!"));
             //ExEnd
         }
     }

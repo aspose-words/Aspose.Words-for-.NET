@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2024 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -37,7 +37,7 @@ namespace ApiExamples
             // to modify how we save the document to the XAML save format.
             XamlFlowSaveOptions options = new XamlFlowSaveOptions();
 
-            Assert.AreEqual(SaveFormat.XamlFlow, options.SaveFormat);
+            Assert.That(options.SaveFormat, Is.EqualTo(SaveFormat.XamlFlow));
 
             // Use the "ImagesFolder" property to assign a folder in the local file system into which
             // Aspose.Words will save all the document's linked images.
@@ -88,9 +88,9 @@ namespace ApiExamples
 
         private void TestImageFolder(ImageUriPrinter callback)
         {
-            Assert.AreEqual(9, callback.Resources.Count);
+            Assert.That(callback.Resources.Count, Is.EqualTo(9));
             foreach (string resource in callback.Resources)
-                Assert.True(File.Exists($"{callback.ImagesFolderAlias}/{resource}"));
+                Assert.That(File.Exists($"{callback.ImagesFolderAlias}/{resource}"), Is.True);
         }
 
         [TestCase(SaveFormat.XamlFlow, "xamlflow")]
@@ -113,7 +113,7 @@ namespace ApiExamples
 
             var exception = Assert.Throws<OperationCanceledException>(() =>
                 doc.Save(ArtifactsDir + $"XamlFlowSaveOptions.ProgressCallback.{ext}", saveOptions));
-            Assert.True(exception?.Message.Contains("EstimatedProgress"));
+            Assert.That(exception?.Message.Contains("EstimatedProgress"), Is.True);
         }
 
         /// <summary>
@@ -152,5 +152,24 @@ namespace ApiExamples
             private const double MaxDuration = 0.01d;
         }
         //ExEnd
+
+        [Test]
+        public void XamlReplaceBackslashWithYenSign()
+        {
+            //ExStart:XamlReplaceBackslashWithYenSign
+            //GistId:708ce40a68fac5003d46f6b4acfd5ff1
+            //ExFor:XamlFlowSaveOptions.ReplaceBackslashWithYenSign
+            //ExSummary:Shows how to replace backslash characters with yen signs (Xaml).
+            Document doc = new Document(MyDir + "Korean backslash symbol.docx");
+
+            // By default, Aspose.Words mimics MS Word's behavior and doesn't replace backslash characters with yen signs in
+            // generated HTML documents. However, previous versions of Aspose.Words performed such replacements in certain
+            // scenarios. This flag enables backward compatibility with previous versions of Aspose.Words.
+            XamlFlowSaveOptions saveOptions = new XamlFlowSaveOptions();
+            saveOptions.ReplaceBackslashWithYenSign = true;
+
+            doc.Save(ArtifactsDir + "HtmlSaveOptions.ReplaceBackslashWithYenSign.xaml", saveOptions);
+            //ExEnd:XamlReplaceBackslashWithYenSign
+        }
     }
 }

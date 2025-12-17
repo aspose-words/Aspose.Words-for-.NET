@@ -10,6 +10,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
         public void MathEquations()
         {
             //ExStart:MathEquations
+            //GistId:e19d5874b376b07466fd7a397d554648
             Document doc = new Document(MyDir + "Office math.docx");
             OfficeMath officeMath = (OfficeMath) doc.GetChild(NodeType.OfficeMath, 0, true);
 

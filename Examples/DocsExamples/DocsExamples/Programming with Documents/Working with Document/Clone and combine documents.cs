@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -12,14 +12,36 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
     internal class CloneAndCombineDocuments : DocsExamplesBase
     {
         [Test]
-        public void CloningDocument()
+        public void CloneDocument()
         {
-            //ExStart:CloningDocument
-            Document doc = new Document(MyDir + "Document.docx");
+            //ExStart:CloneDocument
+            //GistId:b2f62f736a2090163de7b0f221cf46d4
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Writeln("This is the original document before applying the clone method");
 
+            // Clone the document.
             Document clone = doc.Clone();
+
+            // Edit the cloned document.
+            builder = new DocumentBuilder(clone);
+            builder.Write("Section 1");
+            builder.InsertBreak(BreakType.SectionBreakNewPage);
+            builder.Write("Section 2");
+
+            // This shows what is in the document originally. The document has two sections.
+            Assert.That(clone.GetText().Trim(), Is.EqualTo("Section 1\fSection 2This is the original document before applying the clone method"));
+
+            // Duplicate the last section and append the copy to the end of the document.
+            int lastSectionIdx = clone.Sections.Count - 1;
+            Section newSection = clone.Sections[lastSectionIdx].Clone();
+            clone.Sections.Add(newSection);
+
+            // Check what the document contains after we changed it.
+            Assert.That(clone.GetText().Trim(), Is.EqualTo("Section 1\fSection 2This is the original document before applying the clone method" +
+                "\r\fSection 2This is the original document before applying the clone method"));
             clone.Save(ArtifactsDir + "CloneAndCombineDocuments.CloningDocument.docx");
-            //ExEnd:CloningDocument
+            //ExEnd:CloneDocument
         }
 
         [Test]
@@ -80,7 +102,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         /// </summary>
         /// <param name="insertionDestination">Node in the destination document after which the content
         /// Should be inserted. This node should be a block level node (paragraph or table).</param>
-        /// <param name="docToInsert">The document to insert.</param>        
+        /// <param name="docToInsert">The document to insert.</param>
         private static void InsertDocument(Node insertionDestination, Document docToInsert)
         {
             if (insertionDestination.NodeType == NodeType.Paragraph || insertionDestination.NodeType == NodeType.Table)

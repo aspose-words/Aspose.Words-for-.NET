@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2024 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -27,6 +27,7 @@ namespace ApiExamples
             //ExFor:DocSaveOptions.Password
             //ExFor:DocSaveOptions.SaveFormat
             //ExFor:DocSaveOptions.SaveRoutingSlip
+            //ExFor:IncorrectPasswordException
             //ExSummary:Shows how to set save options for older Microsoft Word formats.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -50,7 +51,7 @@ namespace ApiExamples
             LoadOptions loadOptions = new LoadOptions("MyPassword");
             doc = new Document(ArtifactsDir + "DocSaveOptions.SaveAsDoc.doc", loadOptions);
 
-            Assert.AreEqual("Hello world!", doc.GetText().Trim());
+            Assert.That(doc.GetText().Trim(), Is.EqualTo("Hello world!"));
             //ExEnd
         }
 
@@ -74,7 +75,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "DocSaveOptions.TempFolder.doc", options);
 
             // The folder will persist with no residual contents from the load operation.
-            Assert.That(Directory.GetFiles(options.TempFolder), Is.Empty);
+            Assert.That(Directory.GetFiles(options.TempFolder).Length, Is.EqualTo(0));
             //ExEnd
         }
 
@@ -85,7 +86,7 @@ namespace ApiExamples
             //ExFor:DocSaveOptions.SavePictureBullet
             //ExSummary:Shows how to omit PictureBullet data from the document when saving.
             Document doc = new Document(MyDir + "Image bullet points.docx");
-            Assert.NotNull(doc.Lists[0].ListLevels[0].ImageData); //ExSkip
+            Assert.That(doc.Lists[0].ListLevels[0].ImageData, Is.Not.Null); //ExSkip
 
             // Some word processors, such as Microsoft Word 97, are incompatible with PictureBullet data.
             // By setting a flag in the SaveOptions object,
@@ -98,7 +99,7 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "DocSaveOptions.PictureBullets.doc");
 
-            Assert.Null(doc.Lists[0].ListLevels[0].ImageData);
+            Assert.That(doc.Lists[0].ListLevels[0].ImageData, Is.Null);
         }
 
         [TestCase(true)]
@@ -109,7 +110,9 @@ namespace ApiExamples
             //ExFor:SaveOptions.UpdateLastPrintedProperty
             //ExSummary:Shows how to update a document's "Last printed" property when saving.
             Document doc = new Document();
-            doc.BuiltInDocumentProperties.LastPrinted = new DateTime(2019, 12, 20);
+
+            DateTime lastPrinted = new DateTime(2019, 12, 20);
+            doc.BuiltInDocumentProperties.LastPrinted = lastPrinted;
 
             // This flag determines whether the last printed date, which is a built-in property, is updated.
             // If so, then the date of the document's most recent save operation
@@ -124,7 +127,10 @@ namespace ApiExamples
             // Open the saved document, then verify the value of the property.
             doc = new Document(ArtifactsDir + "DocSaveOptions.UpdateLastPrintedProperty.doc");
 
-            Assert.AreNotEqual(isUpdateLastPrintedProperty, new DateTime(2019, 12, 20) == doc.BuiltInDocumentProperties.LastPrinted);
+            if (isUpdateLastPrintedProperty)
+                Assert.That(doc.BuiltInDocumentProperties.LastPrinted, Is.Not.EqualTo(lastPrinted));
+            else
+                Assert.That(doc.BuiltInDocumentProperties.LastPrinted, Is.EqualTo(lastPrinted));
             //ExEnd
         }
 
@@ -133,10 +139,12 @@ namespace ApiExamples
         public void UpdateCreatedTimeProperty(bool isUpdateCreatedTimeProperty)
         {
             //ExStart
-            //ExFor:SaveOptions.UpdateLastPrintedProperty
+            //ExFor:SaveOptions.UpdateCreatedTimeProperty
             //ExSummary:Shows how to update a document's "CreatedTime" property when saving.
             Document doc = new Document();
-            doc.BuiltInDocumentProperties.CreatedTime = new DateTime(2019, 12, 20);
+
+            DateTime createdTime = new DateTime(2019, 12, 20);
+            doc.BuiltInDocumentProperties.CreatedTime = createdTime;
 
             // This flag determines whether the created time, which is a built-in property, is updated.
             // If so, then the date of the document's most recent save operation
@@ -149,7 +157,11 @@ namespace ApiExamples
             // Open the saved document, then verify the value of the property.
             doc = new Document(ArtifactsDir + "DocSaveOptions.UpdateCreatedTimeProperty.docx");
 
-            Assert.AreNotEqual(isUpdateCreatedTimeProperty, new DateTime(2019, 12, 20) == doc.BuiltInDocumentProperties.CreatedTime);
+            if (isUpdateCreatedTimeProperty)
+                Assert.That(doc.BuiltInDocumentProperties.CreatedTime, Is.Not.EqualTo(createdTime));
+            else
+                Assert.That(doc.BuiltInDocumentProperties.CreatedTime, Is.EqualTo(createdTime));
+
             //ExEnd
         }
 
@@ -175,9 +187,9 @@ namespace ApiExamples
             var testedFileLength = new FileInfo(ArtifactsDir + "DocSaveOptions.AlwaysCompressMetafiles.docx").Length;
 
             if (compressAllMetafiles)
-                Assert.That(testedFileLength, Is.LessThan(14000));
+                Assert.That(testedFileLength < 14000, Is.True);
             else
-                Assert.That(testedFileLength, Is.LessThan(22000));            
+                Assert.That(testedFileLength < 22000, Is.True);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2024 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -66,7 +66,7 @@ namespace ApiExamples
                 // Create a clone of this column
                 foreach (Cell cell in columnCells)
                     cell.ParentRow.InsertBefore(cell.Clone(false), cell);
-                
+
                 Column newColumn = new Column(columnCells[0].ParentRow.ParentTable, mColumnIndex);
 
                 // We want to make sure that the cells are all valid to work with (have at least one paragraph).
@@ -130,12 +130,12 @@ namespace ApiExamples
 
             Column column = Column.FromIndex(table, 2);
             column.Remove();
-            
+
             doc.Save(ArtifactsDir + "TableColumn.RemoveColumn.doc");
 
-            Assert.AreEqual(16, table.GetChildNodes(NodeType.Cell, true).Count);
-            Assert.AreEqual("Cell 7 contents", table.Rows[2].Cells[2].ToString(SaveFormat.Text).Trim());
-            Assert.AreEqual("Cell 11 contents", table.LastRow.Cells[2].ToString(SaveFormat.Text).Trim());
+            Assert.That(table.GetChildNodes(NodeType.Cell, true).Count, Is.EqualTo(16));
+            Assert.That(table.Rows[2].Cells[2].ToString(SaveFormat.Text).Trim(), Is.EqualTo("Cell 7 contents"));
+            Assert.That(table.LastRow.Cells[2].ToString(SaveFormat.Text).Trim(), Is.EqualTo("Cell 11 contents"));
         }
 
         [Test]
@@ -153,12 +153,12 @@ namespace ApiExamples
             // Add some text to each cell in the column.
             foreach (Cell cell in newColumn.Cells)
                 cell.FirstParagraph.AppendChild(new Run(doc, "Column Text " + newColumn.IndexOf(cell)));
-            
+
             doc.Save(ArtifactsDir + "TableColumn.Insert.doc");
 
-            Assert.AreEqual(24, table.GetChildNodes(NodeType.Cell, true).Count);
-            Assert.AreEqual("Column Text 0", table.FirstRow.Cells[1].ToString(SaveFormat.Text).Trim());
-            Assert.AreEqual("Column Text 3", table.LastRow.Cells[1].ToString(SaveFormat.Text).Trim());
+            Assert.That(table.GetChildNodes(NodeType.Cell, true).Count, Is.EqualTo(24));
+            Assert.That(table.FirstRow.Cells[1].ToString(SaveFormat.Text).Trim(), Is.EqualTo("Column Text 0"));
+            Assert.That(table.LastRow.Cells[1].ToString(SaveFormat.Text).Trim(), Is.EqualTo("Column Text 3"));
         }
 
         [Test]
@@ -170,7 +170,7 @@ namespace ApiExamples
             Column column = Column.FromIndex(table, 0);
             Console.WriteLine(column.ToTxt());
 
-            Assert.AreEqual("\rRow 1\rRow 2\rRow 3\r", column.ToTxt());
+            Assert.That(column.ToTxt(), Is.EqualTo("\rRow 1\rRow 2\rRow 3\r"));
         }
     }
 }

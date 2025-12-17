@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2024 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -12,12 +12,15 @@ using NUnit.Framework;
 
 namespace ApiExamples
 {
+    [TestFixture]
     public class ExChmLoadOptions : ApiExampleBase
     {
         [Test] // ToDo: Need to add tests.
         public void OriginalFileName()
         {
             //ExStart
+            //ExFor:ChmLoadOptions
+            //ExFor:ChmLoadOptions.#ctor
             //ExFor:ChmLoadOptions.OriginalFileName
             //ExSummary:Shows how to resolve URLs like "ms-its:myfile.chm::/index.htm".
             // Our document contains URLs like "ms-its:amhelp.chm::....htm", but it has a different name,
@@ -27,7 +30,7 @@ namespace ApiExamples
 
             Document doc = new Document(new MemoryStream(File.ReadAllBytes(MyDir + "Document with ms-its links.chm")),
                 loadOptions);
-            
+
             doc.Save(ArtifactsDir + "ExChmLoadOptions.OriginalFileName.html");
             //ExEnd
         }

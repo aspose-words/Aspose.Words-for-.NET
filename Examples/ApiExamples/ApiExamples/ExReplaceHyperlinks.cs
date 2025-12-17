@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2024 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -105,7 +105,10 @@ namespace ApiExamples
         /// </summary>
         internal string Name
         {
-            get => GetTextSameParent(mFieldSeparator, mFieldEnd); 
+            get
+            {
+                return GetTextSameParent(mFieldSeparator, mFieldEnd);
+            }
             set
             {
                 // Hyperlink display name is stored in the field result, which is a Run 
@@ -123,7 +126,10 @@ namespace ApiExamples
         /// </summary>
         internal string Target
         {
-            get => mTarget;
+            get
+            {
+                return mTarget;
+            }
             set
             {
                 mTarget = value;
@@ -136,7 +142,10 @@ namespace ApiExamples
         /// </summary>
         internal bool IsLocal
         {
-            get => mIsLocal; 
+            get
+            {
+                return mIsLocal;
+            }
             set
             {
                 mIsLocal = value;

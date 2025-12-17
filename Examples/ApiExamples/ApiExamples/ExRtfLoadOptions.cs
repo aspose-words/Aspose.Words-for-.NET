@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2024 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -33,13 +33,11 @@ namespace ApiExamples
 
             Document doc = new Document(MyDir + "UTF-8 characters.rtf", loadOptions);
 
-            Assert.AreEqual(
-                recognizeUtf8Text
+            Assert.That(doc.FirstSection.Body.GetText().Trim(), Is.EqualTo(recognizeUtf8Text
                     ? "“John Doe´s list of currency symbols”™\r" +
                       "€, ¢, £, ¥, ¤"
                     : "â€œJohn DoeÂ´s list of currency symbolsâ€\u009dâ„¢\r" +
-                      "â‚¬, Â¢, Â£, Â¥, Â¤",
-                doc.FirstSection.Body.GetText().Trim());
+                      "â‚¬, Â¢, Â£, Â¥, Â¤"));
             //ExEnd
         }
     }

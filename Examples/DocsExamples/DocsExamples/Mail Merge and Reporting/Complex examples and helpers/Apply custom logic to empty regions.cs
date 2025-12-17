@@ -303,6 +303,7 @@ namespace DocsExamples.Mail_Merge_and_Reporting.Custom_examples
         private void DisableForeignKeyConstraints(DataSet dataSet)
         {
             //ExStart:DisableForeignKeyConstraints
+            //GistId:c68048adceb3bda6a1511c7d6f5ebf7b
             dataSet.Relations.Add(new DataRelation("OrderToItem", orderTable.Columns["Order_Id"],
                 itemTable.Columns["Order_Id"], false));
             //ExEnd:DisableForeignKeyConstraints

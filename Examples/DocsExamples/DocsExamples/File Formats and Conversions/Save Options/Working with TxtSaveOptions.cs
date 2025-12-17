@@ -10,6 +10,7 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
         public void AddBidiMarks()
         {
             //ExStart:AddBidiMarks
+            //GistId:ddafc3430967fb4f4f70085fa577d01a
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -25,9 +26,10 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
         }
 
         [Test]
-        public void UseTabCharacterPerLevelForListIndentation()
+        public void UseTabForListIndentation()
         {
-            //ExStart:UseTabCharacterPerLevelForListIndentation
+            //ExStart:UseTabForListIndentation
+            //GistId:ddafc3430967fb4f4f70085fa577d01a
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -43,14 +45,15 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
             saveOptions.ListIndentation.Count = 1;
             saveOptions.ListIndentation.Character = '\t';
 
-            doc.Save(ArtifactsDir + "WorkingWithTxtSaveOptions.UseTabCharacterPerLevelForListIndentation.txt", saveOptions);
-            //ExEnd:UseTabCharacterPerLevelForListIndentation
+            doc.Save(ArtifactsDir + "WorkingWithTxtSaveOptions.UseTabForListIndentation.txt", saveOptions);
+            //ExEnd:UseTabForListIndentation
         }
 
         [Test]
-        public void UseSpaceCharacterPerLevelForListIndentation()
+        public void UseSpaceForListIndentation()
         {
-            //ExStart:UseSpaceCharacterPerLevelForListIndentation
+            //ExStart:UseSpaceForListIndentation
+            //GistId:ddafc3430967fb4f4f70085fa577d01a
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -66,8 +69,8 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
             saveOptions.ListIndentation.Count = 3;
             saveOptions.ListIndentation.Character = ' ';
 
-            doc.Save(ArtifactsDir + "WorkingWithTxtSaveOptions.UseSpaceCharacterPerLevelForListIndentation.txt", saveOptions);
-            //ExEnd:UseSpaceCharacterPerLevelForListIndentation
+            doc.Save(ArtifactsDir + "WorkingWithTxtSaveOptions.UseSpaceForListIndentation.txt", saveOptions);
+            //ExEnd:UseSpaceForListIndentation
         }
     }
 }

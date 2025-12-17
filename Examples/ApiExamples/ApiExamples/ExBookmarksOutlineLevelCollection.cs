@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2024 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -22,13 +22,13 @@ namespace ApiExamples
             //ExFor:BookmarksOutlineLevelCollection
             //ExFor:BookmarksOutlineLevelCollection.Add(String, Int32)
             //ExFor:BookmarksOutlineLevelCollection.Clear
-            //ExFor:BookmarksOutlineLevelCollection.Contains(System.String)
+            //ExFor:BookmarksOutlineLevelCollection.Contains(String)
             //ExFor:BookmarksOutlineLevelCollection.Count
-            //ExFor:BookmarksOutlineLevelCollection.IndexOfKey(System.String)
-            //ExFor:BookmarksOutlineLevelCollection.Item(System.Int32)
-            //ExFor:BookmarksOutlineLevelCollection.Item(System.String)
-            //ExFor:BookmarksOutlineLevelCollection.Remove(System.String)
-            //ExFor:BookmarksOutlineLevelCollection.RemoveAt(System.Int32)
+            //ExFor:BookmarksOutlineLevelCollection.IndexOfKey(String)
+            //ExFor:BookmarksOutlineLevelCollection.Item(Int32)
+            //ExFor:BookmarksOutlineLevelCollection.Item(String)
+            //ExFor:BookmarksOutlineLevelCollection.Remove(String)
+            //ExFor:BookmarksOutlineLevelCollection.RemoveAt(Int32)
             //ExFor:OutlineOptions.BookmarksOutlineLevels
             //ExSummary:Shows how to set outline levels for bookmarks.
             Document doc = new Document();
@@ -60,11 +60,11 @@ namespace ApiExamples
             outlineLevels.Add("Bookmark 2", 2);
             outlineLevels.Add("Bookmark 3", 3);
 
-            Assert.AreEqual(3, outlineLevels.Count);
-            Assert.True(outlineLevels.Contains("Bookmark 1"));
-            Assert.AreEqual(1, outlineLevels[0]);
-            Assert.AreEqual(2, outlineLevels["Bookmark 2"]);
-            Assert.AreEqual(2, outlineLevels.IndexOfKey("Bookmark 3"));
+            Assert.That(outlineLevels.Count, Is.EqualTo(3));
+            Assert.That(outlineLevels.Contains("Bookmark 1"), Is.True);
+            Assert.That(outlineLevels[0], Is.EqualTo(1));
+            Assert.That(outlineLevels["Bookmark 2"], Is.EqualTo(2));
+            Assert.That(outlineLevels.IndexOfKey("Bookmark 3"), Is.EqualTo(2));
 
             // We can remove two elements so that only the outline level designation for "Bookmark 1" is left.
             outlineLevels.RemoveAt(2);
@@ -80,16 +80,22 @@ namespace ApiExamples
             // Emptying this collection will preserve the bookmarks and put them all on the same outline level.
             outlineLevels.Clear();
             //ExEnd
-            
+        }
+
+        [Test]
+        public void UsePdfBookmarkEditorForBookmarkLevels()
+        {
+            BookmarkLevels();
+
             PdfBookmarkEditor bookmarkEditor = new PdfBookmarkEditor();
             bookmarkEditor.BindPdf(ArtifactsDir + "BookmarksOutlineLevelCollection.BookmarkLevels.pdf");
 
             Bookmarks bookmarks = bookmarkEditor.ExtractBookmarks();
 
-            Assert.AreEqual(3, bookmarks.Count);
-            Assert.AreEqual("Bookmark 1", bookmarks[0].Title);
-            Assert.AreEqual("Bookmark 2", bookmarks[1].Title);
-            Assert.AreEqual("Bookmark 3", bookmarks[2].Title);            
+            Assert.That(bookmarks.Count, Is.EqualTo(3));
+            Assert.That(bookmarks[0].Title, Is.EqualTo("Bookmark 1"));
+            Assert.That(bookmarks[1].Title, Is.EqualTo("Bookmark 2"));
+            Assert.That(bookmarks[2].Title, Is.EqualTo("Bookmark 3"));
         }
     }
 }

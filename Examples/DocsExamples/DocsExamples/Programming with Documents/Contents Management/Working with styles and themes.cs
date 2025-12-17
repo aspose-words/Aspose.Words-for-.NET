@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Drawing;
 using Aspose.Words;
 using NUnit.Framework;
@@ -11,6 +11,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
         public void AccessStyles()
         {
             //ExStart:AccessStyles
+            //GistId:a73b495f610523670f0847331ef4d6fc
             Document doc = new Document();
 
             string styleName = "";
@@ -37,6 +38,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
         public void CopyStyles()
         {
             //ExStart:CopyStyles
+            //GistId:a73b495f610523670f0847331ef4d6fc
             Document doc = new Document();
             Document target = new Document(MyDir + "Rendering.docx");
 
@@ -50,6 +52,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
         public void GetThemeProperties()
         {
             //ExStart:GetThemeProperties
+            //GistId:a73b495f610523670f0847331ef4d6fc
             Document doc = new Document();
 
             Aspose.Words.Themes.Theme theme = doc.Theme;
@@ -57,25 +60,27 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
             Console.WriteLine(theme.MajorFonts.Latin);
             Console.WriteLine(theme.MinorFonts.EastAsian);
             Console.WriteLine(theme.Colors.Accent1);
-            //ExEnd:GetThemeProperties 
+            //ExEnd:GetThemeProperties
         }
 
         [Test]
         public void SetThemeProperties()
         {
             //ExStart:SetThemeProperties
+            //GistId:a73b495f610523670f0847331ef4d6fc
             Document doc = new Document();
 
             Aspose.Words.Themes.Theme theme = doc.Theme;
             theme.MinorFonts.Latin = "Times New Roman";
             theme.Colors.Hyperlink = Color.Gold;
-            //ExEnd:SetThemeProperties 
+            //ExEnd:SetThemeProperties
         }
 
         [Test]
         public void InsertStyleSeparator()
         {
             //ExStart:InsertStyleSeparator
+            //GistId:4b5526c3c0d9cad73e05fb4b18d2c3d2
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -113,8 +118,8 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
             Style newStyle = dstDoc.Styles.AddCopy(srcStyle);
 
             // The imported style has an appearance identical to its source style.
-            Assert.AreEqual("MyStyle", newStyle.Name);
-            Assert.AreEqual(Color.Red.ToArgb(), newStyle.Font.Color.ToArgb());
+            Assert.That(newStyle.Name, Is.EqualTo("MyStyle"));
+            Assert.That(newStyle.Font.Color.ToArgb(), Is.EqualTo(Color.Red.ToArgb()));
             //ExEnd:CopyStyleDifferentDocument
         }
     }

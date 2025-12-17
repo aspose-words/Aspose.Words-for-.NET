@@ -1,12 +1,14 @@
-﻿// Copyright (c) 2001-2024 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
+using System;
 using System.IO;
 using Aspose.Words;
+using Aspose.Words.DigitalSignatures;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
 using NUnit.Framework;
@@ -31,7 +33,7 @@ namespace ApiExamples
             // Insert headings that can serve as TOC entries of levels 1, 2, and then 3.
             builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading1;
 
-            Assert.True(builder.ParagraphFormat.IsHeading);
+            Assert.That(builder.ParagraphFormat.IsHeading, Is.True);
 
             builder.Writeln("Heading 1");
 
@@ -49,7 +51,7 @@ namespace ApiExamples
             // to modify how that method converts the document to .XPS.
             XpsSaveOptions saveOptions = new XpsSaveOptions();
 
-            Assert.AreEqual(SaveFormat.Xps, saveOptions.SaveFormat);
+            Assert.That(saveOptions.SaveFormat, Is.EqualTo(SaveFormat.Xps));
 
             // The output XPS document will contain an outline, a table of contents that lists headings in the document body.
             // Clicking on an entry in this outline will take us to the location of its respective heading.
@@ -117,9 +119,9 @@ namespace ApiExamples
 
             var testedFileLength = new FileInfo(ArtifactsDir + "XpsSaveOptions.OptimizeOutput.xps").Length;
             if (optimizeOutput)
-                Assert.That(testedFileLength, Is.LessThan(43000));
+                Assert.That(testedFileLength < 43000, Is.True);
             else
-                Assert.That(testedFileLength, Is.LessThan(64000));
+                Assert.That(testedFileLength < 64000, Is.True);
 
             TestUtil.DocPackageFileContainsString(
                 optimizeOutput
@@ -156,6 +158,32 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "XpsSaveOptions.ExportExactPages.xps", xpsOptions);
             //ExEnd
+        }
+
+        [Test]
+        public void XpsDigitalSignature()
+        {
+            //ExStart:XpsDigitalSignature
+            //GistId:708ce40a68fac5003d46f6b4acfd5ff1
+            //ExFor:XpsSaveOptions.DigitalSignatureDetails
+            //ExSummary:Shows how to sign XPS document.
+            Document doc = new Document(MyDir + "Document.docx");
+
+            CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
+            SignOptions options = new SignOptions();
+            options.SignTime = DateTime.Now;
+            options.Comments = "Some comments";
+
+            DigitalSignatureDetails digitalSignatureDetails = new DigitalSignatureDetails(certificateHolder, options);
+
+            XpsSaveOptions saveOptions = new XpsSaveOptions();
+            saveOptions.DigitalSignatureDetails = digitalSignatureDetails;
+
+            Assert.That(digitalSignatureDetails.CertificateHolder, Is.EqualTo(certificateHolder));
+            Assert.That(digitalSignatureDetails.SignOptions.Comments, Is.EqualTo("Some comments"));
+
+            doc.Save(ArtifactsDir + "XpsSaveOptions.XpsDigitalSignature.docx", saveOptions);
+            //ExEnd:XpsDigitalSignature
         }
     }
 }

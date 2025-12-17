@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2024 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -22,23 +22,23 @@ namespace ApiExamples
         public void LayoutCollector()
         {
             //ExStart
-            //ExFor:Layout.LayoutCollector
-            //ExFor:Layout.LayoutCollector.#ctor(Document)
-            //ExFor:Layout.LayoutCollector.Clear
-            //ExFor:Layout.LayoutCollector.Document
-            //ExFor:Layout.LayoutCollector.GetEndPageIndex(Node)
-            //ExFor:Layout.LayoutCollector.GetEntity(Node)
-            //ExFor:Layout.LayoutCollector.GetNumPagesSpanned(Node)
-            //ExFor:Layout.LayoutCollector.GetStartPageIndex(Node)
-            //ExFor:Layout.LayoutEnumerator.Current
+            //ExFor:LayoutCollector
+            //ExFor:LayoutCollector.#ctor(Document)
+            //ExFor:LayoutCollector.Clear
+            //ExFor:LayoutCollector.Document
+            //ExFor:LayoutCollector.GetEndPageIndex(Node)
+            //ExFor:LayoutCollector.GetEntity(Node)
+            //ExFor:LayoutCollector.GetNumPagesSpanned(Node)
+            //ExFor:LayoutCollector.GetStartPageIndex(Node)
+            //ExFor:LayoutEnumerator.Current
             //ExSummary:Shows how to see the the ranges of pages that a node spans.
             Document doc = new Document();
             LayoutCollector layoutCollector = new LayoutCollector(doc);
-            
+
             // Call the "GetNumPagesSpanned" method to count how many pages the content of our document spans.
             // Since the document is empty, that number of pages is currently zero.
-            Assert.AreEqual(doc, layoutCollector.Document);
-            Assert.AreEqual(0, layoutCollector.GetNumPagesSpanned(doc));
+            Assert.That(layoutCollector.Document, Is.EqualTo(doc));
+            Assert.That(layoutCollector.GetNumPagesSpanned(doc), Is.EqualTo(0));
 
             // Populate the document with 5 pages of content.
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -52,12 +52,12 @@ namespace ApiExamples
 
             // Before the layout collector, we need to call the "UpdatePageLayout" method to give us
             // an accurate figure for any layout-related metric, such as the page count.
-            Assert.AreEqual(0, layoutCollector.GetNumPagesSpanned(doc));
+            Assert.That(layoutCollector.GetNumPagesSpanned(doc), Is.EqualTo(0));
 
             layoutCollector.Clear();
             doc.UpdatePageLayout();
 
-            Assert.AreEqual(5, layoutCollector.GetNumPagesSpanned(doc));
+            Assert.That(layoutCollector.GetNumPagesSpanned(doc), Is.EqualTo(5));
 
             // We can see the numbers of the start and end pages of any node and their overall page spans.
             NodeCollection nodes = doc.GetChildNodes(NodeType.Any, true);
@@ -72,36 +72,36 @@ namespace ApiExamples
             // We can iterate over the layout entities using a LayoutEnumerator.
             LayoutEnumerator layoutEnumerator = new LayoutEnumerator(doc);
 
-            Assert.AreEqual(LayoutEntityType.Page, layoutEnumerator.Type);
+            Assert.That(layoutEnumerator.Type, Is.EqualTo(LayoutEntityType.Page));
 
             // The LayoutEnumerator can traverse the collection of layout entities like a tree.
             // We can also apply it to any node's corresponding layout entity.
             layoutEnumerator.Current = layoutCollector.GetEntity(doc.GetChild(NodeType.Paragraph, 1, true));
 
-            Assert.AreEqual(LayoutEntityType.Span, layoutEnumerator.Type);
-            Assert.AreEqual("¶", layoutEnumerator.Text);
+            Assert.That(layoutEnumerator.Type, Is.EqualTo(LayoutEntityType.Span));
+            Assert.That(layoutEnumerator.Text, Is.EqualTo("¶"));
             //ExEnd
         }
 
         //ExStart
-        //ExFor:Layout.LayoutEntityType
-        //ExFor:Layout.LayoutEnumerator
-        //ExFor:Layout.LayoutEnumerator.#ctor(Document)
-        //ExFor:Layout.LayoutEnumerator.Document
-        //ExFor:Layout.LayoutEnumerator.Kind
-        //ExFor:Layout.LayoutEnumerator.MoveFirstChild
-        //ExFor:Layout.LayoutEnumerator.MoveLastChild
-        //ExFor:Layout.LayoutEnumerator.MoveNext
-        //ExFor:Layout.LayoutEnumerator.MoveNextLogical
-        //ExFor:Layout.LayoutEnumerator.MoveParent
-        //ExFor:Layout.LayoutEnumerator.MoveParent(Layout.LayoutEntityType)
-        //ExFor:Layout.LayoutEnumerator.MovePrevious
-        //ExFor:Layout.LayoutEnumerator.MovePreviousLogical
-        //ExFor:Layout.LayoutEnumerator.PageIndex
-        //ExFor:Layout.LayoutEnumerator.Rectangle
-        //ExFor:Layout.LayoutEnumerator.Reset
-        //ExFor:Layout.LayoutEnumerator.Text
-        //ExFor:Layout.LayoutEnumerator.Type
+        //ExFor:LayoutEntityType
+        //ExFor:LayoutEnumerator
+        //ExFor:LayoutEnumerator.#ctor(Document)
+        //ExFor:LayoutEnumerator.Document
+        //ExFor:LayoutEnumerator.Kind
+        //ExFor:LayoutEnumerator.MoveFirstChild
+        //ExFor:LayoutEnumerator.MoveLastChild
+        //ExFor:LayoutEnumerator.MoveNext
+        //ExFor:LayoutEnumerator.MoveNextLogical
+        //ExFor:LayoutEnumerator.MoveParent
+        //ExFor:LayoutEnumerator.MoveParent(LayoutEntityType)
+        //ExFor:LayoutEnumerator.MovePrevious
+        //ExFor:LayoutEnumerator.MovePreviousLogical
+        //ExFor:LayoutEnumerator.PageIndex
+        //ExFor:LayoutEnumerator.Rectangle
+        //ExFor:LayoutEnumerator.Reset
+        //ExFor:LayoutEnumerator.Text
+        //ExFor:LayoutEnumerator.Type
         //ExSummary:Shows ways of traversing a document's layout entities.
         [Test] //ExSkip
         public void LayoutEnumerator()
@@ -114,11 +114,11 @@ namespace ApiExamples
             // Create an enumerator that can traverse these entities like a tree.
             LayoutEnumerator layoutEnumerator = new LayoutEnumerator(doc);
 
-            Assert.AreEqual(doc, layoutEnumerator.Document);
+            Assert.That(layoutEnumerator.Document, Is.EqualTo(doc));
 
             layoutEnumerator.MoveParent(LayoutEntityType.Page);
 
-            Assert.AreEqual(LayoutEntityType.Page, layoutEnumerator.Type);
+            Assert.That(layoutEnumerator.Type, Is.EqualTo(LayoutEntityType.Page));
             Assert.Throws<InvalidOperationException>(() => Console.WriteLine(layoutEnumerator.Text));
 
             // We can call this method to make sure that the enumerator will be at the first layout entity.
@@ -244,10 +244,12 @@ namespace ApiExamples
         //ExStart
         //ExFor:IPageLayoutCallback
         //ExFor:IPageLayoutCallback.Notify(PageLayoutCallbackArgs)
+        //ExFor:PageLayoutCallbackArgs
         //ExFor:PageLayoutCallbackArgs.Event
         //ExFor:PageLayoutCallbackArgs.Document
         //ExFor:PageLayoutCallbackArgs.PageIndex
         //ExFor:PageLayoutEvent
+        //ExFor:LayoutOptions.Callback
         //ExSummary:Shows how to track layout changes with a layout callback.
         [Test]//ExSkip
         public void PageLayoutCallback()

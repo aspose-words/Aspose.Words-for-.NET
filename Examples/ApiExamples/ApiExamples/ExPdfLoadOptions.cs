@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2024 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -19,22 +19,23 @@ namespace ApiExamples
         public void SkipPdfImages(bool isSkipPdfImages)
         {
             //ExStart
+            //ExFor:PdfLoadOptions
             //ExFor:PdfLoadOptions.SkipPdfImages
+            //ExFor:PdfLoadOptions.PageIndex
+            //ExFor:PdfLoadOptions.PageCount
             //ExSummary:Shows how to skip images during loading PDF files.
             PdfLoadOptions options = new PdfLoadOptions();
             options.SkipPdfImages = isSkipPdfImages;
-            
+            options.PageIndex = 0;
+            options.PageCount = 1;
+
             Document doc = new Document(MyDir + "Images.pdf", options);
             NodeCollection shapeCollection = doc.GetChildNodes(NodeType.Shape, true);
 
             if (isSkipPdfImages)
-            {
-                Assert.AreEqual(shapeCollection.Count, 0);
-            }
+                Assert.That(0, Is.EqualTo(shapeCollection.Count));
             else
-            {
-                Assert.AreNotEqual(shapeCollection.Count, 0);
-            }
+                Assert.That(0, Is.Not.EqualTo(shapeCollection.Count));
             //ExEnd
         }
     }

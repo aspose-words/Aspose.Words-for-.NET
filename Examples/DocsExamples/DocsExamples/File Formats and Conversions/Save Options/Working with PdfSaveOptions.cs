@@ -1,6 +1,8 @@
-using System;
+﻿using System;
+using System.Linq;
 using Aspose.Words;
 using Aspose.Words.DigitalSignatures;
+using Aspose.Words.Fields;
 using Aspose.Words.Saving;
 using NUnit.Framework;
 
@@ -22,6 +24,7 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
 
         [Test]
         //ExStart:PdfRenderWarnings
+        //GistId:f9c5250f94e595ea3590b3be679475ba
         public void PdfRenderWarnings()
         {
             Document doc = new Document(MyDir + "WMF with image.docx");
@@ -47,7 +50,6 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
             }
         }
 
-        //ExStart:RenderMetafileToBitmap
         public class HandleDocumentWarnings : IWarningCallback
         {
             /// <summary>
@@ -68,7 +70,6 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
 
             public WarningInfoCollection mWarnings = new WarningInfoCollection();
         }
-        //ExEnd:RenderMetafileToBitmap
         //ExEnd:PdfRenderWarnings
 
         [Test]
@@ -95,34 +96,37 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
         [Test]
         public void EmbeddedAllFonts()
         {
-            //ExStart:EmbeddAllFonts
+            //ExStart:EmbeddedAllFonts
+            //GistId:6debb84fc15c7e5b8e35384d9c116215
             Document doc = new Document(MyDir + "Rendering.docx");
 
             // The output PDF will be embedded with all fonts found in the document.
             PdfSaveOptions saveOptions = new PdfSaveOptions { EmbedFullFonts = true };
             
-            doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.EmbeddedFontsInPdf.pdf", saveOptions);
-            //ExEnd:EmbeddAllFonts
+            doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.EmbeddedAllFonts.pdf", saveOptions);
+            //ExEnd:EmbeddedAllFonts
         }
 
         [Test]
         public void EmbeddedSubsetFonts()
         {
-            //ExStart:EmbeddSubsetFonts
+            //ExStart:EmbeddedSubsetFonts
+            //GistId:6debb84fc15c7e5b8e35384d9c116215
             Document doc = new Document(MyDir + "Rendering.docx");
 
             // The output PDF will contain subsets of the fonts in the document.
             // Only the glyphs used in the document are included in the PDF fonts.
             PdfSaveOptions saveOptions = new PdfSaveOptions { EmbedFullFonts = false };
             
-            doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.EmbeddSubsetFonts.pdf", saveOptions);
-            //ExEnd:EmbeddSubsetFonts
+            doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.EmbeddedSubsetFonts.pdf", saveOptions);
+            //ExEnd:EmbeddedSubsetFonts
         }
 
         [Test]
         public void DisableEmbedWindowsFonts()
         {
             //ExStart:DisableEmbedWindowsFonts
+            //GistId:6debb84fc15c7e5b8e35384d9c116215
             Document doc = new Document(MyDir + "Rendering.docx");
 
             // The output PDF will be saved without embedding standard windows fonts.
@@ -148,6 +152,7 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
         public void AvoidEmbeddingCoreFonts()
         {
             //ExStart:AvoidEmbeddingCoreFonts
+            //GistId:6debb84fc15c7e5b8e35384d9c116215
             Document doc = new Document(MyDir + "Rendering.docx");
 
             // The output PDF will not be embedded with core fonts such as Arial, Times New Roman etc.
@@ -164,11 +169,8 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             
-            builder.InsertHyperlink("Testlink", 
-                "https://www.google.com/search?q=%2Fthe%20test", false);
-            builder.Writeln();
-            builder.InsertHyperlink("https://www.google.com/search?q=%2Fthe%20test", 
-                "https://www.google.com/search?q=%2Fthe%20test", false);
+            builder.InsertHyperlink("Testlink",
+                "https://www.google.com/search?q= aspose", false);
 
             doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.EscapeUri.pdf");
             //ExEnd:EscapeUri
@@ -178,6 +180,7 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
         public void ExportHeaderFooterBookmarks()
         {
             //ExStart:ExportHeaderFooterBookmarks
+            //GistId:6debb84fc15c7e5b8e35384d9c116215
             Document doc = new Document(MyDir + "Bookmarks in headers and footers.docx");
 
             PdfSaveOptions saveOptions = new PdfSaveOptions();
@@ -236,6 +239,7 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
         public void DownsamplingImages()
         {
             //ExStart:DownsamplingImages
+            //GistId:6debb84fc15c7e5b8e35384d9c116215
             Document doc = new Document(MyDir + "Rendering.docx");
 
             // We can set a minimum threshold for downsampling.
@@ -250,23 +254,25 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
         }
 
         [Test]
-        public void SetOutlineOptions()
+        public void OutlineOptions()
         {
-            //ExStart:SetOutlineOptions
+            //ExStart:OutlineOptions
+            //GistId:6debb84fc15c7e5b8e35384d9c116215
             Document doc = new Document(MyDir + "Rendering.docx");
 
             PdfSaveOptions saveOptions = new PdfSaveOptions();
             saveOptions.OutlineOptions.HeadingsOutlineLevels = 3;
             saveOptions.OutlineOptions.ExpandedOutlineLevels = 1;
 
-            doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.SetOutlineOptions.pdf", saveOptions);
-            //ExEnd:SetOutlineOptions
+            doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.OutlineOptions.pdf", saveOptions);
+            //ExEnd:OutlineOptions
         }
 
         [Test]
         public void CustomPropertiesExport()
         {
             //ExStart:CustomPropertiesExport
+            //GistId:6debb84fc15c7e5b8e35384d9c116215
             Document doc = new Document();
             doc.CustomDocumentProperties.Add("Company", "Aspose");
 
@@ -280,6 +286,7 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
         public void ExportDocumentStructure()
         {
             //ExStart:ExportDocumentStructure
+            //GistId:6debb84fc15c7e5b8e35384d9c116215
             Document doc = new Document(MyDir + "Paragraphs.docx");
 
             // The file size will be increased and the structure will be visible in the "Content" navigation pane
@@ -293,7 +300,8 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
         [Test]
         public void ImageCompression()
         {
-            //ExStart:PdfImageCompression
+            //ExStart:ImageCompression
+            //GistId:6debb84fc15c7e5b8e35384d9c116215
             Document doc = new Document(MyDir + "Rendering.docx");
 
             PdfSaveOptions saveOptions = new PdfSaveOptions
@@ -301,7 +309,7 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
                 ImageCompression = PdfImageCompression.Jpeg, PreserveFormFields = true
             };
 
-            doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.PdfImageCompression.pdf", saveOptions);
+            doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.ImageCompression.pdf", saveOptions);
 
             PdfSaveOptions saveOptionsA2U = new PdfSaveOptions
             {
@@ -312,20 +320,21 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
 
             
 
-            doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.PdfImageCompression_A2u.pdf", saveOptionsA2U);
-            //ExEnd:PdfImageComppression
+            doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.ImageCompression_A2u.pdf", saveOptionsA2U);
+            //ExEnd:ImageCompression
         }
 
         [Test]
-        public void UpdateLastPrintedProperty()
+        public void UpdateLastPrinted()
         {
-            //ExStart:UpdateIfLastPrinted
+            //ExStart:UpdateLastPrinted
+            //GistId:83e5c469d0e72b5114fb8a05a1d01977
             Document doc = new Document(MyDir + "Rendering.docx");
 
             PdfSaveOptions saveOptions = new PdfSaveOptions { UpdateLastPrintedProperty = true };
 
-            doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.UpdateIfLastPrinted.pdf", saveOptions);
-            //ExEnd:UpdateIfLastPrinted
+            doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.UpdateLastPrinted.pdf", saveOptions);
+            //ExEnd:UpdateLastPrinted
         }
 
         [Test]
@@ -363,6 +372,34 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
 
             doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.OptimizeOutput.pdf", saveOptions);
             //ExEnd:OptimizeOutput
+        }
+
+        [Test]
+        public void UpdateScreenTip()
+        {
+            //ExStart:UpdateScreenTip
+            //GistId:8b0ab362f95040ada1255a0473acefe2
+            Document doc = new Document(MyDir + "Table of contents.docx");
+
+            var tocHyperLinks = doc.Range.Fields
+                .Where(f => f.Type == FieldType.FieldHyperlink)
+                .Cast<FieldHyperlink>()
+                .Where(f => f.SubAddress.StartsWith("#_Toc"));
+
+            foreach (FieldHyperlink link in tocHyperLinks)
+                link.ScreenTip = link.DisplayResult;
+
+            PdfSaveOptions saveOptions = new PdfSaveOptions()
+            {
+                Compliance = PdfCompliance.PdfUa1,
+                DisplayDocTitle = true,
+                ExportDocumentStructure = true,
+            };
+            saveOptions.OutlineOptions.HeadingsOutlineLevels = 3;
+            saveOptions.OutlineOptions.CreateMissingOutlineLevels = true;
+
+            doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.UpdateScreenTip.pdf", saveOptions);
+            //ExEnd:UpdateScreenTip
         }
     }
 }

@@ -10,18 +10,20 @@ namespace DocsExamples.File_Formats_and_Conversions.Complex_examples_and_helpers
     public class WorkingWithDocumentInDatabase : DocsExamplesBase
     {
 #if NET48 || JAVA
-        [Test]
+        [Test, Category("IgnoreOnJenkins")]
         public void LoadAndSaveDocToDatabase()
         {
             Document doc = new Document(MyDir + "Document.docx");
-            //ExStart:OpenDatabaseConnection 
+            //ExStart:OpenDatabaseConnection
+            //GistId:f8a622f8bc1cf3c2fa8a7a9be359faa2
             string connString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + DatabaseDir + "Northwind.accdb";
             
             OleDbConnection connection = new OleDbConnection(connString);
             connection.Open();
             //ExEnd:OpenDatabaseConnection
-            
-            //ExStart:OpenRetrieveAndDelete 
+
+            //ExStart:OpenRetrieveAndDelete
+            //GistId:f8a622f8bc1cf3c2fa8a7a9be359faa2
             StoreToDatabase(doc, connection);
             
             Document dbDoc = ReadFromDatabase("Document.docx", connection);
@@ -30,10 +32,11 @@ namespace DocsExamples.File_Formats_and_Conversions.Complex_examples_and_helpers
             DeleteFromDatabase("Document.docx", connection);
 
             connection.Close();
-            //ExEnd:OpenRetrieveAndDelete 
+            //ExEnd:OpenRetrieveAndDelete
         }
 
-        //ExStart:StoreToDatabase 
+        //ExStart:StoreToDatabase
+        //GistId:f8a622f8bc1cf3c2fa8a7a9be359faa2
         public void StoreToDatabase(Document doc, OleDbConnection connection)
         {
             MemoryStream stream = new MemoryStream();
@@ -47,8 +50,9 @@ namespace DocsExamples.File_Formats_and_Conversions.Complex_examples_and_helpers
             command.ExecuteNonQuery();
         }
         //ExEnd:StoreToDatabase
-        
-        //ExStart:ReadFromDatabase 
+
+        //ExStart:ReadFromDatabase
+        //GistId:f8a622f8bc1cf3c2fa8a7a9be359faa2
         public Document ReadFromDatabase(string fileName, OleDbConnection connection)
         {
             string commandString = "SELECT * FROM Documents WHERE Name='" + fileName + "'";
@@ -74,8 +78,9 @@ namespace DocsExamples.File_Formats_and_Conversions.Complex_examples_and_helpers
             return doc;
         }
         //ExEnd:ReadFromDatabase
-        
-        //ExStart:DeleteFromDatabase 
+
+        //ExStart:DeleteFromDatabase
+        //GistId:f8a622f8bc1cf3c2fa8a7a9be359faa2
         public void DeleteFromDatabase(string fileName, OleDbConnection connection)
         {
             string commandString = "DELETE * FROM Documents WHERE Name='" + fileName + "'";

@@ -8,7 +8,7 @@ namespace ApiExamples.TestData.TestClasses
 {
     public class ImageTestClass
     {
-        public Image Image { get; set; }        
+        public Image Image { get; set; }
         public Stream ImageStream { get; set; }
         public byte[] ImageBytes { get; set; }
         public string ImageString { get; set; }

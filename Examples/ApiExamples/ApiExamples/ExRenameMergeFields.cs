@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2024 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -81,7 +81,10 @@ namespace ApiExamples
         /// </summary>
         internal string Name
         {
-            get => GetTextSameParent(mFieldSeparator.NextSibling, mFieldEnd).Trim('«', '»');
+            get
+            {
+                return GetTextSameParent(mFieldSeparator.NextSibling, mFieldEnd).Trim('«', '»');
+            }
             set
             {
                 // Merge field name is stored in the field result which is a Run 

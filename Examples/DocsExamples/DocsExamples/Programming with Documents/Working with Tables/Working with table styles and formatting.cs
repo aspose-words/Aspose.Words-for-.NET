@@ -379,7 +379,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
         [Test]
         public void SetTableCellFormatting()
         {
-            //ExStart:DocumentBuilderSetTableCellFormatting
+            //ExStart:SetTableCellFormatting
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -398,14 +398,14 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
             builder.EndRow();
             builder.EndTable();
 
-            doc.Save(ArtifactsDir + "WorkingWithTableStylesAndFormatting.DocumentBuilderSetTableCellFormatting.docx");
-            //ExEnd:DocumentBuilderSetTableCellFormatting
+            doc.Save(ArtifactsDir + "WorkingWithTableStylesAndFormatting.SetTableCellFormatting.docx");
+            //ExEnd:SetTableCellFormatting
         }
 
         [Test]
         public void SetTableRowFormatting()
         {
-            //ExStart:DocumentBuilderSetTableRowFormatting
+            //ExStart:SetTableRowFormatting
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -427,8 +427,8 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
             builder.EndRow();
             builder.EndTable();
 
-            doc.Save(ArtifactsDir + "WorkingWithTableStylesAndFormatting.DocumentBuilderSetTableRowFormatting.docx");
-            //ExEnd:DocumentBuilderSetTableRowFormatting
+            doc.Save(ArtifactsDir + "WorkingWithTableStylesAndFormatting.SetTableRowFormatting.docx");
+            //ExEnd:SetTableRowFormatting
         }
     }
 }

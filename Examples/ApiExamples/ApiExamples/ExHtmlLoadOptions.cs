@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2024 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -29,6 +29,7 @@ namespace ApiExamples
         public void SupportVml(bool supportVml)
         {
             //ExStart
+            //ExFor:HtmlLoadOptions
             //ExFor:HtmlLoadOptions.#ctor
             //ExFor:HtmlLoadOptions.SupportVml
             //ExSummary:Shows how to support conditional comments while loading an HTML document.
@@ -44,9 +45,9 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "VML conditional.htm", loadOptions);
 
             if (supportVml)
-                Assert.AreEqual(ImageType.Jpeg, ((Shape)doc.GetChild(NodeType.Shape, 0, true)).ImageData.ImageType);
+                Assert.That(((Shape)doc.GetChild(NodeType.Shape, 0, true)).ImageData.ImageType, Is.EqualTo(ImageType.Jpeg));
             else
-                Assert.AreEqual(ImageType.Png, ((Shape)doc.GetChild(NodeType.Shape, 0, true)).ImageData.ImageType);
+                Assert.That(((Shape)doc.GetChild(NodeType.Shape, 0, true)).ImageData.ImageType, Is.EqualTo(ImageType.Png));
             //ExEnd
 
             Shape imageShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
@@ -68,7 +69,7 @@ namespace ApiExamples
 
             // When loading an Html document with resources externally linked by a web address URL,
             // Aspose.Words will abort web requests that fail to fetch the resources within this time limit, in milliseconds.
-            Assert.AreEqual(100000, options.WebRequestTimeout);
+            Assert.That(options.WebRequestTimeout, Is.EqualTo(100000));
 
             // Set a WarningCallback that will record all warnings that occur during loading.
             ListDocumentWarnings warningCallback = new ListDocumentWarnings();
@@ -85,21 +86,21 @@ namespace ApiExamples
             // Set an unreasonable timeout limit and try load the document again.
             options.WebRequestTimeout = 0;
             Document doc = new Document(new MemoryStream(Encoding.UTF8.GetBytes(html)), options);
-            Assert.AreEqual(2, warningCallback.Warnings().Count);
+            Assert.That(warningCallback.Warnings().Count, Is.EqualTo(2));
 
             // A web request that fails to obtain an image within the time limit will still produce an image.
             // However, the image will be the red 'x' that commonly signifies missing images.
             Shape imageShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
-            Assert.AreEqual(924, imageShape.ImageData.ImageBytes.Length);
+            Assert.That(imageShape.ImageData.ImageBytes.Length, Is.EqualTo(924));
 
             // We can also configure a custom callback to pick up any warnings from timed out web requests.
-            Assert.AreEqual(WarningSource.Html, warningCallback.Warnings()[0].Source);
-            Assert.AreEqual(WarningType.DataLoss, warningCallback.Warnings()[0].WarningType);
-            Assert.AreEqual($"Couldn't load a resource from \'{ImageUrl}\'.", warningCallback.Warnings()[0].Description);
+            Assert.That(warningCallback.Warnings()[0].Source, Is.EqualTo(WarningSource.Html));
+            Assert.That(warningCallback.Warnings()[0].WarningType, Is.EqualTo(WarningType.DataLoss));
+            Assert.That(warningCallback.Warnings()[0].Description, Is.EqualTo($"Couldn't load a resource from \'{ImageUrl}\'."));
 
-            Assert.AreEqual(WarningSource.Html, warningCallback.Warnings()[1].Source);
-            Assert.AreEqual(WarningType.DataLoss, warningCallback.Warnings()[1].WarningType);
-            Assert.AreEqual("Image has been replaced with a placeholder.", warningCallback.Warnings()[1].Description);
+            Assert.That(warningCallback.Warnings()[1].Source, Is.EqualTo(WarningSource.Html));
+            Assert.That(warningCallback.Warnings()[1].WarningType, Is.EqualTo(WarningType.DataLoss));
+            Assert.That(warningCallback.Warnings()[1].Description, Is.EqualTo("Image has been replaced with a placeholder."));
 
             doc.Save(ArtifactsDir + "HtmlLoadOptions.WebRequestTimeout.docx");
         }
@@ -137,11 +138,11 @@ namespace ApiExamples
             loadOptions.WarningCallback = warningCallback;
 
             doc = new Document(ArtifactsDir + "HtmlLoadOptions.Fixed.html", loadOptions);
-            Assert.AreEqual(1, warningCallback.Warnings().Count);
+            Assert.That(warningCallback.Warnings().Count, Is.EqualTo(1));
 
-            Assert.AreEqual(WarningSource.Html, warningCallback.Warnings()[0].Source);
-            Assert.AreEqual(WarningType.MajorFormattingLoss, warningCallback.Warnings()[0].WarningType);
-            Assert.AreEqual("The document is fixed-page HTML. Its structure may not be loaded correctly.", warningCallback.Warnings()[0].Description);
+            Assert.That(warningCallback.Warnings()[0].Source, Is.EqualTo(WarningSource.Html));
+            Assert.That(warningCallback.Warnings()[0].WarningType, Is.EqualTo(WarningType.MajorFormattingLoss));
+            Assert.That(warningCallback.Warnings()[0].Description, Is.EqualTo("The document is fixed-page HTML. Its structure may not be loaded correctly."));
         }
 
         [Test]
@@ -168,11 +169,11 @@ namespace ApiExamples
             // password using a HtmlLoadOptions object.
             HtmlLoadOptions loadOptions = new HtmlLoadOptions("docPassword");
 
-            Assert.AreEqual(signOptions.DecryptionPassword, loadOptions.Password);
+            Assert.That(loadOptions.Password, Is.EqualTo(signOptions.DecryptionPassword));
 
             Document doc = new Document(outputFileName, loadOptions);
 
-            Assert.AreEqual("Test encrypted document.", doc.GetText().Trim());       
+            Assert.That(doc.GetText().Trim(), Is.EqualTo("Test encrypted document."));
             //ExEnd
         }
 
@@ -190,13 +191,13 @@ namespace ApiExamples
             // We can provide a base URI using an HtmlLoadOptions object. 
             HtmlLoadOptions loadOptions = new HtmlLoadOptions(LoadFormat.Html, "", ImageDir);
 
-            Assert.AreEqual(LoadFormat.Html, loadOptions.LoadFormat);
+            Assert.That(loadOptions.LoadFormat, Is.EqualTo(LoadFormat.Html));
 
             Document doc = new Document(MyDir + "Missing image.html", loadOptions);
 
             // While the image was broken in the input .html, our custom base URI helped us repair the link.
             Shape imageShape = (Shape)doc.GetChildNodes(NodeType.Shape, true)[0];
-            Assert.True(imageShape.IsImage);
+            Assert.That(imageShape.IsImage, Is.True);
 
             // This output document will display the image that was missing.
             doc.Save(ArtifactsDir + "HtmlLoadOptions.BaseUri.docx");
@@ -204,7 +205,7 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "HtmlLoadOptions.BaseUri.docx");
 
-            Assert.True(((Shape)doc.GetChild(NodeType.Shape, 0, true)).ImageData.ImageBytes.Length > 0);
+            Assert.That(((Shape)doc.GetChild(NodeType.Shape, 0, true)).ImageData.ImageBytes.Length > 0, Is.True);
         }
 
         [Test]
@@ -212,12 +213,13 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:HtmlLoadOptions.PreferredControlType
+            //ExFor:HtmlControlType
             //ExSummary:Shows how to set preferred type of document nodes that will represent imported <input> and <select> elements.
             const string html = @"
                 <html>
                     <select name='ComboBox' size='1'>
                         <option value='val1'>item1</option>
-                        <option value='val2'></option>                        
+                        <option value='val2'></option>
                     </select>
                 </html>
             ";
@@ -231,10 +233,10 @@ namespace ApiExamples
             StructuredDocumentTag tag = (StructuredDocumentTag) nodes[0];
             //ExEnd
 
-            Assert.AreEqual(2, tag.ListItems.Count);
+            Assert.That(tag.ListItems.Count, Is.EqualTo(2));
 
-            Assert.AreEqual("val1", tag.ListItems[0].Value);
-            Assert.AreEqual("val2", tag.ListItems[1].Value);
+            Assert.That(tag.ListItems[0].Value, Is.EqualTo("val1"));
+            Assert.That(tag.ListItems[1].Value, Is.EqualTo("val2"));
         }
 
         [Test]
@@ -253,10 +255,10 @@ namespace ApiExamples
             Document doc = new Document(new MemoryStream(Encoding.UTF8.GetBytes(html)), htmlLoadOptions);
             NodeCollection nodes = doc.GetChildNodes(NodeType.FormField, true);
 
-            Assert.AreEqual(1, nodes.Count);
+            Assert.That(nodes.Count, Is.EqualTo(1));
 
             FormField formField = (FormField) nodes[0];
-            Assert.AreEqual("Input value text", formField.Result);
+            Assert.That(formField.Result, Is.EqualTo("Input value text"));
         }
 
         [TestCase(true)]
@@ -286,12 +288,19 @@ namespace ApiExamples
             Document doc = new Document(new MemoryStream(Encoding.UTF8.GetBytes(html)), htmlLoadOptions);
             doc.Save(ArtifactsDir + "HtmlLoadOptions.IgnoreNoscriptElements.pdf");
             //ExEnd
+        }
+
+        [TestCase(true)]
+        [TestCase(false)]
+        public void UsePdfDocumentForIgnoreNoscriptElements(bool ignoreNoscriptElements)
+        {
+            IgnoreNoscriptElements(ignoreNoscriptElements);
 
             Aspose.Pdf.Document pdfDoc = new Aspose.Pdf.Document(ArtifactsDir + "HtmlLoadOptions.IgnoreNoscriptElements.pdf");
             TextAbsorber textAbsorber = new TextAbsorber();
             textAbsorber.Visit(pdfDoc);
 
-            Assert.AreEqual(ignoreNoscriptElements ? "" : "Your browser does not support JavaScript!", textAbsorber.Text);
+            Assert.That(textAbsorber.Text, Is.EqualTo(ignoreNoscriptElements ? "" : "Your browser does not support JavaScript!"));
         }
 
         [TestCase(BlockImportMode.Preserve)]
@@ -316,10 +325,25 @@ namespace ApiExamples
             HtmlLoadOptions loadOptions = new HtmlLoadOptions();
             // Set the new mode of import HTML block-level elements.
             loadOptions.BlockImportMode = blockImportMode;
-                        
+
             Document doc = new Document(stream, loadOptions);
             doc.Save(ArtifactsDir + "HtmlLoadOptions.BlockImport.docx");
             //ExEnd
+        }
+
+        [Test]
+        public void FontFaceRules()
+        {
+            //ExStart:FontFaceRules
+            //GistId:5f20ac02cb42c6b08481aa1c5b0cd3db
+            //ExFor:HtmlLoadOptions.SupportFontFaceRules
+            //ExSummary:Shows how to load declared "@font-face" rules.
+            HtmlLoadOptions loadOptions = new HtmlLoadOptions();
+            loadOptions.SupportFontFaceRules = true;
+            Document doc = new Document(MyDir + "Html with FontFace.html", loadOptions);
+
+            Assert.That(doc.FontInfos[0].Name, Is.EqualTo("Squarish Sans CT Regular"));
+            //ExEnd:FontFaceRules
         }
     }
 }

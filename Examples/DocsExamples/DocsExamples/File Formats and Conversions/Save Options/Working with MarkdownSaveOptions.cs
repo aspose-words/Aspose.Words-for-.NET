@@ -8,9 +8,10 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
     public class WorkingWithMarkdownSaveOptions : DocsExamplesBase
     {
         [Test]
-        public void ExportIntoMarkdownWithTableContentAlignment()
+        public void MarkdownTableContentAlignment()
         {
-            //ExStart:ExportIntoMarkdownWithTableContentAlignment
+            //ExStart:MarkdownTableContentAlignment
+            //GistId:19de942ef8827201c1dca99f76c59133
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -37,20 +38,21 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
             // The alignment in this case will be taken from the first paragraph in corresponding table column.
             saveOptions.TableContentAlignment = TableContentAlignment.Auto;
             doc.Save(ArtifactsDir + "WorkingWithMarkdownSaveOptions.AutoTableContentAlignment.md", saveOptions);
-            //ExEnd:ExportIntoMarkdownWithTableContentAlignment
+            //ExEnd:MarkdownTableContentAlignment
         }
 
         [Test]
-        public void SetImagesFolder()
+        public void ImagesFolder()
         {
-            //ExStart:SetImagesFolder
+            //ExStart:ImagesFolder
+            //GistId:51b4cb9c451832f23527892e19c7bca6
             Document doc = new Document(MyDir + "Image bullet points.docx");
 
             MarkdownSaveOptions saveOptions = new MarkdownSaveOptions { ImagesFolder = ArtifactsDir + "Images" };
 
             using (MemoryStream stream = new MemoryStream())
                 doc.Save(stream, saveOptions);
-            //ExEnd:SetImagesFolder
+            //ExEnd:ImagesFolder
         }
     }
 }

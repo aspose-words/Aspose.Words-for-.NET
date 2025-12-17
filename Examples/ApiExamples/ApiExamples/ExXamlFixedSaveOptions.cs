@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2024 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -34,7 +34,7 @@ namespace ApiExamples
             // to modify how we save the document to the XAML save format.
             XamlFixedSaveOptions options = new XamlFixedSaveOptions();
 
-            Assert.AreEqual(SaveFormat.XamlFixed, options.SaveFormat);
+            Assert.That(options.SaveFormat, Is.EqualTo(SaveFormat.XamlFixed));
 
             // Use the "ResourcesFolder" property to assign a folder in the local file system into which
             // Aspose.Words will save all the document's linked resources, such as images and fonts.
@@ -83,9 +83,9 @@ namespace ApiExamples
 
         private void TestResourceFolder(ResourceUriPrinter callback)
         {
-            Assert.AreEqual(15, callback.Resources.Count);
+            Assert.That(callback.Resources.Count, Is.EqualTo(15));
             foreach (string resource in callback.Resources)
-                Assert.True(File.Exists(resource.Split('\t')[1]));
+                Assert.That(File.Exists(resource.Split('\t')[1]), Is.True);
         }
     }
 }

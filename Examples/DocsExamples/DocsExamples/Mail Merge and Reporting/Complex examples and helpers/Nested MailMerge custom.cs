@@ -137,7 +137,8 @@ namespace DocsExamples.Mail_Merge_and_Reporting.Custom_examples
                 return !IsEof;
             }
 
-            //ExStart:GetChildDataSourceExample           
+            //ExStart:GetChildDataSource
+            //GistId:c68048adceb3bda6a1511c7d6f5ebf7b
             public IMailMergeDataSource GetChildDataSource(string tableName)
             {
                 switch (tableName)
@@ -149,7 +150,7 @@ namespace DocsExamples.Mail_Merge_and_Reporting.Custom_examples
                         return null;
                 }
             }
-            //ExEnd:GetChildDataSourceExample
+            //ExEnd:GetChildDataSource
 
             private bool IsEof => (mRecordIndex >= mCustomers.Count);
 

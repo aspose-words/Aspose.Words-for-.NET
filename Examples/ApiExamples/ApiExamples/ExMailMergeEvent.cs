@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2024 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -57,7 +57,7 @@ namespace ApiExamples
             
             doc.MailMerge.FieldMergingCallback = new HandleMergeFieldInsertHtml();
             doc.MailMerge.Execute(new[] { "html_Title", "html_Body" }, mergeData);
-            
+
             doc.Save(ArtifactsDir + "MailMergeEvent.MergeHtml.docx");
         }
 
@@ -114,7 +114,7 @@ namespace ApiExamples
                 new string[] { "text_Field1", "text_Field2", "numeric_Field1" },
                 new object[] { "Field 1", "Field 2", 10 });
             string t = doc.GetText().Trim();
-            Assert.AreEqual("Merge Value For \"Text_Field1\": Field 1, MERGE VALUE FOR \"TEXT_FIELD2\": FIELD 2, 10000.0", doc.GetText().Trim());
+            Assert.That(doc.GetText().Trim(), Is.EqualTo("Merge Value For \"Text_Field1\": Field 1, MERGE VALUE FOR \"TEXT_FIELD2\": FIELD 2, 10000.0"));
         }
 
         /// <summary>
@@ -185,7 +185,7 @@ namespace ApiExamples
             {
                 if (args.DocumentFieldName == "CourseName")
                 {
-                    Assert.AreEqual("StudentCourse", args.TableName);
+                    Assert.That(args.TableName, Is.EqualTo("StudentCourse"));
 
                     DocumentBuilder builder = new DocumentBuilder(args.Document);
                     builder.MoveToMergeField(args.FieldName);
@@ -194,7 +194,7 @@ namespace ApiExamples
                     string fieldValue = args.FieldValue.ToString();
 
                     // In this case, for every record index 'n', the corresponding field value is "Course n".
-                    Assert.AreEqual(char.GetNumericValue(fieldValue[7]), args.RecordIndex);
+                    Assert.That(args.RecordIndex, Is.EqualTo(char.GetNumericValue(fieldValue[7])));
 
                     builder.Write(fieldValue);
                     mCheckBoxCount++;
@@ -355,7 +355,7 @@ namespace ApiExamples
         //ExFor:IFieldMergingCallback.ImageFieldMerging
         //ExFor:ImageFieldMergingArgs.ImageStream
         //ExSummary:Shows how to insert images stored in a database BLOB field into a report.
-        [Test, Category("IgnoreOnJenkins"), Category("SkipGitHub")] //ExSkip        
+        [Test, Category("IgnoreOnJenkins"), Category("SkipGitHub")] //ExSkip
         public void ImageFromBlob()
         {
             Document doc = new Document(MyDir + "Mail merge destination - Northwind employees.docx");

@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2024 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -22,7 +22,8 @@ namespace ApiExamples
         //ExFor:IMailMergeDataSource.TableName
         //ExFor:IMailMergeDataSource.MoveNext
         //ExFor:IMailMergeDataSource.GetValue
-        //ExFor:IMailMergeDataSource.GetChildDataSource        
+        //ExFor:IMailMergeDataSource.GetChildDataSource
+        //ExFor:MailMerge.Execute(IMailMergeDataSource)
         //ExSummary:Shows how to execute a mail merge with a data source in the form of a custom object.
         [Test] //ExSkip
         public void CustomDataSource()

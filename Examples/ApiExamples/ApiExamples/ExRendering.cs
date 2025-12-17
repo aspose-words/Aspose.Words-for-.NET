@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2024 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -12,11 +12,11 @@ using Aspose.Words.Drawing;
 using Aspose.Words.Drawing.Charts;
 using Aspose.Words.Rendering;
 using NUnit.Framework;
-#if NET461_OR_GREATER || JAVA
+#if NETFRAMEWORK || JAVA
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Drawing.Text;
-#elif NET5_0_OR_GREATER || __MOBILE__
+#elif NET6_0_OR_GREATER
 using SkiaSharp;
 #endif
 
@@ -25,11 +25,12 @@ namespace ApiExamples
     [TestFixture]
     public class ExRendering : ApiExampleBase
     {
-#if NET461_OR_GREATER || JAVA
+#if NETFRAMEWORK || JAVA
         //ExStart
         //ExFor:NodeRendererBase.RenderToScale(Graphics, Single, Single, Single)
         //ExFor:NodeRendererBase.RenderToSize(Graphics, Single, Single, Single, Single)
-        //ExFor:ShapeRenderer        
+        //ExFor:ShapeRenderer
+        //ExFor:ShapeRenderer.#ctor(ShapeBase)
         //ExSummary:Shows how to render a shape with a Graphics object and display it using a Windows Form.
         [Test, Category("IgnoreOnJenkins"), Category("SkipMono")] //ExSkip
         public void RenderShapesOnForm()
@@ -87,10 +88,10 @@ namespace ApiExamples
         {
             public ShapeForm(Size size)
             {
-                Timer timer = new Timer(); //ExSKip
-                timer.Interval = 10000; //ExSKip
-                timer.Tick += TimerTick; //ExSKip
-                timer.Start(); //ExSKip
+                Timer timer = new Timer(); //ExSkip
+                timer.Interval = 10000; //ExSkip
+                timer.Tick += TimerTick; //ExSkip
+                timer.Start(); //ExSkip
                 Size = size;
                 mShapesToRender = new List<KeyValuePair<ShapeBase, float[]>>();
             }
@@ -171,7 +172,7 @@ namespace ApiExamples
                     float returnedScale = doc.RenderToSize(0, gr, 0f, 0f, 3f, 3f);
 
                     // This is the scaling factor that the RenderToSize method applied to the first page to fit the specified size.
-                    Assert.AreEqual(0.2566f, returnedScale, 0.0001f);
+                    Assert.That(returnedScale, Is.EqualTo(0.2566f).Within(0.0001f));
 
                     // Set the "PageUnit" property to "GraphicsUnit.Millimeter" to use millimeters as the
                     // measurement unit for any transformations and dimensions that we will define.
@@ -205,7 +206,8 @@ namespace ApiExamples
 
             // Calculate the number of rows and columns that we will fill with thumbnails.
             const int thumbColumns = 2;
-            int thumbRows = Math.DivRem(doc.PageCount, thumbColumns, out int remainder);
+            int thumbRows = doc.PageCount / thumbColumns;
+            int remainder = doc.PageCount % thumbColumns;
 
             if (remainder > 0)
                 thumbRows++;
@@ -229,7 +231,8 @@ namespace ApiExamples
 
                     for (int pageIndex = 0; pageIndex < doc.PageCount; pageIndex++)
                     {
-                        int rowIdx = Math.DivRem(pageIndex, thumbColumns, out int columnIdx);
+                        int rowIdx = pageIndex / thumbColumns;
+                        int columnIdx = pageIndex % thumbColumns;
 
                         // Specify where we want the thumbnail to appear.
                         float thumbLeft = columnIdx * thumbSize.Width;
@@ -245,7 +248,7 @@ namespace ApiExamples
             }
             //ExEnd
         }
-#elif NET5_0_OR_GREATER || __MOBILE__
+#elif NET6_0_OR_GREATER
         [Test]
         public void RenderToSizeNetStandard2()
         {
@@ -253,7 +256,7 @@ namespace ApiExamples
             //ExFor:Document.RenderToSize
             //ExSummary:Shows how to render the document as a bitmap at a specified location and size (.NetStandard 2.0).
             Document doc = new Document(MyDir + "Rendering.docx");
-            
+
             using (SKBitmap bitmap = new SKBitmap(700, 700))
             {
                 using (SKCanvas canvas = new SKCanvas(bitmap))
@@ -305,7 +308,7 @@ namespace ApiExamples
                         bitmap.PeekPixels().Encode(fs, SKEncodedImageFormat.Png, 100);
                     }
                 }
-            }            
+            }
             //ExEnd
         }
 
@@ -319,7 +322,8 @@ namespace ApiExamples
 
             // Calculate the number of rows and columns that we will fill with thumbnails.
             const int thumbnailColumnsNum = 2;
-            int thumbRows = Math.DivRem(doc.PageCount, thumbnailColumnsNum, out int remainder);
+            int thumbRows = doc.PageCount / thumbnailColumnsNum;
+            int remainder = doc.PageCount % thumbnailColumnsNum;
 
             if (remainder > 0)
                 thumbRows++;
@@ -341,7 +345,8 @@ namespace ApiExamples
 
                     for (int pageIndex = 0; pageIndex < doc.PageCount; pageIndex++)
                     {
-                        int rowIdx = Math.DivRem(pageIndex, thumbnailColumnsNum, out int columnIdx);
+                        int rowIdx = pageIndex / thumbnailColumnsNum;
+                        int columnIdx = pageIndex % thumbnailColumnsNum;
 
                         // Specify where we want the thumbnail to appear.
                         float thumbLeft = columnIdx * thumbSize.Width;
@@ -364,7 +369,7 @@ namespace ApiExamples
                         bitmap.PeekPixels().Encode(fs, SKEncodedImageFormat.Png, 100);
                     }
                 }
-            }            
+            }
             //ExEnd
         }
 #endif

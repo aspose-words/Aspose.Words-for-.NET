@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2024 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -90,6 +90,7 @@ namespace ApiExamples
             //ExStart:SaveOfficeMath
             //GistId:a775441ecb396eea917a2717cb9e8f8f
             //ExFor:NodeRendererBase.Save(String, SvgSaveOptions)
+            //ExFor:NodeRendererBase.Save(Stream, SvgSaveOptions)
             //ExSummary:Shows how to pass save options when rendering office math.
             Document doc = new Document(MyDir + "Office math.docx");
 
@@ -99,7 +100,61 @@ namespace ApiExamples
             options.TextOutputMode = SvgTextOutputMode.UsePlacedGlyphs;
 
             math.GetMathRenderer().Save(ArtifactsDir + "SvgSaveOptions.Output.svg", options);
+            
+            using (MemoryStream stream = new MemoryStream())
+                math.GetMathRenderer().Save(stream, options);
             //ExEnd:SaveOfficeMath
+        }
+
+        [Test]
+        public void MaxImageResolution()
+        {
+            //ExStart:MaxImageResolution
+            //GistId:6e4482e7434754c31c6f2f6e4bf48bb1
+            //ExFor:ShapeBase.SoftEdge
+            //ExFor:SoftEdgeFormat.Radius
+            //ExFor:SoftEdgeFormat.Remove
+            //ExFor:SvgSaveOptions.MaxImageResolution
+            //ExSummary:Shows how to set limit for image resolution.
+            Document doc = new Document(MyDir + "Rendering.docx");
+
+            SvgSaveOptions saveOptions = new SvgSaveOptions();
+            saveOptions.MaxImageResolution = 72;
+
+            doc.Save(ArtifactsDir + "SvgSaveOptions.MaxImageResolution.svg", saveOptions);
+            //ExEnd:MaxImageResolution
+        }
+
+        [Test]
+        public void IdPrefixSvg()
+        {
+            //ExStart:IdPrefixSvg
+            //GistId:f86d49dc0e6781b93e576539a01e6ca2
+            //ExFor:SvgSaveOptions.IdPrefix
+            //ExSummary:Shows how to add a prefix that is prepended to all generated element IDs (svg).
+            Document doc = new Document(MyDir + "Id prefix.docx");
+
+            SvgSaveOptions saveOptions = new SvgSaveOptions();
+            saveOptions.IdPrefix = "pfx1_";
+
+            doc.Save(ArtifactsDir + "SvgSaveOptions.IdPrefixSvg.html", saveOptions);
+            //ExEnd:IdPrefixSvg
+        }
+
+        [Test]
+        public void RemoveJavaScriptFromLinksSvg()
+        {
+            //ExStart:RemoveJavaScriptFromLinksSvg
+            //GistId:f86d49dc0e6781b93e576539a01e6ca2
+            //ExFor:SvgSaveOptions.RemoveJavaScriptFromLinks
+            //ExSummary:Shows how to remove JavaScript from the links (svg).
+            Document doc = new Document(MyDir + "JavaScript in HREF.docx");
+
+            SvgSaveOptions saveOptions = new SvgSaveOptions();
+            saveOptions.RemoveJavaScriptFromLinks = true;
+
+            doc.Save(ArtifactsDir + "SvgSaveOptions.RemoveJavaScriptFromLinksSvg.html", saveOptions);
+            //ExEnd:RemoveJavaScriptFromLinksSvg
         }
     }
 }

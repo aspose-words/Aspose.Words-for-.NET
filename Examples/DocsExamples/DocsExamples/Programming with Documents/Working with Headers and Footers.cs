@@ -63,13 +63,13 @@ namespace DocsExamples.Programming_with_Documents
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             
-            // Specify that we want different headers and footers for even and odd pages.            
+            // Specify that we want different headers and footers for even and odd pages.
             builder.PageSetup.OddAndEvenPagesHeaderFooter = true;
 
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderEven);
             builder.Write("Header for even pages.");
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
-            builder.Write("Header for odd pages.");            
+            builder.Write("Header for odd pages.");
             builder.MoveToHeaderFooter(HeaderFooterType.FooterEven);
             builder.Write("Footer for even pages.");
             builder.MoveToHeaderFooter(HeaderFooterType.FooterPrimary);
@@ -92,9 +92,9 @@ namespace DocsExamples.Programming_with_Documents
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);            
+            builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
             builder.InsertImage(ImagesDir + "Logo.jpg", RelativeHorizontalPosition.RightMargin, 10,
-                RelativeVerticalPosition.Page, 10, 50, 50, WrapType.Through);            
+                RelativeVerticalPosition.Page, 10, 50, 50, WrapType.Through);
 
             doc.Save(ArtifactsDir + "WorkingWithHeadersAndFooters.InsertImage.docx");
             //ExEnd:InsertImage
@@ -155,7 +155,7 @@ namespace DocsExamples.Programming_with_Documents
             builder.Font.Size = 14;
             builder.Write("Header for the first page.");
 
-            builder.MoveToDocumentEnd();            
+            builder.MoveToDocumentEnd();
             builder.InsertBreak(BreakType.SectionBreakNewPage);
 
             Section currentSection = builder.CurrentSection;
@@ -173,7 +173,7 @@ namespace DocsExamples.Programming_with_Documents
 
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
             builder.ParagraphFormat.Alignment = ParagraphAlignment.Center;
-            builder.Font.Name = "Arial";            
+            builder.Font.Name = "Arial";
             builder.Font.Size = 12;
             builder.Write("New Header for the first page.");
 
@@ -184,8 +184,8 @@ namespace DocsExamples.Programming_with_Documents
         [Test]
         public void SectionsWithDifferentHeaders()
         {
-            //ExStart:SectionsWithDifferentHeaders            
-            //GistId:1afca4d3da7cb4240fb91c3d93d8c30d            
+            //ExStart:SectionsWithDifferentHeaders
+            //GistId:1afca4d3da7cb4240fb91c3d93d8c30d
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 

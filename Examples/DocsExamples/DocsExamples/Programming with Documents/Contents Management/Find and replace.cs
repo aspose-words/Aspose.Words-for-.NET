@@ -1,5 +1,6 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -27,7 +28,6 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
 
             Console.WriteLine("Document text after replace: " + doc.Range.Text);
 
-            // Save the modified document
             doc.Save(ArtifactsDir + "FindAndReplace.SimpleFindReplace.docx");
         }
 
@@ -155,6 +155,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
         public void ReplaceTextContainingMetaCharacters()
         {
             //ExStart:ReplaceTextContainingMetaCharacters
+            //GistId:27c3408b2c7fbee8d6dc6a1c8b61c105
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -177,6 +178,19 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
 
             doc.Save(ArtifactsDir + "FindAndReplace.ReplaceTextContainingMetaCharacters.docx");
             //ExEnd:ReplaceTextContainingMetaCharacters
+        }
+
+        [Test]
+        public void HighlightColor()
+        {
+            //ExStart:HighlightColor
+            //GistId:27c3408b2c7fbee8d6dc6a1c8b61c105
+            Document doc = new Document(MyDir + "Footer.docx");
+
+            FindReplaceOptions options = new FindReplaceOptions();
+            options.ApplyFont.HighlightColor = Color.DarkOrange;
+            doc.Range.Replace(new Regex("(header|footer)"), "", options);
+            //ExEnd:HighlightColor
         }
 
         [Test]
@@ -207,6 +221,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
         public void IgnoreTextInsideDeleteRevisions()
         {
             //ExStart:IgnoreTextInsideDeleteRevisions
+            //GistId:27c3408b2c7fbee8d6dc6a1c8b61c105
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -301,13 +316,13 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
         public void ReplaceTextInFooter()
         {
             //ExStart:ReplaceTextInFooter
+            //GistId:27c3408b2c7fbee8d6dc6a1c8b61c105
             Document doc = new Document(MyDir + "Footer.docx");
 
             HeaderFooterCollection headersFooters = doc.FirstSection.HeadersFooters;
             HeaderFooter footer = headersFooters[HeaderFooterType.FooterPrimary];
 
             FindReplaceOptions options = new FindReplaceOptions { MatchCase = false, FindWholeWordsOnly = false };
-
             footer.Range.Replace("(C) 2006 Aspose Pty Ltd.", "Copyright (C) 2020 by Aspose Pty Ltd.", options);
 
             doc.Save(ArtifactsDir + "FindAndReplace.ReplaceTextInFooter.docx");
@@ -496,6 +511,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
 
         [Test]
         //ExStart:ReplaceWithHtml
+        //GistId:27c3408b2c7fbee8d6dc6a1c8b61c105
         public void ReplaceWithHtml()
         {
             Document doc = new Document();
@@ -542,6 +558,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
         public void ReplaceWithRegex()
         {
             //ExStart:ReplaceWithRegex
+            //GistId:27c3408b2c7fbee8d6dc6a1c8b61c105
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             
@@ -576,12 +593,13 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
         public void ReplaceWithString()
         {
             //ExStart:ReplaceWithString
+            //GistId:27c3408b2c7fbee8d6dc6a1c8b61c105
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             
-            builder.Writeln("sad mad bad");
+            builder.Writeln("Hello _CustomerName_,");
 
-            doc.Range.Replace("sad", "bad", new FindReplaceOptions(FindReplaceDirection.Forward));
+            doc.Range.Replace("_CustomerName_", "James Bond", new FindReplaceOptions(FindReplaceDirection.Forward));
 
             doc.Save(ArtifactsDir + "FindAndReplace.ReplaceWithString.docx");
             //ExEnd:ReplaceWithString
@@ -636,5 +654,38 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
             doc.Save(ArtifactsDir + "FindAndReplace.ReplaceTextInTable.docx");
             //ExEnd:ReplaceText
         }
+
+        //ExStart:LineCounter
+        //GistId:27c3408b2c7fbee8d6dc6a1c8b61c105
+        [Test] //ExSkip
+        public void LineCounter()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Writeln("This is first line");
+            builder.Writeln("Second line");
+            builder.Writeln("And last line");
+
+            // Prepend each line with line number.
+            FindReplaceOptions opt = new FindReplaceOptions() { ReplacingCallback = new LineCounterCallback() };
+            doc.Range.Replace(new Regex("[^&p]*&p"), "", opt);
+
+            doc.Save(ArtifactsDir + "FindAndReplace.LineCounter.docx");
+        }
+
+        internal class LineCounterCallback : IReplacingCallback
+        {
+            public ReplaceAction Replacing(ReplacingArgs args)
+            {
+                Debug.WriteLine(args.Match.Value);
+
+                args.Replacement = string.Format("{0} {1}", mCounter++, args.Match.Value);
+                return ReplaceAction.Replace;
+            }
+
+            private int mCounter = 1;
+        }
+        //ExEnd:LineCounter
     }
 }

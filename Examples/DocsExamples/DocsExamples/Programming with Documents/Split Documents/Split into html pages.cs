@@ -13,7 +13,7 @@ namespace DocsExamples.Programming_with_Documents.Split_Documents
         [Test]
         public void HtmlPages()
         {
-            string srcFileName = MyDir + "Footnotes and endnotes.docx";
+            string srcFileName = MyDir + "Big document.docx";
             string tocTemplate = MyDir + "Table of content template.docx";
 
             string outDir = Path.Combine(ArtifactsDir, "HtmlPages");
@@ -24,7 +24,7 @@ namespace DocsExamples.Programming_with_Documents.Split_Documents
         }
     }
 
-    internal class WordToHtmlConverter
+    internal class WordToHtmlConverter : DocsExamplesBase
     {
         /// <summary>
         /// Performs the Word to HTML conversion.

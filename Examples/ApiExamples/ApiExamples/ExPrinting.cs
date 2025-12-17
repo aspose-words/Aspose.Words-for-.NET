@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2024 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -19,7 +19,7 @@ namespace ApiExamples
     [TestFixture]
     public class ExPrinting : ApiExampleBase
     {
-#if NET461_OR_GREATER || JAVA
+#if NETFRAMEWORK || JAVA
         [Test, Ignore("Run only when the printer driver is installed.")]
         public void CustomPrint()
         {
@@ -130,6 +130,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:PageInfo
+            //ExFor:PageInfo.GetSizeInPixels(Single, Single)
             //ExFor:PageInfo.GetSizeInPixels(Single, Single, Single)
             //ExFor:PageInfo.GetSpecifiedPrinterPaperSource(PaperSourceCollection, PaperSource)
             //ExFor:PageInfo.HeightInPoints
@@ -228,7 +229,7 @@ namespace ApiExamples
             // 2 -  Specify a printer that we wish to print the document with by name:
             string myPrinter = PrinterSettings.InstalledPrinters[4];
 
-            Assert.AreEqual("HPDAAB96 (HP ENVY 5000 series)", myPrinter);
+            Assert.That(myPrinter, Is.EqualTo("HPDAAB96 (HP ENVY 5000 series)"));
 
             doc.Print(myPrinter);
             //ExEnd
@@ -261,7 +262,7 @@ namespace ApiExamples
 
             // 2 -  Print while applying our printing settings, while also
             // giving the document a custom name that we may recognize in the printer queue:
-            doc.Print(printerSettings, "My rendered document");            
+            doc.Print(printerSettings, "My rendered document");
             //ExEnd
         }
 
@@ -269,6 +270,7 @@ namespace ApiExamples
         public void PreviewAndPrint()
         {
             //ExStart
+            //ExFor:AsposeWordsPrintDocument
             //ExFor:AsposeWordsPrintDocument.#ctor(Document)
             //ExFor:AsposeWordsPrintDocument.CachePrinterSettings
             //ExFor:AsposeWordsPrintDocument.ColorMode
@@ -312,7 +314,7 @@ namespace ApiExamples
             previewDlg.Document = awPrintDoc;
             previewDlg.ShowDialog();
 
-            awPrintDoc.Print();            
+            awPrintDoc.Print();
             Console.WriteLine($"The numer of pages printed in color are {awPrintDoc.ColorPagesPrinted}.");
             //ExEnd
         }

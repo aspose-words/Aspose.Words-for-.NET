@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2024 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -10,6 +10,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using Aspose.Words;
+using Aspose.Words.DigitalSignatures;
 using Aspose.Words.Drawing;
 using Aspose.Words.Lists;
 using Aspose.Words.Loading;
@@ -45,7 +46,7 @@ namespace ApiExamples
             // Open the encrypted document by passing the correct password in a LoadOptions object.
             doc = new Document(ArtifactsDir + "OoxmlSaveOptions.Password.docx", new LoadOptions("MyPassword"));
 
-            Assert.AreEqual("Hello world!", doc.GetText().Trim());
+            Assert.That(doc.GetText().Trim(), Is.EqualTo("Hello world!"));
             //ExEnd
         }
 
@@ -70,7 +71,7 @@ namespace ApiExamples
             doc.CompatibilityOptions.OptimizeFor(MsWordVersion.Word2003);
             builder.InsertImage(ImageDir + "Transparent background logo.png");
 
-            Assert.AreEqual(ShapeMarkupLanguage.Vml, ((Shape)doc.GetChild(NodeType.Shape, 0, true)).MarkupLanguage);
+            Assert.That(((Shape)doc.GetChild(NodeType.Shape, 0, true)).MarkupLanguage, Is.EqualTo(ShapeMarkupLanguage.Vml));
 
             // The "ISO/IEC 29500:2008" OOXML standard does not support VML shapes.
             // If we set the "Compliance" property of the SaveOptions object to "OoxmlCompliance.Iso29500_2008_Strict",
@@ -86,7 +87,7 @@ namespace ApiExamples
             // Our saved document defines the shape using DML to adhere to the "ISO/IEC 29500:2008" OOXML standard.
             doc = new Document(ArtifactsDir + "OoxmlSaveOptions.Iso29500Strict.docx");
             
-            Assert.AreEqual(ShapeMarkupLanguage.Dml, ((Shape)doc.GetChild(NodeType.Shape, 0, true)).MarkupLanguage);
+            Assert.That(((Shape)doc.GetChild(NodeType.Shape, 0, true)).MarkupLanguage, Is.EqualTo(ShapeMarkupLanguage.Dml));
             //ExEnd
         }
 
@@ -104,8 +105,8 @@ namespace ApiExamples
 
             doc.Lists.Add(ListTemplate.NumberDefault);
 
-            Aspose.Words.Lists.List list = doc.Lists[0];
-            list.IsRestartAtEachSection = restartListAtEachSection;
+            Aspose.Words.Lists.List docList = doc.Lists[0];
+            docList.IsRestartAtEachSection = restartListAtEachSection;
 
             // The "IsRestartAtEachSection" property will only be applicable when
             // the document's OOXML compliance level is to a standard that is newer than "OoxmlComplianceCore.Ecma376".
@@ -114,7 +115,7 @@ namespace ApiExamples
                 Compliance = OoxmlCompliance.Iso29500_2008_Transitional
             };
 
-            builder.ListFormat.List = list;
+            builder.ListFormat.List = docList;
 
             builder.Writeln("List item 1");
             builder.Writeln("List item 2");
@@ -126,7 +127,7 @@ namespace ApiExamples
             
             doc = new Document(ArtifactsDir + "OoxmlSaveOptions.RestartingDocumentList.docx");
 
-            Assert.AreEqual(restartListAtEachSection, doc.Lists[0].IsRestartAtEachSection);
+            Assert.That(doc.Lists[0].IsRestartAtEachSection, Is.EqualTo(restartListAtEachSection));
             //ExEnd
         }
 
@@ -139,8 +140,7 @@ namespace ApiExamples
             //ExSummary:Shows how to determine whether to preserve the document's "Last saved time" property when saving.
             Document doc = new Document(MyDir + "Document.docx");
 
-            Assert.AreEqual(new DateTime(2021, 5, 11, 6, 32, 0), 
-                doc.BuiltInDocumentProperties.LastSavedTime);
+            Assert.That(doc.BuiltInDocumentProperties.LastSavedTime, Is.EqualTo(new DateTime(2021, 5, 11, 6, 32, 0)));
 
             // When we save the document to an OOXML format, we can create an OoxmlSaveOptions object
             // and then pass it to the document's saving method to modify how we save the document.
@@ -157,10 +157,9 @@ namespace ApiExamples
             DateTime lastSavedTimeNew = doc.BuiltInDocumentProperties.LastSavedTime;
 
             if (updateLastSavedTimeProperty)
-                Assert.That(DateTime.Now, Is.EqualTo(lastSavedTimeNew).Within(1).Days);
+                Assert.That((DateTime.Now - lastSavedTimeNew).Days < 1, Is.True);
             else
-                Assert.AreEqual(new DateTime(2021, 5, 11, 6, 32, 0), 
-                    lastSavedTimeNew);
+                Assert.That(lastSavedTimeNew, Is.EqualTo(new DateTime(2021, 5, 11, 6, 32, 0)));
             //ExEnd
         }
 
@@ -187,8 +186,7 @@ namespace ApiExamples
             
             doc = new Document(ArtifactsDir + "OoxmlSaveOptions.KeepLegacyControlChars.docx");
 
-            Assert.AreEqual(keepLegacyControlChars ? "\u0013date \\@ \"MM/dd/yyyy\"\u0014\u0015\f" : "\u001e\f",
-                doc.FirstSection.Body.GetText());
+            Assert.That(doc.FirstSection.Body.GetText(), Is.EqualTo(keepLegacyControlChars ? "\u0013date \\@ \"MM/dd/yyyy\"\u0014\u0015\f" : "\u001e\f"));
             //ExEnd
         }
 
@@ -214,7 +212,7 @@ namespace ApiExamples
             // the default compression that Microsoft Word uses.
             OoxmlSaveOptions saveOptions = new OoxmlSaveOptions(SaveFormat.Docx);
             saveOptions.CompressionLevel = compressionLevel;
-            
+
             Stopwatch st = Stopwatch.StartNew();
             doc.Save(ArtifactsDir + "OoxmlSaveOptions.DocumentCompression.docx", saveOptions);
             st.Stop();
@@ -231,16 +229,16 @@ namespace ApiExamples
             switch (compressionLevel)
             {
                 case CompressionLevel.Maximum:
-                    Assert.That(testedFileLength, Is.LessThan(1269000));
+                    Assert.That(testedFileLength < 1269000, Is.True);
                     break;
                 case CompressionLevel.Normal:
-                    Assert.That(testedFileLength, Is.LessThan(1271000));
+                    Assert.That(testedFileLength < 1271000, Is.True);
                     break;
                 case CompressionLevel.Fast:
-                    Assert.That(testedFileLength, Is.LessThan(1280000));
+                    Assert.That(testedFileLength < 1280000, Is.True);
                     break;
                 case CompressionLevel.SuperFast:
-                    Assert.That(testedFileLength, Is.LessThan(1276000));
+                    Assert.That(testedFileLength < 1276000, Is.True);
                     break;
             }
         }
@@ -285,10 +283,10 @@ namespace ApiExamples
                 using (FileStream outputFileStream = File.Open(ArtifactsDir + "OoxmlSaveOptions.CheckFileSignatures.docx", FileMode.Open))
                 {
                     long fileSize = outputFileStream.Length;
-                    Assert.That(prevFileSize < fileSize);
+                    Assert.That(prevFileSize < fileSize, Is.True);
 
                     TestUtil.CopyStream(outputFileStream, stream);
-                    Assert.AreEqual(fileSignatures[i], TestUtil.DumpArray(stream.ToArray(), 0, 10));
+                    Assert.That(TestUtil.DumpArray(stream.ToArray(), 0, 10), Is.EqualTo(fileSignatures[i]));
 
                     prevFileSize = fileSize;
                 }
@@ -302,10 +300,10 @@ namespace ApiExamples
             //ExFor:SaveOptions.ExportGeneratorName
             //ExSummary:Shows how to disable adding name and version of Aspose.Words into produced files.
             Document doc = new Document();
-            
+
             // Use https://docs.aspose.com/words/net/generator-or-producer-name-included-in-output-documents/ to know how to check the result.
             OoxmlSaveOptions saveOptions = new OoxmlSaveOptions { ExportGeneratorName = false };
-            
+
             doc.Save(ArtifactsDir + "OoxmlSaveOptions.ExportGeneratorName.docx", saveOptions);
             //ExEnd
         }
@@ -333,7 +331,7 @@ namespace ApiExamples
 
             var exception = Assert.Throws<OperationCanceledException>(() =>
                 doc.Save(ArtifactsDir + $"OoxmlSaveOptions.ProgressCallback.{ext}", saveOptions));
-            Assert.True(exception?.Message.Contains("EstimatedProgress"));
+            Assert.That(exception?.Message.Contains("EstimatedProgress"), Is.True);
         }
 
         /// <summary>
@@ -401,6 +399,57 @@ namespace ApiExamples
             builder.Document.Save(ArtifactsDir + "OoxmlSaveOptions.Zip64ModeOption.docx", 
                 new OoxmlSaveOptions { Zip64Mode = Zip64Mode.Always });
             //ExEnd:Zip64ModeOption
+        }
+
+        [Test]
+        public void DigitalSignature()
+        {
+            //ExStart:DigitalSignature
+            //GistId:5f20ac02cb42c6b08481aa1c5b0cd3db
+            //ExFor:OoxmlSaveOptions.DigitalSignatureDetails
+            //ExFor:DigitalSignatureDetails
+            //ExFor:DigitalSignatureDetails.#ctor(CertificateHolder, SignOptions)
+            //ExFor:DigitalSignatureDetails.CertificateHolder
+            //ExFor:DigitalSignatureDetails.SignOptions
+            //ExSummary:Shows how to sign OOXML document.
+            Document doc = new Document(MyDir + "Document.docx");
+
+            CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
+            DigitalSignatureDetails digitalSignatureDetails = new DigitalSignatureDetails(
+                certificateHolder,
+                new SignOptions() { Comments = "Some comments", SignTime = DateTime.Now });
+
+            OoxmlSaveOptions saveOptions = new OoxmlSaveOptions();
+            saveOptions.DigitalSignatureDetails = digitalSignatureDetails;
+
+            Assert.That(digitalSignatureDetails.CertificateHolder, Is.EqualTo(certificateHolder));
+            Assert.That(digitalSignatureDetails.SignOptions.Comments, Is.EqualTo("Some comments"));
+
+            doc.Save(ArtifactsDir + "OoxmlSaveOptions.DigitalSignature.docx", saveOptions);
+            //ExEnd:DigitalSignature
+        }
+
+        [Test]
+        public void UpdateAmbiguousTextFont()
+        {
+            //ExStart:UpdateAmbiguousTextFont
+            //GistId:1a265b92fa0019b26277ecfef3c20330
+            //ExFor:SaveOptions.UpdateAmbiguousTextFont
+            //ExSummary:Shows how to update the font to match the character code being used.
+            Document doc = new Document(MyDir + "Special symbol.docx");
+            Run run = doc.FirstSection.Body.FirstParagraph.Runs[0];
+            Console.WriteLine(run.Text); // ฿
+            Console.WriteLine(run.Font.Name); // Arial
+
+            OoxmlSaveOptions saveOptions = new OoxmlSaveOptions();
+            saveOptions.UpdateAmbiguousTextFont = true;
+            doc.Save(ArtifactsDir + "OoxmlSaveOptions.UpdateAmbiguousTextFont.docx", saveOptions);
+
+            doc = new Document(ArtifactsDir + "OoxmlSaveOptions.UpdateAmbiguousTextFont.docx");
+            run = doc.FirstSection.Body.FirstParagraph.Runs[0];
+            Console.WriteLine(run.Text); // ฿
+            Console.WriteLine(run.Font.Name); // Angsana New
+            //ExEnd:UpdateAmbiguousTextFont
         }
     }
 }

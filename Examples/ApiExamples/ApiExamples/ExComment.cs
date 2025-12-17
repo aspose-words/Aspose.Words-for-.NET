@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2024 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -39,13 +39,13 @@ namespace ApiExamples
             comment.AddReply("Joe Bloggs", "J.B.", DateTime.Now, "New reply");
 
             // Comments and replies are both Comment nodes.
-            Assert.AreEqual(2, doc.GetChildNodes(NodeType.Comment, true).Count);
+            Assert.That(doc.GetChildNodes(NodeType.Comment, true).Count, Is.EqualTo(2));
 
             // Comments that do not reply to other comments are "top-level". They have no ancestor comments.
-            Assert.Null(comment.Ancestor);
+            Assert.That(comment.Ancestor, Is.Null);
 
             // Replies have an ancestor top-level comment.
-            Assert.AreEqual(comment, comment.Replies[0].Ancestor);
+            Assert.That(comment.Replies[0].Ancestor, Is.EqualTo(comment));
 
             doc.Save(ArtifactsDir + "Comment.AddCommentWithReply.docx");
             //ExEnd
@@ -53,11 +53,11 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Comment.AddCommentWithReply.docx");
             Comment docComment = (Comment)doc.GetChild(NodeType.Comment, 0, true);
 
-            Assert.AreEqual(1, docComment.Count);
-            Assert.AreEqual(1, comment.Replies.Count);
+            Assert.That(docComment.Count, Is.EqualTo(1));
+            Assert.That(comment.Replies.Count, Is.EqualTo(1));
 
-            Assert.AreEqual("\u0005My comment.\r", docComment.GetText());
-            Assert.AreEqual("\u0005New reply\r", docComment.Replies[0].GetText());
+            Assert.That(docComment.GetText(), Is.EqualTo("\u0005My comment.\r"));
+            Assert.That(docComment.Replies[0].GetText(), Is.EqualTo("\u0005New reply\r"));
         }
 
         [Test]
@@ -67,16 +67,17 @@ namespace ApiExamples
             //ExFor:Comment.Ancestor
             //ExFor:Comment.Author
             //ExFor:Comment.Replies
+            //ExFor:CompositeNode.GetEnumerator
             //ExFor:CompositeNode.GetChildNodes(NodeType, Boolean)
             //ExSummary:Shows how to print all of a document's comments and their replies.
             Document doc = new Document(MyDir + "Comments.docx");
 
             NodeCollection comments = doc.GetChildNodes(NodeType.Comment, true);
-            Assert.AreEqual(12, comments.Count); //ExSkip
+            Assert.That(comments.Count, Is.EqualTo(12)); //ExSkip
 
             // If a comment has no ancestor, it is a "top-level" comment as opposed to a reply-type comment.
             // Print all top-level comments along with any replies they may have.
-            foreach (Comment comment in comments.OfType<Comment>().Where(c => c.Ancestor == null))
+            foreach (Comment comment in comments.OfType<Comment>().Where(c => c.Ancestor == null).ToList())
             {
                 Console.WriteLine("Top-level comment:");
                 Console.WriteLine($"\t\"{comment.GetText().Trim()}\", by {comment.Author}");
@@ -108,18 +109,18 @@ namespace ApiExamples
             comment.AddReply("Joe Bloggs", "J.B.", DateTime.Now, "New reply");
             comment.AddReply("Joe Bloggs", "J.B.", DateTime.Now, "Another reply");
 
-            Assert.AreEqual(2, comment.Replies.Count()); 
+            Assert.That(comment.Replies.Count, Is.EqualTo(2)); 
 
             // Below are two ways of removing replies from a comment.
             // 1 -  Use the "RemoveReply" method to remove replies from a comment individually:
             comment.RemoveReply(comment.Replies[0]);
 
-            Assert.AreEqual(1, comment.Replies.Count());
+            Assert.That(comment.Replies.Count, Is.EqualTo(1));
 
             // 2 -  Use the "RemoveAllReplies" method to remove all replies from a comment at once:
             comment.RemoveAllReplies();
 
-            Assert.AreEqual(0, comment.Replies.Count()); 
+            Assert.That(comment.Replies.Count, Is.EqualTo(0)); 
             //ExEnd
         }
 
@@ -142,7 +143,7 @@ namespace ApiExamples
             // Comments have a "Done" flag, which is set to "false" by default. 
             // If a comment suggests that we make a change within the document,
             // we can apply the change, and then also set the "Done" flag afterwards to indicate the correction.
-            Assert.False(comment.Done);
+            Assert.That(comment.Done, Is.False);
 
             doc.FirstSection.Body.FirstParagraph.Runs[0].Text = "Hello world!";
             comment.Done = true;
@@ -159,15 +160,17 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Comment.Done.docx");
             comment = (Comment)doc.GetChildNodes(NodeType.Comment, true)[0];
 
-            Assert.True(comment.Done);
-            Assert.AreEqual("\u0005Fix the spelling error!", comment.GetText().Trim());
-            Assert.AreEqual("Hello world!", doc.FirstSection.Body.FirstParagraph.Runs[0].Text);
+            Assert.That(comment.Done, Is.True);
+            Assert.That(comment.GetText().Trim(), Is.EqualTo("\u0005Fix the spelling error!"));
+            Assert.That(doc.FirstSection.Body.FirstParagraph.Runs[0].Text, Is.EqualTo("Hello world!"));
         }
-        
+
         //ExStart
         //ExFor:Comment.Done
         //ExFor:Comment.#ctor(DocumentBase)
         //ExFor:Comment.Accept(DocumentVisitor)
+        //ExFor:Comment.AcceptStart(DocumentVisitor)
+        //ExFor:Comment.AcceptEnd(DocumentVisitor)
         //ExFor:Comment.DateTime
         //ExFor:Comment.Id
         //ExFor:Comment.Initial
@@ -216,7 +219,7 @@ namespace ApiExamples
             CommentInfoPrinter commentVisitor = new CommentInfoPrinter();
 
             // Iterate over all top-level comments. Unlike reply-type comments, top-level comments have no ancestor.
-            foreach (Comment comment in comments.Where(c => ((Comment)c).Ancestor == null))
+            foreach (Comment comment in comments.Where(c => ((Comment)c).Ancestor == null).ToList())
             {
                 // First, visit the start of the comment range.
                 CommentRangeStart commentRangeStart = (CommentRangeStart)comment.PreviousSibling.PreviousSibling.PreviousSibling;
@@ -224,6 +227,10 @@ namespace ApiExamples
 
                 // Then, visit the comment, and any replies that it may have.
                 comment.Accept(commentVisitor);
+                // Visit only start of the comment.
+                comment.AcceptStart(commentVisitor);
+                // Visit only end of the comment.
+                comment.AcceptEnd(commentVisitor);
 
                 foreach (Comment reply in comment.Replies)
                     reply.Accept(commentVisitor);
@@ -334,5 +341,30 @@ namespace ApiExamples
             private readonly StringBuilder mBuilder;
         }
         //ExEnd
+
+        [Test]
+        public void UtcDateTime()
+        {
+            //ExStart:UtcDateTime
+            //GistId:65919861586e42e24f61a3ccb65f8f4e
+            //ExFor:Comment.DateTimeUtc
+            //ExSummary:Shows how to get UTC date and time.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            DateTime dateTime = DateTime.Now;
+            Comment comment = new Comment(doc, "John Doe", "J.D.", dateTime);
+            comment.SetText("My comment.");
+
+            builder.CurrentParagraph.AppendChild(comment);
+
+            doc.Save(ArtifactsDir + "Comment.UtcDateTime.docx");
+            doc = new Document(ArtifactsDir + "Comment.UtcDateTime.docx");
+
+            comment = (Comment)doc.GetChild(NodeType.Comment, 0, true);
+            // DateTimeUtc return data without milliseconds.
+            Assert.That(comment.DateTimeUtc.ToString("yyyy-MM-dd hh:mm:ss"), Is.EqualTo(dateTime.ToUniversalTime().ToString("yyyy-MM-dd hh:mm:ss")));
+            //ExEnd:UtcDateTime
+        }
     }
 }

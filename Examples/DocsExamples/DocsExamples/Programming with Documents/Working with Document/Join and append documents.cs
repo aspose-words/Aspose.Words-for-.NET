@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
 using Aspose.Words;
 using Aspose.Words.Fields;
@@ -189,15 +190,15 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
                         previousNode.ParentNode.InsertBefore(previousNode, newField.Start);
 
                         // Remove the original NUMPAGES field from the document.
-                        RemoveField(fieldStart);
+                        RemoveNumPageField(fieldStart);
                     }
                 }
             }
         }
         //ExEnd:ConvertNumPageFieldsToPageRef
-        
-        //ExStart:GetRemoveField
-        private void RemoveField(FieldStart fieldStart)
+
+        //ExStart:RemoveNumPageField
+        private void RemoveNumPageField(FieldStart fieldStart)
         {
             bool isRemoving = true;
             
@@ -229,7 +230,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
 
             return builder.ToString();
         }
-        //ExEnd:GetRemoveField
+        //ExEnd:RemoveNumPageField
 
         [Test]
         public void DifferentPageSetup()
@@ -336,13 +337,13 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             
             dstDoc.Save(ArtifactsDir + "JoinAndAppendDocuments.KeepSourceTogether.docx");
             //ExEnd:KeepSourceTogether
-        }        
+        }
 
         [Test]
         public void ListKeepSourceFormatting()
         {
             //ExStart:ListKeepSourceFormatting
-            Document srcDoc = new Document(MyDir + "Document source.docx");
+            Document srcDoc = new Document(MyDir + "Document source with list.docx");
             Document dstDoc = new Document(MyDir + "Document destination with list.docx");
 
             // Append the content of the document so it flows continuously.
@@ -358,7 +359,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void ListUseDestinationStyles()
         {
             //ExStart:ListUseDestinationStyles
-            Document srcDoc = new Document(MyDir + "Document source.docx");
+            Document srcDoc = new Document(MyDir + "Document source with list.docx");
             Document dstDoc = new Document(MyDir + "Document destination with list.docx");
 
             // Set the source document to continue straight after the end of the destination document.
@@ -460,17 +461,31 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void SmartStyleBehavior()
         {
             //ExStart:SmartStyleBehavior
-            Document srcDoc = new Document(MyDir + "Document source.docx");
-            Document dstDoc = new Document(MyDir + "Northwind traders.docx");
+            Document dstDoc = new Document();
             DocumentBuilder builder = new DocumentBuilder(dstDoc);
-            
-            builder.MoveToDocumentEnd();
-            builder.InsertBreak(BreakType.PageBreak);
 
-            ImportFormatOptions options = new ImportFormatOptions { SmartStyleBehavior = true };
+            Style myStyle = builder.Document.Styles.Add(StyleType.Paragraph, "MyStyle");
+            myStyle.Font.Size = 14;
+            myStyle.Font.Name = "Courier New";
+            myStyle.Font.Color = Color.Blue;
 
-            builder.InsertDocument(srcDoc, ImportFormatMode.UseDestinationStyles, options);
-            builder.Document.Save(ArtifactsDir + "JoinAndAppendDocuments.SmartStyleBehavior.docx");
+            builder.ParagraphFormat.StyleName = myStyle.Name;
+            builder.Writeln("Hello world!");
+
+            // Clone the document and edit the clone's "MyStyle" style, so it is a different color than that of the original.
+            // If we insert the clone into the original document, the two styles with the same name will cause a clash.
+            Document srcDoc = dstDoc.Clone();
+            srcDoc.Styles["MyStyle"].Font.Color = Color.Red;
+
+            // When we enable SmartStyleBehavior and use the KeepSourceFormatting import format mode,
+            // Aspose.Words will resolve style clashes by converting source document styles.
+            // with the same names as destination styles into direct paragraph attributes.
+            ImportFormatOptions options = new ImportFormatOptions();
+            options.SmartStyleBehavior = true;
+
+            builder.InsertDocument(srcDoc, ImportFormatMode.KeepSourceFormatting, options);
+
+            dstDoc.Save(ArtifactsDir + "JoinAndAppendDocuments.SmartStyleBehavior.docx");
             //ExEnd:SmartStyleBehavior
         }
 
@@ -506,13 +521,13 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             dstDoc.InsertNode(new BookmarkEnd(dstDoc.Document, "src_place"));
             dstDoc.Write(" after");
 
-            Assert.AreEqual("Before  after", dstDoc.Document.GetText().TrimEnd());
+            Assert.That(dstDoc.Document.GetText().TrimEnd(), Is.EqualTo("Before  after"));
 
             // Insert source document into destination inline.
             dstDoc.MoveToBookmark("src_place");
             dstDoc.InsertDocumentInline(srcDoc.Document, ImportFormatMode.UseDestinationStyles, new ImportFormatOptions());
 
-            Assert.AreEqual("Before [src content] after", dstDoc.Document.GetText().TrimEnd());
+            Assert.That(dstDoc.Document.GetText().TrimEnd(), Is.EqualTo("Before [src content] after"));
             //ExEnd:InsertDocumentInlineWithBuilder
         }
 
@@ -520,21 +535,18 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void KeepSourceNumbering()
         {
             //ExStart:KeepSourceNumbering
-            Document srcDoc = new Document(MyDir + "Document source.docx");
-            Document dstDoc = new Document(MyDir + "Northwind traders.docx");
+            Document srcDoc = new Document(MyDir + "List source.docx");
+            Document dstDoc = new Document(MyDir + "List destination.docx");
 
-            // Keep source list formatting when importing numbered paragraphs.
-            ImportFormatOptions importFormatOptions = new ImportFormatOptions { KeepSourceNumbering = true };
-            
-            NodeImporter importer = new NodeImporter(srcDoc, dstDoc, ImportFormatMode.KeepSourceFormatting,
-                importFormatOptions);
+            ImportFormatOptions options = new ImportFormatOptions();
+            // If there is a clash of list styles, apply the list format of the source document.
+            // Set the "KeepSourceNumbering" property to "false" to not import any list numbers into the destination document.
+            // Set the "KeepSourceNumbering" property to "true" import all clashing
+            // list style numbering with the same appearance that it had in the source document.
+            options.KeepSourceNumbering = true;
 
-            ParagraphCollection srcParas = srcDoc.FirstSection.Body.Paragraphs;
-            foreach (Paragraph srcPara in srcParas)
-            {
-                Node importedNode = importer.ImportNode(srcPara, false);
-                dstDoc.FirstSection.Body.AppendChild(importedNode);
-            }
+            dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepSourceFormatting, options);
+            dstDoc.UpdateListLabels();
 
             dstDoc.Save(ArtifactsDir + "JoinAndAppendDocuments.KeepSourceNumbering.docx");
             //ExEnd:KeepSourceNumbering

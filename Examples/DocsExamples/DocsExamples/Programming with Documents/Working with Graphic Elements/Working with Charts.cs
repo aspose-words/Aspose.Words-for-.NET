@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Drawing.Charts;
@@ -12,6 +13,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
         public void FormatNumberOfDataLabel()
         {
             //ExStart:FormatNumberOfDataLabel
+            //GistId:23d39c0b874655d7e7354f1ecc122e39
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -45,6 +47,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
         public void CreateChartUsingShape()
         {
             //ExStart:CreateChartUsingShape
+            //GistId:23d39c0b874655d7e7354f1ecc122e39
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -68,6 +71,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
         public void InsertSimpleColumnChart()
         {
             //ExStart:InsertSimpleColumnChart
+            //GistId:23d39c0b874655d7e7354f1ecc122e39
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -75,11 +79,12 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
             Shape shape = builder.InsertChart(ChartType.Column, 432, 252);
 
             Chart chart = shape.Chart;
-            //ExStart:ChartSeriesCollection 
+            //ExStart:ChartSeriesCollection
+            //GistId:23d39c0b874655d7e7354f1ecc122e39
             ChartSeriesCollection seriesColl = chart.Series;
 
             Console.WriteLine(seriesColl.Count);
-            //ExEnd:ChartSeriesCollection 
+            //ExEnd:ChartSeriesCollection
 
             // Delete default generated series.
             seriesColl.Clear();
@@ -102,6 +107,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
         public void InsertColumnChart()
         {
             //ExStart:InsertColumnChart
+            //GistId:23d39c0b874655d7e7354f1ecc122e39
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -118,6 +124,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
         public void InsertAreaChart()
         {
             //ExStart:InsertAreaChart
+            //GistId:23d39c0b874655d7e7354f1ecc122e39
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -142,6 +149,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
         public void InsertBubbleChart()
         {
             //ExStart:InsertBubbleChart
+            //GistId:23d39c0b874655d7e7354f1ecc122e39
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -159,6 +167,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
         public void InsertScatterChart()
         {
             //ExStart:InsertScatterChart
+            //GistId:23d39c0b874655d7e7354f1ecc122e39
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -172,9 +181,10 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
         }
 
         [Test]
-        public void DefineXYAxisProperties()
+        public void DefineAxisProperties()
         {
-            //ExStart:DefineXYAxisProperties
+            //ExStart:DefineAxisProperties
+            //GistId:23d39c0b874655d7e7354f1ecc122e39
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -203,23 +213,24 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
             xAxis.ReverseOrder = true;
             xAxis.MajorTickMark = AxisTickMark.Cross;
             xAxis.MinorTickMark = AxisTickMark.Outside;
-            xAxis.TickLabelOffset = 200;
+            xAxis.TickLabels.Offset = 200;
 
-            yAxis.TickLabelPosition = AxisTickLabelPosition.High;
+            yAxis.TickLabels.Position = AxisTickLabelPosition.High;
             yAxis.MajorUnit = 100;
             yAxis.MinorUnit = 50;
             yAxis.DisplayUnit.Unit = AxisBuiltInUnit.Hundreds;
             yAxis.Scaling.Minimum = new AxisBound(100);
             yAxis.Scaling.Maximum = new AxisBound(700);
 
-            doc.Save(ArtifactsDir + "WorkingWithCharts.DefineXYAxisProperties.docx");
-            //ExEnd:DefineXYAxisProperties
+            doc.Save(ArtifactsDir + "WorkingWithCharts.DefineAxisProperties.docx");
+            //ExEnd:DefineAxisProperties
         }
 
         [Test]
         public void DateTimeValuesToAxis()
         {
-            //ExStart:SetDateTimeValuesToAxis
+            //ExStart:DateTimeValuesToAxis
+            //GistId:23d39c0b874655d7e7354f1ecc122e39
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -247,13 +258,14 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
             xAxis.MinorTickMark = AxisTickMark.Outside;
 
             doc.Save(ArtifactsDir + "WorkingWithCharts.DateTimeValuesToAxis.docx");
-            //ExEnd:SetDateTimeValuesToAxis
+            //ExEnd:DateTimeValuesToAxis
         }
 
         [Test]
         public void NumberFormatForAxis()
         {
-            //ExStart:SetNumberFormatForAxis
+            //ExStart:NumberFormatForAxis
+            //GistId:23d39c0b874655d7e7354f1ecc122e39
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -270,13 +282,14 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
             chart.AxisY.NumberFormat.FormatCode = "#,##0";
 
             doc.Save(ArtifactsDir + "WorkingWithCharts.NumberFormatForAxis.docx");
-            //ExEnd:SetNumberFormatForAxis
+            //ExEnd:NumberFormatForAxis
         }
 
         [Test]
         public void BoundsOfAxis()
         {
-            //ExStart:SetboundsOfAxis
+            //ExStart:BoundsOfAxis
+            //GistId:23d39c0b874655d7e7354f1ecc122e39
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -294,13 +307,14 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
             chart.AxisY.Scaling.Maximum = new AxisBound(6);
 
             doc.Save(ArtifactsDir + "WorkingWithCharts.BoundsOfAxis.docx");
-            //ExEnd:SetboundsOfAxis
+            //ExEnd:BoundsOfAxis
         }
 
         [Test]
         public void IntervalUnitBetweenLabelsOnAxis()
         {
-            //ExStart:SetIntervalUnitBetweenLabelsOnAxis
+            //ExStart:IntervalUnitBetweenLabelsOnAxis
+            //GistId:23d39c0b874655d7e7354f1ecc122e39
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -314,16 +328,17 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
                 new string[] { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" },
                 new double[] { 1.2, 0.3, 2.1, 2.9, 4.2 });
 
-            chart.AxisX.TickLabelSpacing = 2;
+            chart.AxisX.TickLabels.Spacing = 2;
 
             doc.Save(ArtifactsDir + "WorkingWithCharts.IntervalUnitBetweenLabelsOnAxis.docx");
-            //ExEnd:SetIntervalUnitBetweenLabelsOnAxis
+            //ExEnd:IntervalUnitBetweenLabelsOnAxis
         }
 
         [Test]
         public void HideChartAxis()
         {
             //ExStart:HideChartAxis
+            //GistId:23d39c0b874655d7e7354f1ecc122e39
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -347,6 +362,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
         public void TickMultiLineLabelAlignment()
         {
             //ExStart:TickMultiLineLabelAlignment
+            //GistId:23d39c0b874655d7e7354f1ecc122e39
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -354,7 +370,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
 
             ChartAxis axis = shape.Chart.AxisX;
             // This property has effect only for multi-line labels.
-            axis.TickLabelAlignment = ParagraphAlignment.Right;
+            axis.TickLabels.Alignment = ParagraphAlignment.Right;
 
             doc.Save(ArtifactsDir + "WorkingWithCharts.TickMultiLineLabelAlignment.docx");
             //ExEnd:TickMultiLineLabelAlignment
@@ -364,6 +380,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
         public void ChartDataLabel()
         {
             //ExStart:WorkWithChartDataLabel
+            //GistId:23d39c0b874655d7e7354f1ecc122e39
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -393,6 +410,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
         public void DefaultOptionsForDataLabels()
         {
             //ExStart:DefaultOptionsForDataLabels
+            //GistId:23d39c0b874655d7e7354f1ecc122e39
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -420,6 +438,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
         public void SingleChartDataPoint()
         {
             //ExStart:WorkWithSingleChartDataPoint
+            //GistId:23d39c0b874655d7e7354f1ecc122e39
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -460,6 +479,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
             Chart chart = shape.Chart;
 
             //ExStart:WorkWithSingleChartSeries
+            //GistId:23d39c0b874655d7e7354f1ecc122e39
             ChartSeries series0 = chart.Series[0];
             ChartSeries series1 = chart.Series[1];
 
@@ -471,7 +491,8 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
             series1.Smooth = true;
             //ExEnd:WorkWithSingleChartSeries
 
-            //ExStart:ChartDataPoint 
+            //ExStart:ChartDataPoint
+            //GistId:23d39c0b874655d7e7354f1ecc122e39
             // Specifies whether by default the parent element shall inverts its colors if the value is negative.
             series0.InvertIfNegative = true;
 
@@ -480,9 +501,74 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
 
             series1.Marker.Symbol = MarkerSymbol.Star;
             series1.Marker.Size = 10;
-            //ExEnd:ChartDataPoint 
+            //ExEnd:ChartDataPoint
 
             doc.Save(ArtifactsDir + "WorkingWithCharts.SingleChartSeries.docx");
+        }
+
+        [Test]
+        public void FillFormatting()
+        {
+            //ExStart:FillFormatting
+            //GistId:23d39c0b874655d7e7354f1ecc122e39
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Shape shape = builder.InsertChart(ChartType.Column, 432, 252);
+
+            Chart chart = shape.Chart;
+            ChartSeriesCollection seriesColl = chart.Series;
+
+            // Delete default generated series.
+            seriesColl.Clear();
+
+            // Create category names array.
+            string[] categories = new string[] { "AW Category 1", "AW Category 2" };
+
+            // Adding new series. Value and category arrays must be the same size.
+            ChartSeries series1 = seriesColl.Add("AW Series 1", categories, new double[] { 1, 2 });
+            ChartSeries series2 = seriesColl.Add("AW Series 2", categories, new double[] { 3, 4 });
+            ChartSeries series3 = seriesColl.Add("AW Series 3", categories, new double[] { 5, 6 });
+
+            // Set series color.
+            series1.Format.Fill.ForeColor = Color.Red;
+            series2.Format.Fill.ForeColor = Color.Yellow;
+            series3.Format.Fill.ForeColor = Color.Blue;
+
+            doc.Save(ArtifactsDir + "WorkingWithCharts.FillFormatting.docx");
+            //ExEnd:FillFormatting
+        }
+
+        [Test]
+        public void StrokeFormatting()
+        {
+            //ExStart:StrokeFormatting
+            //GistId:23d39c0b874655d7e7354f1ecc122e39
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Shape shape = builder.InsertChart(ChartType.Line, 432, 252);
+
+            Chart chart = shape.Chart;
+            ChartSeriesCollection seriesColl = chart.Series;
+
+            // Delete default generated series.
+            seriesColl.Clear();
+
+            // Adding new series.
+            ChartSeries series1 = seriesColl.Add("AW Series 1", new double[] { 0.7, 1.8, 2.6 },
+                new double[] { 2.7, 3.2, 0.8 });
+            ChartSeries series2 = seriesColl.Add("AW Series 2", new double[] { 0.5, 1.5, 2.5 },
+                new double[] { 3, 1, 2 });
+
+            // Set series color.
+            series1.Format.Stroke.ForeColor = Color.Red;
+            series1.Format.Stroke.Weight = 5;
+            series2.Format.Stroke.ForeColor = Color.LightGreen;
+            series2.Format.Stroke.Weight = 5;
+
+            doc.Save(ArtifactsDir + "WorkingWithCharts.StrokeFormatting.docx");
+            //ExEnd:StrokeFormatting
         }
     }
 }

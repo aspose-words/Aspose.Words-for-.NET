@@ -16,6 +16,7 @@ namespace DocsExamples.Mail_Merge_and_Reporting
         public void XmlMailMerge()
         {
             //ExStart:XmlMailMerge
+            //GistId:0441f68c5209fec25c47d1a0a203fbb0
             DataSet customersDs = new DataSet();
             customersDs.ReadXml(MyDir + "Mail merge data - Customers.xml");
 
@@ -30,6 +31,7 @@ namespace DocsExamples.Mail_Merge_and_Reporting
         public void NestedMailMerge()
         {
             //ExStart:NestedMailMerge
+            //GistId:c68048adceb3bda6a1511c7d6f5ebf7b
             // The Datatable.TableNames and the DataSet.Relations are defined implicitly by .NET through ReadXml.
             DataSet pizzaDs = new DataSet();
             pizzaDs.ReadXml(MyDir + "Mail merge data - Orders.xml");
@@ -63,7 +65,7 @@ namespace DocsExamples.Mail_Merge_and_Reporting
         }
 
         [Test]
-        public void LINQtoXmlMailMerge()
+        public void LinqToXmlMailMerge()
         {
             XElement orderXml = XElement.Load(MyDir + "Mail merge data - Purchase order.xml");
 
@@ -75,7 +77,7 @@ namespace DocsExamples.Mail_Merge_and_Reporting
             // we need to cast them to string. This prevents the XML tags from being inserted into the final document
             // when the XElement or XAttribute objects are passed to Aspose.Words.
 
-            //ExStart:LINQtoXMLMailMergeorderItems
+            //ExStart:LinqToXmlMailMergeOrderItems
             var orderItems =
                 from order in orderXml.Descendants("Item")
                 select new
@@ -87,9 +89,9 @@ namespace DocsExamples.Mail_Merge_and_Reporting
                     Comment = (string) order.Element("Comment"),
                     ShipDate = (string) order.Element("ShipDate")
                 };
-            //ExEnd:LINQtoXMLMailMergeorderItems
-            
-            //ExStart:LINQToXMLQueryForDeliveryAddress
+            //ExEnd:LinqToXmlMailMergeOrderItems
+
+            //ExStart:LinqToXmlQueryForDeliveryAddress
             var deliveryAddress =
                 from delivery in orderXml.Elements("Address")
                 where ((string) delivery.Attribute("Type") == "Shipping")
@@ -102,12 +104,12 @@ namespace DocsExamples.Mail_Merge_and_Reporting
                     City = (string) delivery.Element("City"),
                     Street = (string) delivery.Element("Street")
                 };
-            //ExEnd:LINQToXMLQueryForDeliveryAddress
+            //ExEnd:LinqToXmlQueryForDeliveryAddress
 
             MyMailMergeDataSource orderItemsDataSource = new MyMailMergeDataSource(orderItems, "Items");
             MyMailMergeDataSource deliveryDataSource = new MyMailMergeDataSource(deliveryAddress);
             
-            //ExStart:LINQToXMLMailMerge
+            //ExStart:LinqToXmlMailMerge
             Document doc = new Document(MyDir + "Mail merge destinations - LINQ.docx");
 
             // Fill the document with data from our data sources using mail merge regions for populating the order items
@@ -116,8 +118,8 @@ namespace DocsExamples.Mail_Merge_and_Reporting
 
             doc.MailMerge.Execute(deliveryDataSource);
 
-            doc.Save(ArtifactsDir + "WorkingWithXmlData.LINQtoXmlMailMerge.docx");
-            //ExEnd:LINQToXMLMailMerge
+            doc.Save(ArtifactsDir + "WorkingWithXmlData.LinqToXmlMailMerge.docx");
+            //ExEnd:LinqToXmlMailMerge
         }
 
         /// <summary>
@@ -128,9 +130,9 @@ namespace DocsExamples.Mail_Merge_and_Reporting
         /// interface that accepts a LINQ query (any IEnumerable object).
         /// Aspose.Words call this class during the mail merge to retrieve the data.
         /// </summary>
-        //ExStart:MyMailMergeDataSource 
+        //ExStart:MyMailMergeDataSource
         public class MyMailMergeDataSource : IMailMergeDataSource
-        //ExEnd:MyMailMergeDataSource 
+        //ExEnd:MyMailMergeDataSource
         {
             /// <summary>
             /// Creates a new instance of a custom mail merge data source.
@@ -185,7 +187,7 @@ namespace DocsExamples.Mail_Merge_and_Reporting
 
             /// <summary>
             /// Moves to the next record in the collection.
-            /// </summary>            
+            /// </summary>
             //ExStart:MyMailMergeDataSourceMoveNext
             public bool MoveNext()
             {

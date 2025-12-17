@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2024 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -16,6 +16,7 @@ using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
 using Aspose.Words.Fonts;
 using Aspose.Words.Notes;
+using Aspose.Words.Settings;
 using Aspose.Words.Tables;
 using Aspose.Words.Themes;
 using NUnit.Framework;
@@ -54,10 +55,10 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Font.CreateFormattedRun.docx");
             run = doc.FirstSection.Body.FirstParagraph.Runs[0];
 
-            Assert.AreEqual("Hello world!", run.GetText().Trim());
-            Assert.AreEqual("Courier New", run.Font.Name);
-            Assert.AreEqual(36, run.Font.Size);
-            Assert.AreEqual(Color.Yellow.ToArgb(), run.Font.HighlightColor.ToArgb());
+            Assert.That(run.GetText().Trim(), Is.EqualTo("Hello world!"));
+            Assert.That(run.Font.Name, Is.EqualTo("Courier New"));
+            Assert.That(run.Font.Size, Is.EqualTo(36));
+            Assert.That(run.Font.HighlightColor.ToArgb(), Is.EqualTo(Color.Yellow.ToArgb()));
         }
 
         [Test]
@@ -76,7 +77,7 @@ namespace ApiExamples
             run.Font.AllCaps = true;
             para.AppendChild(run);
 
-            para = para.ParentNode.AppendChild(new Paragraph(doc));
+            para = (Paragraph)para.ParentNode.AppendChild(new Paragraph(doc));
 
             // 2 -  Set the SmallCaps flag to display all characters in small capitals:
             // If a character is lower case, it will appear in its upper case form
@@ -92,13 +93,13 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Font.Caps.docx");
             run = doc.FirstSection.Body.Paragraphs[0].Runs[0];
 
-            Assert.AreEqual("all capitals", run.GetText().Trim());
-            Assert.True(run.Font.AllCaps);
+            Assert.That(run.GetText().Trim(), Is.EqualTo("all capitals"));
+            Assert.That(run.Font.AllCaps, Is.True);
 
             run = doc.FirstSection.Body.Paragraphs[1].Runs[0];
 
-            Assert.AreEqual("Small Capitals", run.GetText().Trim());
-            Assert.True(run.Font.SmallCaps);
+            Assert.That(run.GetText().Trim(), Is.EqualTo("Small Capitals"));
+            Assert.That(run.Font.SmallCaps, Is.True);
         }
 
         [Test]
@@ -114,7 +115,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Embedded font.docx");
 
             FontInfoCollection allFonts = doc.FontInfos;
-            Assert.AreEqual(5, allFonts.Count); //ExSkip
+            Assert.That(allFonts.Count, Is.EqualTo(5)); //ExSkip
 
             // Print all the used and unused fonts in the document.
             for (int i = 0; i < allFonts.Count; i++)
@@ -132,9 +133,9 @@ namespace ApiExamples
         {
             Document doc = new Document();
 
-            Assert.IsFalse(doc.FontInfos.EmbedTrueTypeFonts);
-            Assert.IsFalse(doc.FontInfos.EmbedSystemFonts);
-            Assert.IsFalse(doc.FontInfos.SaveSubsetFonts);
+            Assert.That(doc.FontInfos.EmbedTrueTypeFonts, Is.False);
+            Assert.That(doc.FontInfos.EmbedSystemFonts, Is.False);
+            Assert.That(doc.FontInfos.SaveSubsetFonts, Is.False);
         }
 
         [TestCase(false)]
@@ -161,9 +162,9 @@ namespace ApiExamples
             var testedFileLength = new FileInfo(ArtifactsDir + "Font.FontInfoCollection.docx").Length;
 
             if (embedAllFonts)
-                Assert.That(testedFileLength, Is.LessThan(28000));
+                Assert.That(testedFileLength < 28000, Is.True);
             else
-                Assert.That(testedFileLength, Is.LessThan(13000));
+                Assert.That(testedFileLength < 13000, Is.True);
         }
 
         [TestCase(true, false, false, Description =
@@ -201,7 +202,7 @@ namespace ApiExamples
             run.Font.StrikeThrough = true;
             para.AppendChild(run);
 
-            para = para.ParentNode.AppendChild(new Paragraph(doc));
+            para = (Paragraph)para.ParentNode.AppendChild(new Paragraph(doc));
 
             run = new Run(doc, "Text with a double-line strikethrough.");
             run.Font.DoubleStrikeThrough = true;
@@ -214,13 +215,13 @@ namespace ApiExamples
 
             run = doc.FirstSection.Body.Paragraphs[0].Runs[0];
 
-            Assert.AreEqual("Text with a single-line strikethrough.", run.GetText().Trim());
-            Assert.True(run.Font.StrikeThrough);
+            Assert.That(run.GetText().Trim(), Is.EqualTo("Text with a single-line strikethrough."));
+            Assert.That(run.Font.StrikeThrough, Is.True);
 
             run = doc.FirstSection.Body.Paragraphs[1].Runs[0];
 
-            Assert.AreEqual("Text with a double-line strikethrough.", run.GetText().Trim());
-            Assert.True(run.Font.DoubleStrikeThrough);
+            Assert.That(run.GetText().Trim(), Is.EqualTo("Text with a double-line strikethrough."));
+            Assert.That(run.Font.DoubleStrikeThrough, Is.True);
         }
 
         [Test]
@@ -264,24 +265,24 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Font.PositionSubscript.docx");
             run = doc.FirstSection.Body.FirstParagraph.Runs[0];
 
-            Assert.AreEqual("Raised text.", run.GetText().Trim());
-            Assert.AreEqual(5, run.Font.Position);
+            Assert.That(run.GetText().Trim(), Is.EqualTo("Raised text."));
+            Assert.That(run.Font.Position, Is.EqualTo(5));
 
             doc = new Document(ArtifactsDir + "Font.PositionSubscript.docx");
             run = doc.FirstSection.Body.FirstParagraph.Runs[1];
 
-            Assert.AreEqual("Lowered text.", run.GetText().Trim());
-            Assert.AreEqual(-10, run.Font.Position);
+            Assert.That(run.GetText().Trim(), Is.EqualTo("Lowered text."));
+            Assert.That(run.Font.Position, Is.EqualTo(-10));
 
             run = doc.FirstSection.Body.FirstParagraph.Runs[3];
 
-            Assert.AreEqual("Subscript.", run.GetText().Trim());
-            Assert.True(run.Font.Subscript);
+            Assert.That(run.GetText().Trim(), Is.EqualTo("Subscript."));
+            Assert.That(run.Font.Subscript, Is.True);
 
             run = doc.FirstSection.Body.FirstParagraph.Runs[4];
 
-            Assert.AreEqual("Superscript.", run.GetText().Trim());
-            Assert.True(run.Font.Superscript);
+            Assert.That(run.GetText().Trim(), Is.EqualTo("Superscript."));
+            Assert.That(run.Font.Superscript, Is.True);
         }
 
         [Test]
@@ -312,18 +313,18 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Font.ScalingSpacing.docx");
             Run run = doc.FirstSection.Body.Paragraphs[0].Runs[0];
 
-            Assert.AreEqual("Wide characters", run.GetText().Trim());
-            Assert.AreEqual(150, run.Font.Scaling);
+            Assert.That(run.GetText().Trim(), Is.EqualTo("Wide characters"));
+            Assert.That(run.Font.Scaling, Is.EqualTo(150));
 
             run = doc.FirstSection.Body.Paragraphs[1].Runs[0];
 
-            Assert.AreEqual("Expanded by 1pt", run.GetText().Trim());
-            Assert.AreEqual(1, run.Font.Spacing);
+            Assert.That(run.GetText().Trim(), Is.EqualTo("Expanded by 1pt"));
+            Assert.That(run.Font.Spacing, Is.EqualTo(1));
 
             run = doc.FirstSection.Body.Paragraphs[2].Runs[0];
 
-            Assert.AreEqual("Condensed by 1pt", run.GetText().Trim());
-            Assert.AreEqual(-1, run.Font.Spacing);
+            Assert.That(run.GetText().Trim(), Is.EqualTo("Condensed by 1pt"));
+            Assert.That(run.Font.Spacing, Is.EqualTo(-1));
         }
 
         [Test]
@@ -345,8 +346,8 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Font.Italic.docx");
             Run run = doc.FirstSection.Body.FirstParagraph.Runs[0];
 
-            Assert.AreEqual("Hello world!", run.GetText().Trim());
-            Assert.True(run.Font.Italic);
+            Assert.That(run.GetText().Trim(), Is.EqualTo("Hello world!"));
+            Assert.That(run.Font.Italic, Is.True);
         }
 
         [Test]
@@ -380,15 +381,15 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Font.EngraveEmboss.docx");
             Run run = doc.FirstSection.Body.Paragraphs[0].Runs[0];
 
-            Assert.AreEqual("This text is engraved.", run.GetText().Trim());
-            Assert.True(run.Font.Engrave);
-            Assert.False(run.Font.Emboss);
+            Assert.That(run.GetText().Trim(), Is.EqualTo("This text is engraved."));
+            Assert.That(run.Font.Engrave, Is.True);
+            Assert.That(run.Font.Emboss, Is.False);
 
             run = doc.FirstSection.Body.Paragraphs[1].Runs[0];
 
-            Assert.AreEqual("This text is embossed.", run.GetText().Trim());
-            Assert.False(run.Font.Engrave);
-            Assert.True(run.Font.Emboss);
+            Assert.That(run.GetText().Trim(), Is.EqualTo("This text is embossed."));
+            Assert.That(run.Font.Engrave, Is.False);
+            Assert.That(run.Font.Emboss, Is.True);
         }
 
         [Test]
@@ -413,8 +414,8 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Font.Shadow.docx");
             Run run = doc.FirstSection.Body.Paragraphs[0].Runs[0];
 
-            Assert.AreEqual("This text has a shadow.", run.GetText().Trim());
-            Assert.True(run.Font.Shadow);
+            Assert.That(run.GetText().Trim(), Is.EqualTo("This text has a shadow."));
+            Assert.That(run.Font.Shadow, Is.True);
         }
 
         [Test]
@@ -427,7 +428,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Set the Outline flag to change the text's fill color to white and
-            // leave a thin outline around each character in the original color of the text. 
+            // leave a thin outline around each character in the original color of the text.
             builder.Font.Outline = true;
             builder.Font.Color = Color.Blue;
             builder.Font.Size = 36;
@@ -440,8 +441,8 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Font.Outline.docx");
             Run run = doc.FirstSection.Body.Paragraphs[0].Runs[0];
 
-            Assert.AreEqual("This text has an outline.", run.GetText().Trim());
-            Assert.True(run.Font.Outline);
+            Assert.That(run.GetText().Trim(), Is.EqualTo("This text has an outline."));
+            Assert.That(run.Font.Outline, Is.True);
         }
 
         [Test]
@@ -469,8 +470,8 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Font.Hidden.docx");
             Run run = doc.FirstSection.Body.Paragraphs[0].Runs[0];
 
-            Assert.AreEqual("This text will not be visible in the document.", run.GetText().Trim());
-            Assert.True(run.Font.Hidden);
+            Assert.That(run.GetText().Trim(), Is.EqualTo("This text will not be visible in the document."));
+            Assert.That(run.Font.Hidden, Is.True);
         }
 
         [Test]
@@ -503,15 +504,15 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Font.Kerning.docx");
             Run run = doc.FirstSection.Body.Paragraphs[0].Runs[0];
 
-            Assert.AreEqual("TALLY. (Kerning not applied)", run.GetText().Trim());
-            Assert.AreEqual(24, run.Font.Kerning);
-            Assert.AreEqual(18, run.Font.Size);
+            Assert.That(run.GetText().Trim(), Is.EqualTo("TALLY. (Kerning not applied)"));
+            Assert.That(run.Font.Kerning, Is.EqualTo(24));
+            Assert.That(run.Font.Size, Is.EqualTo(18));
 
             run = doc.FirstSection.Body.Paragraphs[1].Runs[0];
 
-            Assert.AreEqual("TALLY. (Kerning applied)", run.GetText().Trim());
-            Assert.AreEqual(12, run.Font.Kerning);
-            Assert.AreEqual(18, run.Font.Size);
+            Assert.That(run.GetText().Trim(), Is.EqualTo("TALLY. (Kerning applied)"));
+            Assert.That(run.Font.Kerning, Is.EqualTo(12));
+            Assert.That(run.Font.Size, Is.EqualTo(18));
         }
 
         [Test]
@@ -536,8 +537,8 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Font.NoProofing.docx");
             Run run = doc.FirstSection.Body.Paragraphs[0].Runs[0];
 
-            Assert.AreEqual("Proofing has been disabled, so these spelking errrs will not display red lines underneath.", run.GetText().Trim());
-            Assert.True(run.Font.NoProofing);
+            Assert.That(run.GetText().Trim(), Is.EqualTo("Proofing has been disabled, so these spelking errrs will not display red lines underneath."));
+            Assert.That(run.Font.NoProofing, Is.True);
         }
 
         [Test]
@@ -564,13 +565,13 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Font.LocaleId.docx");
             Run run = doc.FirstSection.Body.Paragraphs[0].Runs[0];
 
-            Assert.AreEqual("Привет!", run.GetText().Trim());
-            Assert.AreEqual(1033, run.Font.LocaleId);
+            Assert.That(run.GetText().Trim(), Is.EqualTo("Привет!"));
+            Assert.That(run.Font.LocaleId, Is.EqualTo(1033));
 
             run = doc.FirstSection.Body.Paragraphs[1].Runs[0];
 
-            Assert.AreEqual("Привет!", run.GetText().Trim());
-            Assert.AreEqual(1049, run.Font.LocaleId);
+            Assert.That(run.GetText().Trim(), Is.EqualTo("Привет!"));
+            Assert.That(run.Font.LocaleId, Is.EqualTo(1049));
         }
 
         [Test]
@@ -594,9 +595,9 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Font.Underlines.docx");
             Run run = doc.FirstSection.Body.Paragraphs[0].Runs[0];
 
-            Assert.AreEqual("Underlined text.", run.GetText().Trim());
-            Assert.AreEqual(Underline.Dotted, run.Font.Underline);
-            Assert.AreEqual(Color.Red.ToArgb(), run.Font.UnderlineColor.ToArgb());
+            Assert.That(run.GetText().Trim(), Is.EqualTo("Underlined text."));
+            Assert.That(run.Font.Underline, Is.EqualTo(Underline.Dotted));
+            Assert.That(run.Font.UnderlineColor.ToArgb(), Is.EqualTo(Color.Red.ToArgb()));
         }
 
         [Test]
@@ -618,14 +619,15 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Font.ComplexScript.docx");
             Run run = doc.FirstSection.Body.Paragraphs[0].Runs[0];
 
-            Assert.AreEqual("Text treated as complex script.", run.GetText().Trim());
-            Assert.True(run.Font.ComplexScript);
+            Assert.That(run.GetText().Trim(), Is.EqualTo("Text treated as complex script."));
+            Assert.That(run.Font.ComplexScript, Is.True);
         }
 
         [Test]
         public void SparklingText()
         {
             //ExStart
+            //ExFor:TextEffect
             //ExFor:Font.TextEffect
             //ExSummary:Shows how to apply a visual effect to a run.
             Document doc = new Document();
@@ -643,8 +645,8 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Font.SparklingText.doc");
             Run run = doc.FirstSection.Body.Paragraphs[0].Runs[0];
 
-            Assert.AreEqual("Text with a sparkle effect.", run.GetText().Trim());
-            Assert.AreEqual(TextEffect.SparkleText, run.Font.TextEffect);
+            Assert.That(run.GetText().Trim(), Is.EqualTo("Text with a sparkle effect."));
+            Assert.That(run.Font.TextEffect, Is.EqualTo(TextEffect.SparkleText));
         }
 
         [Test]
@@ -679,12 +681,12 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Font.ForegroundAndBackground.docx");
             Run run = doc.FirstSection.Body.Paragraphs[0].Runs[0];
 
-            Assert.AreEqual("Foreground and background pattern colors for shading texture.", run.GetText().Trim());
-            Assert.AreEqual(ThemeColor.Dark1, doc.FirstSection.Body.Paragraphs[0].ParagraphFormat.Shading.ForegroundPatternThemeColor);
-            Assert.AreEqual(ThemeColor.Dark2, doc.FirstSection.Body.Paragraphs[0].ParagraphFormat.Shading.BackgroundPatternThemeColor);
+            Assert.That(run.GetText().Trim(), Is.EqualTo("Foreground and background pattern colors for shading texture."));
+            Assert.That(doc.FirstSection.Body.Paragraphs[0].ParagraphFormat.Shading.ForegroundPatternThemeColor, Is.EqualTo(ThemeColor.Dark1));
+            Assert.That(doc.FirstSection.Body.Paragraphs[0].ParagraphFormat.Shading.BackgroundPatternThemeColor, Is.EqualTo(ThemeColor.Dark2));
 
-            Assert.AreEqual(0.5, doc.FirstSection.Body.Paragraphs[0].ParagraphFormat.Shading.ForegroundTintAndShade, 0.1);
-            Assert.AreEqual(-0.2, doc.FirstSection.Body.Paragraphs[0].ParagraphFormat.Shading.BackgroundTintAndShade, 0.1);
+            Assert.That(doc.FirstSection.Body.Paragraphs[0].ParagraphFormat.Shading.ForegroundTintAndShade, Is.EqualTo(0.5).Within(0.1));
+            Assert.That(doc.FirstSection.Body.Paragraphs[0].ParagraphFormat.Shading.BackgroundTintAndShade, Is.EqualTo(-0.2).Within(0.1));
         }
 
         [Test]
@@ -713,12 +715,12 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Font.Shading.docx");
             Run run = doc.FirstSection.Body.Paragraphs[0].Runs[0];
 
-            Assert.AreEqual("White text on an orange background with a two-tone texture.", run.GetText().Trim());
-            Assert.AreEqual(Color.White.ToArgb(), run.Font.Color.ToArgb());
+            Assert.That(run.GetText().Trim(), Is.EqualTo("White text on an orange background with a two-tone texture."));
+            Assert.That(run.Font.Color.ToArgb(), Is.EqualTo(Color.White.ToArgb()));
 
-            Assert.AreEqual(TextureIndex.TextureDiagonalUp, run.Font.Shading.Texture);
-            Assert.AreEqual(Color.OrangeRed.ToArgb(), run.Font.Shading.BackgroundPatternColor.ToArgb());
-            Assert.AreEqual(Color.DarkBlue.ToArgb(), run.Font.Shading.ForegroundPatternColor.ToArgb());
+            Assert.That(run.Font.Shading.Texture, Is.EqualTo(TextureIndex.TextureDiagonalUp));
+            Assert.That(run.Font.Shading.BackgroundPatternColor.ToArgb(), Is.EqualTo(Color.OrangeRed.ToArgb()));
+            Assert.That(run.Font.Shading.ForegroundPatternColor.ToArgb(), Is.EqualTo(Color.DarkBlue.ToArgb()));
         }
 
         [Test, Category("SkipMono")]
@@ -770,25 +772,24 @@ namespace ApiExamples
                 switch (doc.FirstSection.Body.Paragraphs[0].IndexOf(run))
                 {
                     case 0:
-                        Assert.AreEqual("مرحبًا", run.GetText().Trim());
-                        Assert.True(run.Font.Bidi);
+                        Assert.That(run.GetText().Trim(), Is.EqualTo("مرحبًا"));
+                        Assert.That(run.Font.Bidi, Is.True);
                         break;
                     case 1:
-                        Assert.AreEqual("Hello world!", run.GetText().Trim());
-                        Assert.False(run.Font.Bidi);
+                        Assert.That(run.GetText().Trim(), Is.EqualTo("Hello world!"));
+                        Assert.That(run.Font.Bidi, Is.False);
                         break;
                 }
 
-                Assert.AreEqual(1033, run.Font.LocaleId);
-                Assert.AreEqual(16, run.Font.Size);
-                Assert.AreEqual("Courier New", run.Font.Name);
-                Assert.False(run.Font.Italic);
-                Assert.False(run.Font.Bold);
-                Assert.AreEqual(1025, run.Font.LocaleIdBi);
-                Assert.AreEqual(24, run.Font.SizeBi);
-                Assert.AreEqual("Andalus", run.Font.NameBi);
-                Assert.True(run.Font.ItalicBi);
-                Assert.True(run.Font.BoldBi);
+                Assert.That(run.Font.LocaleId, Is.EqualTo(1033));
+                Assert.That(run.Font.Size, Is.EqualTo(16));
+                Assert.That(run.Font.Italic, Is.False);
+                Assert.That(run.Font.Bold, Is.False);
+                Assert.That(run.Font.LocaleIdBi, Is.EqualTo(1025));
+                Assert.That(run.Font.SizeBi, Is.EqualTo(24));
+                Assert.That(run.Font.NameBi, Is.EqualTo("Andalus"));
+                Assert.That(run.Font.ItalicBi, Is.True);
+                Assert.That(run.Font.BoldBi, Is.True);
             }
         }
 
@@ -825,19 +826,19 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Font.FarEast.docx");
             Run run = doc.FirstSection.Body.Paragraphs[0].Runs[0];
 
-            Assert.AreEqual("Hello world!", run.GetText().Trim());
-            Assert.AreEqual(1033, run.Font.LocaleId);
-            Assert.AreEqual("Courier New", run.Font.Name);
-            Assert.AreEqual(2052, run.Font.LocaleIdFarEast);
-            Assert.AreEqual("SimSun", run.Font.NameFarEast);
+            Assert.That(run.GetText().Trim(), Is.EqualTo("Hello world!"));
+            Assert.That(run.Font.LocaleId, Is.EqualTo(1033));
+            Assert.That(run.Font.Name, Is.EqualTo("Courier New"));
+            Assert.That(run.Font.LocaleIdFarEast, Is.EqualTo(2052));
+            Assert.That(run.Font.NameFarEast, Is.EqualTo("SimSun"));
 
             run = doc.FirstSection.Body.Paragraphs[1].Runs[0];
 
-            Assert.AreEqual("你好世界", run.GetText().Trim());
-            Assert.AreEqual(1033, run.Font.LocaleId);
-            Assert.AreEqual("SimSun", run.Font.Name);
-            Assert.AreEqual(2052, run.Font.LocaleIdFarEast);
-            Assert.AreEqual("SimSun", run.Font.NameFarEast);
+            Assert.That(run.GetText().Trim(), Is.EqualTo("你好世界"));
+            Assert.That(run.Font.LocaleId, Is.EqualTo(1033));
+            Assert.That(run.Font.Name, Is.EqualTo("SimSun"));
+            Assert.That(run.Font.LocaleIdFarEast, Is.EqualTo(2052));
+            Assert.That(run.Font.NameFarEast, Is.EqualTo("SimSun"));
         }
 
         [Test]
@@ -856,7 +857,7 @@ namespace ApiExamples
             builder.Font.NameAscii = "Calibri";
 
             // With no other font specified, the builder will also apply this font to all characters that it inserts.
-            Assert.AreEqual("Calibri", builder.Font.Name);
+            Assert.That(builder.Font.Name, Is.EqualTo("Calibri"));
 
             // Specify a font to use for all characters outside of the ASCII range.
             // Ideally, this font should have a glyph for each required non-ASCII character code.
@@ -872,10 +873,10 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Font.NameAscii.docx");
             Run run = doc.FirstSection.Body.Paragraphs[0].Runs[0];
 
-            Assert.AreEqual("Hello, Привет", run.GetText().Trim());
-            Assert.AreEqual("Calibri", run.Font.Name);
-            Assert.AreEqual("Calibri", run.Font.NameAscii);
-            Assert.AreEqual("Courier New", run.Font.NameOther);
+            Assert.That(run.GetText().Trim(), Is.EqualTo("Hello, Привет"));
+            Assert.That(run.Font.Name, Is.EqualTo("Calibri"));
+            Assert.That(run.Font.NameAscii, Is.EqualTo("Calibri"));
+            Assert.That(run.Font.NameOther, Is.EqualTo("Courier New"));
         }
 
         [Test]
@@ -900,7 +901,7 @@ namespace ApiExamples
 
             // Convert all uses of one style to another,
             // using the above methods to reference old and new styles.
-            foreach (Run run in doc.GetChildNodes(NodeType.Run, true).OfType<Run>())
+            foreach (Run run in doc.GetChildNodes(NodeType.Run, true))
             {
                 if (run.Font.StyleName == "Emphasis")
                     run.Font.StyleName = "Strong";
@@ -915,15 +916,15 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Font.ChangeStyle.docx");
             Run docRun = doc.FirstSection.Body.Paragraphs[0].Runs[0];
 
-            Assert.AreEqual("Text originally in \"Emphasis\" style", docRun.GetText().Trim());
-            Assert.AreEqual(StyleIdentifier.Strong, docRun.Font.StyleIdentifier);
-            Assert.AreEqual("Strong", docRun.Font.StyleName);
+            Assert.That(docRun.GetText().Trim(), Is.EqualTo("Text originally in \"Emphasis\" style"));
+            Assert.That(docRun.Font.StyleIdentifier, Is.EqualTo(StyleIdentifier.Strong));
+            Assert.That(docRun.Font.StyleName, Is.EqualTo("Strong"));
 
             docRun = doc.FirstSection.Body.Paragraphs[1].Runs[0];
 
-            Assert.AreEqual("Text originally in \"Intense Emphasis\" style", docRun.GetText().Trim());
-            Assert.AreEqual(StyleIdentifier.Strong, docRun.Font.StyleIdentifier);
-            Assert.AreEqual("Strong", docRun.Font.StyleName);
+            Assert.That(docRun.GetText().Trim(), Is.EqualTo("Text originally in \"Intense Emphasis\" style"));
+            Assert.That(docRun.Font.StyleIdentifier, Is.EqualTo(StyleIdentifier.Strong));
+            Assert.That(docRun.Font.StyleName, Is.EqualTo("Strong"));
         }
 
         [Test]
@@ -940,15 +941,15 @@ namespace ApiExamples
             // These styles will all have the "BuiltIn" flag set to "true".
             Style style = doc.Styles["Emphasis"];
 
-            Assert.True(style.BuiltIn);
+            Assert.That(style.BuiltIn, Is.True);
 
             // Create a custom style and add it to the collection.
-            // Custom styles such as this will have the "BuiltIn" flag set to "false". 
+            // Custom styles such as this will have the "BuiltIn" flag set to "false".
             style = doc.Styles.Add(StyleType.Character, "MyStyle");
             style.Font.Color = Color.Navy;
             style.Font.Name = "Courier New";
 
-            Assert.False(style.BuiltIn);
+            Assert.That(style.BuiltIn, Is.False);
             //ExEnd
         }
 
@@ -970,7 +971,7 @@ namespace ApiExamples
             builder.Write("This text is in a custom style.");
 
             // Iterate over every run and add a double underline to every custom style.
-            foreach (Run run in doc.GetChildNodes(NodeType.Run, true).OfType<Run>())
+            foreach (Run run in doc.GetChildNodes(NodeType.Run, true))
             {
                 Style charStyle = run.Font.Style;
 
@@ -984,17 +985,17 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Font.Style.docx");
             Run docRun = doc.FirstSection.Body.Paragraphs[0].Runs[0];
 
-            Assert.AreEqual("This text is in a custom style.", docRun.GetText().Trim());
-            Assert.AreEqual("MyStyle", docRun.Font.StyleName);
-            Assert.False(docRun.Font.Style.BuiltIn);
-            Assert.AreEqual(Underline.Double, docRun.Font.Underline);
+            Assert.That(docRun.GetText().Trim(), Is.EqualTo("This text is in a custom style."));
+            Assert.That(docRun.Font.StyleName, Is.EqualTo("MyStyle"));
+            Assert.That(docRun.Font.Style.BuiltIn, Is.False);
+            Assert.That(docRun.Font.Underline, Is.EqualTo(Underline.Double));
         }
 
         [Test]
         public void GetAvailableFonts()
         {
             //ExStart
-            //ExFor:Fonts.PhysicalFontInfo
+            //ExFor:PhysicalFontInfo
             //ExFor:FontSourceBase.GetAvailableFonts
             //ExFor:PhysicalFontInfo.FontFamilyName
             //ExFor:PhysicalFontInfo.FullFontName
@@ -1013,8 +1014,7 @@ namespace ApiExamples
             }
             //ExEnd
 
-            Assert.AreEqual(folderFontSource[0].GetAvailableFonts().Count,
-                Directory.EnumerateFiles(FontsDir, "*.*", SearchOption.AllDirectories).Count(f => f.EndsWith(".ttf") || f.EndsWith(".otf")));
+            Assert.That(Directory.EnumerateFiles(FontsDir, "*.*", SearchOption.AllDirectories).Count(f => f.EndsWith(".ttf") || f.EndsWith(".otf")) + 5, Is.EqualTo(folderFontSource[0].GetAvailableFonts().Count));
         }
 
         [Test]
@@ -1028,7 +1028,7 @@ namespace ApiExamples
 
             // If a run's Font object does not specify text color, it will automatically
             // select either black or white depending on the background color's color.
-            Assert.AreEqual(Color.Empty.ToArgb(), builder.Font.Color.ToArgb());
+            Assert.That(builder.Font.Color.ToArgb(), Is.EqualTo(Color.Empty.ToArgb()));
 
             // The default color for text is black. If the color of the background is dark, black text will be difficult to see.
             // To solve this problem, the AutoColor property will display this text in white.
@@ -1036,7 +1036,7 @@ namespace ApiExamples
 
             builder.Writeln("The text color automatically chosen for this run is white.");
 
-            Assert.AreEqual(Color.White.ToArgb(), doc.FirstSection.Body.Paragraphs[0].Runs[0].Font.AutoColor.ToArgb());
+            Assert.That(doc.FirstSection.Body.Paragraphs[0].Runs[0].Font.AutoColor.ToArgb(), Is.EqualTo(Color.White.ToArgb()));
 
             // If we change the background to a light color, black will be a more
             // suitable text color than white so that the auto color will display it in black.
@@ -1044,7 +1044,7 @@ namespace ApiExamples
 
             builder.Writeln("The text color automatically chosen for this run is black.");
 
-            Assert.AreEqual(Color.Black.ToArgb(), doc.FirstSection.Body.Paragraphs[1].Runs[0].Font.AutoColor.ToArgb());
+            Assert.That(doc.FirstSection.Body.Paragraphs[1].Runs[0].Font.AutoColor.ToArgb(), Is.EqualTo(Color.Black.ToArgb()));
 
             doc.Save(ArtifactsDir + "Font.SetFontAutoColor.docx");
             //ExEnd
@@ -1052,20 +1052,22 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Font.SetFontAutoColor.docx");
             Run run = doc.FirstSection.Body.Paragraphs[0].Runs[0];
 
-            Assert.AreEqual("The text color automatically chosen for this run is white.", run.GetText().Trim());
-            Assert.AreEqual(Color.Empty.ToArgb(), run.Font.Color.ToArgb());
-            Assert.AreEqual(Color.DarkBlue.ToArgb(), run.Font.Shading.BackgroundPatternColor.ToArgb());
+            Assert.That(run.GetText().Trim(), Is.EqualTo("The text color automatically chosen for this run is white."));
+            Assert.That(run.Font.Color.ToArgb(), Is.EqualTo(Color.Empty.ToArgb()));
+            Assert.That(run.Font.Shading.BackgroundPatternColor.ToArgb(), Is.EqualTo(Color.DarkBlue.ToArgb()));
 
             run = doc.FirstSection.Body.Paragraphs[1].Runs[0];
 
-            Assert.AreEqual("The text color automatically chosen for this run is black.", run.GetText().Trim());
-            Assert.AreEqual(Color.Empty.ToArgb(), run.Font.Color.ToArgb());
-            Assert.AreEqual(Color.LightBlue.ToArgb(), run.Font.Shading.BackgroundPatternColor.ToArgb());
+            Assert.That(run.GetText().Trim(), Is.EqualTo("The text color automatically chosen for this run is black."));
+            Assert.That(run.Font.Color.ToArgb(), Is.EqualTo(Color.Empty.ToArgb()));
+            Assert.That(run.Font.Shading.BackgroundPatternColor.ToArgb(), Is.EqualTo(Color.LightBlue.ToArgb()));
         }
 
         //ExStart
         //ExFor:Font.Hidden
-        //ExFor:Paragraph.Accept
+        //ExFor:Paragraph.Accept(DocumentVisitor)
+        //ExFor:Paragraph.AcceptStart(DocumentVisitor)
+        //ExFor:Paragraph.AcceptEnd(DocumentVisitor)
         //ExFor:DocumentVisitor.VisitParagraphStart(Paragraph)
         //ExFor:DocumentVisitor.VisitFormField(FormField)
         //ExFor:DocumentVisitor.VisitTableEnd(Table)
@@ -1077,16 +1079,20 @@ namespace ApiExamples
         //ExFor:DocumentVisitor.VisitCommentStart(Comment)
         //ExFor:DocumentVisitor.VisitFootnoteStart(Footnote)
         //ExFor:SpecialChar
-        //ExFor:Node.Accept
+        //ExFor:SpecialChar.Accept(DocumentVisitor)
+        //ExFor:SpecialChar.GetText
+        //ExFor:Node.Accept(DocumentVisitor)
         //ExFor:Paragraph.ParagraphBreakFont
-        //ExFor:Table.Accept
+        //ExFor:Table.Accept(DocumentVisitor)
+        //ExFor:Table.AcceptStart(DocumentVisitor)
+        //ExFor:Table.AcceptEnd(DocumentVisitor)
         //ExSummary:Shows how to use a DocumentVisitor implementation to remove all hidden content from a document.
         [Test] //ExSkip
         public void RemoveHiddenContentFromDocument()
         {
             Document doc = new Document(MyDir + "Hidden content.docx");
-            Assert.AreEqual(26, doc.GetChildNodes(NodeType.Paragraph, true).Count); //ExSkip
-            Assert.AreEqual(2, doc.GetChildNodes(NodeType.Table, true).Count); //ExSkip
+            Assert.That(doc.GetChildNodes(NodeType.Paragraph, true).Count, Is.EqualTo(26)); //ExSkip
+            Assert.That(doc.GetChildNodes(NodeType.Table, true).Count, Is.EqualTo(2)); //ExSkip
 
             RemoveHiddenContentVisitor hiddenContentRemover = new RemoveHiddenContentVisitor();
 
@@ -1227,6 +1233,8 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitSpecialChar(SpecialChar specialChar)
             {
+                Console.WriteLine(specialChar.GetText());
+
                 if (specialChar.Font.Hidden)
                     specialChar.Remove();
 
@@ -1276,45 +1284,45 @@ namespace ApiExamples
 
         private void TestRemoveHiddenContent(Document doc)
         {
-            Assert.AreEqual(20, doc.GetChildNodes(NodeType.Paragraph, true).Count); //ExSkip
-            Assert.AreEqual(1, doc.GetChildNodes(NodeType.Table, true).Count); //ExSkip
+            Assert.That(doc.GetChildNodes(NodeType.Paragraph, true).Count, Is.EqualTo(20)); //ExSkip
+            Assert.That(doc.GetChildNodes(NodeType.Table, true).Count, Is.EqualTo(1)); //ExSkip
 
             foreach (Node node in doc.GetChildNodes(NodeType.Any, true))
             {
                 switch (node)
                 {
                     case FieldStart fieldStart:
-                        Assert.False(fieldStart.Font.Hidden);
+                        Assert.That(fieldStart.Font.Hidden, Is.False);
                         break;
                     case FieldEnd fieldEnd:
-                        Assert.False(fieldEnd.Font.Hidden);
+                        Assert.That(fieldEnd.Font.Hidden, Is.False);
                         break;
                     case FieldSeparator fieldSeparator:
-                        Assert.False(fieldSeparator.Font.Hidden);
+                        Assert.That(fieldSeparator.Font.Hidden, Is.False);
                         break;
                     case Run run:
-                        Assert.False(run.Font.Hidden);
+                        Assert.That(run.Font.Hidden, Is.False);
                         break;
                     case Paragraph paragraph:
-                        Assert.False(paragraph.ParagraphBreakFont.Hidden);
+                        Assert.That(paragraph.ParagraphBreakFont.Hidden, Is.False);
                         break;
                     case FormField formField:
-                        Assert.False(formField.Font.Hidden);
+                        Assert.That(formField.Font.Hidden, Is.False);
                         break;
                     case GroupShape groupShape:
-                        Assert.False(groupShape.Font.Hidden);
+                        Assert.That(groupShape.Font.Hidden, Is.False);
                         break;
                     case Shape shape:
-                        Assert.False(shape.Font.Hidden);
+                        Assert.That(shape.Font.Hidden, Is.False);
                         break;
                     case Comment comment:
-                        Assert.False(comment.Font.Hidden);
+                        Assert.That(comment.Font.Hidden, Is.False);
                         break;
                     case Footnote footnote:
-                        Assert.False(footnote.Font.Hidden);
+                        Assert.That(footnote.Font.Hidden, Is.False);
                         break;
                     case SpecialChar specialChar:
-                        Assert.False(specialChar.Font.Hidden);
+                        Assert.That(specialChar.Font.Hidden, Is.False);
                         break;
                 }
             }
@@ -1324,20 +1332,20 @@ namespace ApiExamples
         public void DefaultFonts()
         {
             //ExStart
-            //ExFor:Fonts.FontInfoCollection.Contains(String)
-            //ExFor:Fonts.FontInfoCollection.Count
+            //ExFor:FontInfoCollection.Contains(String)
+            //ExFor:FontInfoCollection.Count
             //ExSummary:Shows info about the fonts that are present in the blank document.
             Document doc = new Document();
 
             // A blank document contains 3 default fonts. Each font in the document
             // will have a corresponding FontInfo object which contains details about that font.
-            Assert.AreEqual(3, doc.FontInfos.Count);
+            Assert.That(doc.FontInfos.Count, Is.EqualTo(3));
 
-            Assert.True(doc.FontInfos.Contains("Times New Roman"));
-            Assert.AreEqual(204, doc.FontInfos["Times New Roman"].Charset);
+            Assert.That(doc.FontInfos.Contains("Times New Roman"), Is.True);
+            Assert.That(doc.FontInfos["Times New Roman"].Charset, Is.EqualTo(204));
 
-            Assert.True(doc.FontInfos.Contains("Symbol"));
-            Assert.True(doc.FontInfos.Contains("Arial"));
+            Assert.That(doc.FontInfos.Contains("Symbol"), Is.True);
+            Assert.That(doc.FontInfos.Contains("Arial"), Is.True);
             //ExEnd
         }
 
@@ -1345,18 +1353,18 @@ namespace ApiExamples
         public void ExtractEmbeddedFont()
         {
             //ExStart
-            //ExFor:Fonts.EmbeddedFontFormat
-            //ExFor:Fonts.EmbeddedFontStyle
-            //ExFor:Fonts.FontInfo.GetEmbeddedFont(EmbeddedFontFormat,EmbeddedFontStyle)
-            //ExFor:Fonts.FontInfo.GetEmbeddedFontAsOpenType(EmbeddedFontStyle)
-            //ExFor:Fonts.FontInfoCollection.Item(Int32)
-            //ExFor:Fonts.FontInfoCollection.Item(String)
+            //ExFor:EmbeddedFontFormat
+            //ExFor:EmbeddedFontStyle
+            //ExFor:FontInfo.GetEmbeddedFont(EmbeddedFontFormat,EmbeddedFontStyle)
+            //ExFor:FontInfo.GetEmbeddedFontAsOpenType(EmbeddedFontStyle)
+            //ExFor:FontInfoCollection.Item(Int32)
+            //ExFor:FontInfoCollection.Item(String)
             //ExSummary:Shows how to extract an embedded font from a document, and save it to the local file system.
             Document doc = new Document(MyDir + "Embedded font.docx");
 
             FontInfo embeddedFont = doc.FontInfos["Alte DIN 1451 Mittelschrift"];
             byte[] embeddedFontBytes = embeddedFont.GetEmbeddedFont(EmbeddedFontFormat.OpenType, EmbeddedFontStyle.Regular);
-            Assert.IsNotNull(embeddedFontBytes); //ExSkip
+            Assert.That(embeddedFontBytes, Is.Not.Null); //ExSkip
 
             File.WriteAllBytes(ArtifactsDir + "Alte DIN 1451 Mittelschrift.ttf", embeddedFontBytes);
 
@@ -1364,8 +1372,8 @@ namespace ApiExamples
             // We need to know the correct format before we can extract the font.
             doc = new Document(MyDir + "Embedded font.doc");
 
-            Assert.IsNull(doc.FontInfos["Alte DIN 1451 Mittelschrift"].GetEmbeddedFont(EmbeddedFontFormat.OpenType, EmbeddedFontStyle.Regular));
-            Assert.IsNotNull(doc.FontInfos["Alte DIN 1451 Mittelschrift"].GetEmbeddedFont(EmbeddedFontFormat.EmbeddedOpenType, EmbeddedFontStyle.Regular));
+            Assert.That(doc.FontInfos["Alte DIN 1451 Mittelschrift"].GetEmbeddedFont(EmbeddedFontFormat.OpenType, EmbeddedFontStyle.Regular), Is.Null);
+            Assert.That(doc.FontInfos["Alte DIN 1451 Mittelschrift"].GetEmbeddedFont(EmbeddedFontFormat.EmbeddedOpenType, EmbeddedFontStyle.Regular), Is.Not.Null);
 
             // Also, we can convert embedded OpenType format, which comes from .doc documents, to OpenType.
             embeddedFontBytes = doc.FontInfos["Alte DIN 1451 Mittelschrift"].GetEmbeddedFontAsOpenType(EmbeddedFontStyle.Regular);
@@ -1378,14 +1386,14 @@ namespace ApiExamples
         public void GetFontInfoFromFile()
         {
             //ExStart
-            //ExFor:Fonts.FontFamily
-            //ExFor:Fonts.FontPitch
-            //ExFor:Fonts.FontInfo.AltName
-            //ExFor:Fonts.FontInfo.Charset
-            //ExFor:Fonts.FontInfo.Family
-            //ExFor:Fonts.FontInfo.Panose
-            //ExFor:Fonts.FontInfo.Pitch
-            //ExFor:Fonts.FontInfoCollection.GetEnumerator
+            //ExFor:FontFamily
+            //ExFor:FontPitch
+            //ExFor:FontInfo.AltName
+            //ExFor:FontInfo.Charset
+            //ExFor:FontInfo.Family
+            //ExFor:FontInfo.Panose
+            //ExFor:FontInfo.Pitch
+            //ExFor:FontInfoCollection.GetEnumerator
             //ExSummary:Shows how to access and print details of each font in a document.
             Document doc = new Document(MyDir + "Document.docx");
 
@@ -1418,9 +1426,9 @@ namespace ApiExamples
             }
             //ExEnd
 
-            Assert.AreEqual(new[] { 2, 15, 5, 2, 2, 2, 4, 3, 2, 4 }, doc.FontInfos["Calibri"].Panose);
-            Assert.AreEqual(new[] { 2, 15, 3, 2, 2, 2, 4, 3, 2, 4 }, doc.FontInfos["Calibri Light"].Panose);
-            Assert.AreEqual(new[] { 2, 2, 6, 3, 5, 4, 5, 2, 3, 4 }, doc.FontInfos["Times New Roman"].Panose);
+            Assert.That(doc.FontInfos["Calibri"].Panose, Is.EqualTo(new[] { 2, 15, 5, 2, 2, 2, 4, 3, 2, 4 }));
+            Assert.That(doc.FontInfos["Calibri Light"].Panose, Is.EqualTo(new[] { 2, 15, 3, 2, 2, 2, 4, 3, 2, 4 }));
+            Assert.That(doc.FontInfos["Times New Roman"].Panose, Is.EqualTo(new[] { 2, 2, 6, 3, 5, 4, 5, 2, 3, 4 }));
         }
 
         [Test]
@@ -1434,10 +1442,10 @@ namespace ApiExamples
 
             // Set different fonts for the DocumentBuilder and verify their line spacing.
             builder.Font.Name = "Calibri";
-            Assert.AreEqual(14.6484375d, builder.Font.LineSpacing);
+            Assert.That(builder.Font.LineSpacing, Is.EqualTo(14.6484375d));
 
             builder.Font.Name = "Times New Roman";
-            Assert.AreEqual(13.798828125d, builder.Font.LineSpacing);
+            Assert.That(builder.Font.LineSpacing, Is.EqualTo(13.798828125d));
             //ExEnd
         }
 
@@ -1446,20 +1454,21 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Font.HasDmlEffect(TextDmlEffect)
+            //ExFor:TextDmlEffect
             //ExSummary:Shows how to check if a run displays a DrawingML text effect.
             Document doc = new Document(MyDir + "DrawingML text effects.docx");
 
             RunCollection runs = doc.FirstSection.Body.FirstParagraph.Runs;
 
-            Assert.True(runs[0].Font.HasDmlEffect(TextDmlEffect.Shadow));
-            Assert.True(runs[1].Font.HasDmlEffect(TextDmlEffect.Shadow));
-            Assert.True(runs[2].Font.HasDmlEffect(TextDmlEffect.Reflection));
-            Assert.True(runs[3].Font.HasDmlEffect(TextDmlEffect.Effect3D));
-            Assert.True(runs[4].Font.HasDmlEffect(TextDmlEffect.Fill));
+            Assert.That(runs[0].Font.HasDmlEffect(TextDmlEffect.Shadow), Is.True);
+            Assert.That(runs[1].Font.HasDmlEffect(TextDmlEffect.Shadow), Is.True);
+            Assert.That(runs[2].Font.HasDmlEffect(TextDmlEffect.Reflection), Is.True);
+            Assert.That(runs[3].Font.HasDmlEffect(TextDmlEffect.Effect3D), Is.True);
+            Assert.That(runs[4].Font.HasDmlEffect(TextDmlEffect.Fill), Is.True);
             //ExEnd
         }
 
-        [Test, Category("SkipGitHub")]        
+        [Test, Category("SkipGitHub")]
         public void CheckScanUserFontsFolder()
         {
             var userProfile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
@@ -1470,9 +1479,8 @@ namespace ApiExamples
                 // On Windows 10 fonts may be installed either into system folder "%windir%\fonts" for all users
                 // or into user folder "%userprofile%\AppData\Local\Microsoft\Windows\Fonts" for current user.
                 SystemFontSource systemFontSource = new SystemFontSource();
-                Assert.NotNull(systemFontSource.GetAvailableFonts()
-                        .FirstOrDefault(x => x.FilePath.Contains("\\AppData\\Local\\Microsoft\\Windows\\Fonts")),
-                    "Fonts did not install to the user font folder");
+                Assert.That(systemFontSource.GetAvailableFonts()
+                        .FirstOrDefault(x => x.FilePath.Contains("\\AppData\\Local\\Microsoft\\Windows\\Fonts")), Is.Not.Null, "Fonts did not install to the user font folder");
             }
         }
 
@@ -1491,13 +1499,13 @@ namespace ApiExamples
 
             // Possible types of emphasis mark:
             // https://apireference.aspose.com/words/net/aspose.words/emphasismark
-            builder.Font.EmphasisMark = emphasisMark; 
-            
+            builder.Font.EmphasisMark = emphasisMark;
+
             builder.Write("Emphasis text");
             builder.Writeln();
             builder.Font.ClearFormatting();
             builder.Write("Simple text");
- 
+
             builder.Document.Save(ArtifactsDir + "Fonts.SetEmphasisMark.docx");
             //ExEnd
         }
@@ -1516,7 +1524,7 @@ namespace ApiExamples
             //ExFor:ThemeColor
             //ExSummary:Shows how to work with theme fonts and colors.
             Document doc = new Document();
-            
+
             // Define fonts for languages uses by default.
             doc.Theme.MinorFonts.Latin = "Algerian";
             doc.Theme.MinorFonts.EastAsian = "Aharoni";
@@ -1528,69 +1536,69 @@ namespace ApiExamples
             // We can use theme font and color instead of default values.
             font.ThemeFont = ThemeFont.Minor;
             font.ThemeColor = ThemeColor.Accent2;
-            
-            Assert.AreEqual(ThemeFont.Minor, font.ThemeFont);
-            Assert.AreEqual("Algerian", font.Name);
-            
-            Assert.AreEqual(ThemeFont.Minor, font.ThemeFontAscii);
-            Assert.AreEqual("Algerian", font.NameAscii);
 
-            Assert.AreEqual(ThemeFont.Minor, font.ThemeFontBi);
-            Assert.AreEqual("Andalus", font.NameBi);
+            Assert.That(font.ThemeFont, Is.EqualTo(ThemeFont.Minor));
+            Assert.That(font.Name, Is.EqualTo("Algerian"));
 
-            Assert.AreEqual(ThemeFont.Minor, font.ThemeFontFarEast);
-            Assert.AreEqual("Aharoni", font.NameFarEast);
+            Assert.That(font.ThemeFontAscii, Is.EqualTo(ThemeFont.Minor));
+            Assert.That(font.NameAscii, Is.EqualTo("Algerian"));
 
-            Assert.AreEqual(ThemeFont.Minor, font.ThemeFontOther);
-            Assert.AreEqual("Algerian", font.NameOther);
+            Assert.That(font.ThemeFontBi, Is.EqualTo(ThemeFont.Minor));
+            Assert.That(font.NameBi, Is.EqualTo("Andalus"));
 
-            Assert.AreEqual(ThemeColor.Accent2, font.ThemeColor);
-            Assert.AreEqual(Color.Empty, font.Color);
+            Assert.That(font.ThemeFontFarEast, Is.EqualTo(ThemeFont.Minor));
+            Assert.That(font.NameFarEast, Is.EqualTo("Aharoni"));
+
+            Assert.That(font.ThemeFontOther, Is.EqualTo(ThemeFont.Minor));
+            Assert.That(font.NameOther, Is.EqualTo("Algerian"));
+
+            Assert.That(font.ThemeColor, Is.EqualTo(ThemeColor.Accent2));
+            Assert.That(font.Color, Is.EqualTo(Color.Empty));
 
             // There are several ways of reset them font and color.
             // 1 -  By setting ThemeFont.None/ThemeColor.None:
             font.ThemeFont = ThemeFont.None;
             font.ThemeColor = ThemeColor.None;
 
-            Assert.AreEqual(ThemeFont.None, font.ThemeFont);
-            Assert.AreEqual("Algerian", font.Name);
+            Assert.That(font.ThemeFont, Is.EqualTo(ThemeFont.None));
+            Assert.That(font.Name, Is.EqualTo("Algerian"));
 
-            Assert.AreEqual(ThemeFont.None, font.ThemeFontAscii);
-            Assert.AreEqual("Algerian", font.NameAscii);
+            Assert.That(font.ThemeFontAscii, Is.EqualTo(ThemeFont.None));
+            Assert.That(font.NameAscii, Is.EqualTo("Algerian"));
 
-            Assert.AreEqual(ThemeFont.None, font.ThemeFontBi);
-            Assert.AreEqual("Andalus", font.NameBi);
+            Assert.That(font.ThemeFontBi, Is.EqualTo(ThemeFont.None));
+            Assert.That(font.NameBi, Is.EqualTo("Andalus"));
 
-            Assert.AreEqual(ThemeFont.None, font.ThemeFontFarEast);
-            Assert.AreEqual("Aharoni", font.NameFarEast);
+            Assert.That(font.ThemeFontFarEast, Is.EqualTo(ThemeFont.None));
+            Assert.That(font.NameFarEast, Is.EqualTo("Aharoni"));
 
-            Assert.AreEqual(ThemeFont.None, font.ThemeFontOther);
-            Assert.AreEqual("Algerian", font.NameOther);
+            Assert.That(font.ThemeFontOther, Is.EqualTo(ThemeFont.None));
+            Assert.That(font.NameOther, Is.EqualTo("Algerian"));
 
-            Assert.AreEqual(ThemeColor.None, font.ThemeColor);
-            Assert.AreEqual(Color.Empty, font.Color);
+            Assert.That(font.ThemeColor, Is.EqualTo(ThemeColor.None));
+            Assert.That(font.Color, Is.EqualTo(Color.Empty));
 
             // 2 -  By setting non-theme font/color names:
             font.Name = "Arial";
             font.Color = Color.Blue;
 
-            Assert.AreEqual(ThemeFont.None, font.ThemeFont);
-            Assert.AreEqual("Arial", font.Name);
+            Assert.That(font.ThemeFont, Is.EqualTo(ThemeFont.None));
+            Assert.That(font.Name, Is.EqualTo("Arial"));
 
-            Assert.AreEqual(ThemeFont.None, font.ThemeFontAscii);
-            Assert.AreEqual("Arial", font.NameAscii);
+            Assert.That(font.ThemeFontAscii, Is.EqualTo(ThemeFont.None));
+            Assert.That(font.NameAscii, Is.EqualTo("Arial"));
 
-            Assert.AreEqual(ThemeFont.None, font.ThemeFontBi);
-            Assert.AreEqual("Arial", font.NameBi);
+            Assert.That(font.ThemeFontBi, Is.EqualTo(ThemeFont.None));
+            Assert.That(font.NameBi, Is.EqualTo("Arial"));
 
-            Assert.AreEqual(ThemeFont.None, font.ThemeFontFarEast);
-            Assert.AreEqual("Arial", font.NameFarEast);
+            Assert.That(font.ThemeFontFarEast, Is.EqualTo(ThemeFont.None));
+            Assert.That(font.NameFarEast, Is.EqualTo("Arial"));
 
-            Assert.AreEqual(ThemeFont.None, font.ThemeFontOther);
-            Assert.AreEqual("Arial", font.NameOther);
+            Assert.That(font.ThemeFontOther, Is.EqualTo(ThemeFont.None));
+            Assert.That(font.NameOther, Is.EqualTo("Arial"));
 
-            Assert.AreEqual(ThemeColor.None, font.ThemeColor);
-            Assert.AreEqual(Color.Blue.ToArgb(), font.Color.ToArgb());
+            Assert.That(font.ThemeColor, Is.EqualTo(ThemeColor.None));
+            Assert.That(font.Color.ToArgb(), Is.EqualTo(Color.Blue.ToArgb()));
             //ExEnd
         }
 
@@ -1606,7 +1614,7 @@ namespace ApiExamples
             //ExSummary:Shows how to create and use themed style.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            
+
             builder.Writeln();
 
             // Create some style with theme font properties.
@@ -1618,26 +1626,108 @@ namespace ApiExamples
             builder.ParagraphFormat.StyleName = "ThemedStyle";
             builder.Writeln("Text with themed style");
             //ExEnd
-            
+
             Run run = (Run)((Paragraph)builder.CurrentParagraph.PreviousSibling).FirstChild;
 
-            Assert.AreEqual(ThemeFont.Major, run.Font.ThemeFont);
-            Assert.AreEqual("Times New Roman", run.Font.Name);
+            Assert.That(run.Font.ThemeFont, Is.EqualTo(ThemeFont.Major));
+            Assert.That(run.Font.Name, Is.EqualTo("Times New Roman"));
 
-            Assert.AreEqual(ThemeFont.Major, run.Font.ThemeFontAscii);
-            Assert.AreEqual("Times New Roman", run.Font.NameAscii);
+            Assert.That(run.Font.ThemeFontAscii, Is.EqualTo(ThemeFont.Major));
+            Assert.That(run.Font.NameAscii, Is.EqualTo("Times New Roman"));
 
-            Assert.AreEqual(ThemeFont.Major, run.Font.ThemeFontBi);
-            Assert.AreEqual("Times New Roman", run.Font.NameBi);
+            Assert.That(run.Font.ThemeFontBi, Is.EqualTo(ThemeFont.Major));
+            Assert.That(run.Font.NameBi, Is.EqualTo("Times New Roman"));
 
-            Assert.AreEqual(ThemeFont.Major, run.Font.ThemeFontFarEast);
-            Assert.AreEqual("Times New Roman", run.Font.NameFarEast);
+            Assert.That(run.Font.ThemeFontFarEast, Is.EqualTo(ThemeFont.Major));
+            Assert.That(run.Font.NameFarEast, Is.EqualTo("Times New Roman"));
 
-            Assert.AreEqual(ThemeFont.Major, run.Font.ThemeFontOther);
-            Assert.AreEqual("Times New Roman", run.Font.NameOther);
+            Assert.That(run.Font.ThemeFontOther, Is.EqualTo(ThemeFont.Major));
+            Assert.That(run.Font.NameOther, Is.EqualTo("Times New Roman"));
 
-            Assert.AreEqual(ThemeColor.Accent5, run.Font.ThemeColor);
-            Assert.AreEqual(Color.Empty, run.Font.Color);
+            Assert.That(run.Font.ThemeColor, Is.EqualTo(ThemeColor.Accent5));
+            Assert.That(run.Font.Color, Is.EqualTo(Color.Empty));
+        }
+
+        [Test]
+        public void FontInfoEmbeddingLicensingRights()
+        {
+            //ExStart:FontInfoEmbeddingLicensingRights
+            //GistId:708ce40a68fac5003d46f6b4acfd5ff1
+            //ExFor:FontInfo.EmbeddingLicensingRights
+            //ExFor:FontEmbeddingUsagePermissions
+            //ExFor:FontEmbeddingLicensingRights
+            //ExFor:FontEmbeddingLicensingRights.EmbeddingUsagePermissions
+            //ExFor:FontEmbeddingLicensingRights.BitmapEmbeddingOnly
+            //ExFor:FontEmbeddingLicensingRights.NoSubsetting
+            //ExSummary:Shows how to get license rights information for embedded fonts (FontInfo).
+            Document doc = new Document(MyDir + "Embedded font rights.docx");
+
+            // Get the list of document fonts.
+            FontInfoCollection fontInfos = doc.FontInfos;
+            foreach (FontInfo fontInfo in fontInfos)
+            {
+                if (fontInfo.EmbeddingLicensingRights != null)
+                {
+                    Console.WriteLine(fontInfo.EmbeddingLicensingRights.EmbeddingUsagePermissions);
+                    Console.WriteLine(fontInfo.EmbeddingLicensingRights.BitmapEmbeddingOnly);
+                    Console.WriteLine(fontInfo.EmbeddingLicensingRights.NoSubsetting);
+                }
+            }
+            //ExEnd:FontInfoEmbeddingLicensingRights
+        }
+
+        [Test]
+        public void PhysicalFontInfoEmbeddingLicensingRights()
+        {
+            //ExStart:PhysicalFontInfoEmbeddingLicensingRights
+            //GistId:708ce40a68fac5003d46f6b4acfd5ff1
+            //ExFor:PhysicalFontInfo.EmbeddingLicensingRights
+            //ExSummary:Shows how to get license rights information for embedded fonts (PhysicalFontInfo).
+            FontSettings settings = FontSettings.DefaultInstance;
+            FontSourceBase source = settings.GetFontsSources()[0];
+
+            // Get the list of available fonts.
+            IList<PhysicalFontInfo> fontInfos = source.GetAvailableFonts();
+            foreach (PhysicalFontInfo fontInfo in fontInfos)
+            {
+                if (fontInfo.EmbeddingLicensingRights != null)
+                {
+                    Console.WriteLine(fontInfo.EmbeddingLicensingRights.EmbeddingUsagePermissions);
+                    Console.WriteLine(fontInfo.EmbeddingLicensingRights.BitmapEmbeddingOnly);
+                    Console.WriteLine(fontInfo.EmbeddingLicensingRights.NoSubsetting);
+                }
+            }
+            //ExEnd:PhysicalFontInfoEmbeddingLicensingRights
+        }
+
+        [Test]
+        public void NumberSpacing()
+        {
+            //ExStart:NumberSpacing
+            //GistId:95fdae949cefbf2ce485acc95cccc495
+            //ExFor:Font.NumberSpacing
+            //ExFor:NumSpacing
+            //ExSummary:Shows how to set the spacing type of the numeral.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // This effect is only supported in newer versions of MS Word.
+            doc.CompatibilityOptions.OptimizeFor(MsWordVersion.Word2019);
+
+            builder.Write("1 ");
+            builder.Write("This is an example");
+
+            Run run = doc.FirstSection.Body.FirstParagraph.Runs[0];
+            if (run.Font.NumberSpacing == NumSpacing.Default)
+                run.Font.NumberSpacing = NumSpacing.Proportional;
+
+            doc.Save(ArtifactsDir + "Fonts.NumberSpacing.docx");
+            //ExEnd:NumberSpacing
+
+            doc = new Document(ArtifactsDir + "Fonts.NumberSpacing.docx");
+
+            run = doc.FirstSection.Body.FirstParagraph.Runs[0];
+            Assert.That(run.Font.NumberSpacing, Is.EqualTo(NumSpacing.Proportional));
         }
     }
 }

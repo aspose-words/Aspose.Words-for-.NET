@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2024 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -18,6 +18,10 @@ namespace ApiExamples
         //ExFor:AbsolutePositionTab
         //ExFor:AbsolutePositionTab.Accept(DocumentVisitor)
         //ExFor:DocumentVisitor.VisitAbsolutePositionTab
+        //ExFor:Body.Accept(DocumentVisitor)
+        //ExFor:Body.AcceptStart(DocumentVisitor)
+        //ExFor:Body.AcceptEnd(DocumentVisitor)
+        //ExFor:VisitorAction
         //ExSummary:Shows how to process absolute position tab characters with a document visitor.
         [Test] //ExSkip
         public void DocumentToTxt()
@@ -26,10 +30,15 @@ namespace ApiExamples
 
             // Extract the text contents of our document by accepting this custom document visitor.
             DocTextExtractor myDocTextExtractor = new DocTextExtractor();
-            doc.FirstSection.Body.Accept(myDocTextExtractor);
+            Section fisrtSection = doc.FirstSection;
+            fisrtSection.Body.Accept(myDocTextExtractor);
+            // Visit only start of the document body.
+            fisrtSection.Body.AcceptStart(myDocTextExtractor);
+            // Visit only end of the document body.
+            fisrtSection.Body.AcceptEnd(myDocTextExtractor);
 
             // The absolute position tab, which has no equivalent in string form, has been explicitly converted to a tab character.
-            Assert.AreEqual("Before AbsolutePositionTab\tAfter AbsolutePositionTab", myDocTextExtractor.GetText());
+            Assert.That(myDocTextExtractor.GetText(), Is.EqualTo("Before AbsolutePositionTab\tAfter AbsolutePositionTab"));
 
             // An AbsolutePositionTab can accept a DocumentVisitor by itself too.
             AbsolutePositionTab absPositionTab = (AbsolutePositionTab)doc.FirstSection.Body.FirstParagraph.GetChild(NodeType.SpecialChar, 0, true);
@@ -37,7 +46,7 @@ namespace ApiExamples
             myDocTextExtractor = new DocTextExtractor();
             absPositionTab.Accept(myDocTextExtractor);
 
-            Assert.AreEqual("\t", myDocTextExtractor.GetText());
+            Assert.That(myDocTextExtractor.GetText(), Is.EqualTo("\t"));
         }
 
         /// <summary>

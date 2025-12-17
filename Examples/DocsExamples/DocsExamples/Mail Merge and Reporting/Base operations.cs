@@ -7,12 +7,13 @@ using NUnit.Framework;
 
 namespace DocsExamples.Mail_Merge_and_Reporting
 {
-    internal class BaseOperations : DocsExamplesBase
+    public class BaseOperations : DocsExamplesBase
     {
         [Test]
         public void SimpleMailMerge()
         {
-            //ExStart:SimpleMailMerge
+            //ExStart:ExecuteSimpleMailMerge
+            //GistId:341b834e9b6a84ac6885e907e0ea4229
             // Include the code for our template.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -29,26 +30,28 @@ namespace DocsExamples.Mail_Merge_and_Reporting
                 new object[] { "John Doe", "Hawaiian", "2" });
 
             doc.Save(ArtifactsDir + "BaseOperations.SimpleMailMerge.docx");
-            //ExEnd:SimpleMailMerge
+            //ExEnd:ExecuteSimpleMailMerge
         }
 
         [Test]
         public void UseIfElseMustache()
         {
-            //ExStart:UseOfifelseMustacheSyntax
+            //ExStart:UseIfElseMustache
+            //GistId:544788f602e697802e313a641cedb9b8
             Document doc = new Document(MyDir + "Mail merge destinations - Mustache syntax.docx");
 
             doc.MailMerge.UseNonMergeFields = true;
             doc.MailMerge.Execute(new[] { "GENDER" }, new object[] { "MALE" });
 
             doc.Save(ArtifactsDir + "BaseOperations.IfElseMustache.docx");
-            //ExEnd:UseOfifelseMustacheSyntax
+            //ExEnd:UseIfElseMustache
         }
 
         [Test]
         public void MustacheSyntaxUsingDataTable()
         {
             //ExStart:MustacheSyntaxUsingDataTable
+            //GistId:544788f602e697802e313a641cedb9b8
             Document doc = new Document(MyDir + "Mail merge destinations - Vendor.docx");
 
             // Loop through each row and fill it with data.
@@ -71,10 +74,11 @@ namespace DocsExamples.Mail_Merge_and_Reporting
         }
 
 #if NET48 || JAVA
-        [Test]
+        [Test, Category("IgnoreOnJenkins")]
         public void ExecuteWithRegionsDataTable()
         {
             //ExStart:ExecuteWithRegionsDataTable
+            //GistId:de5e13f5d5bb7d8cb88da900b4f9ed8b
             Document doc = new Document(MyDir + "Mail merge destinations - Orders.docx");
 
             // Use DataTable as a data source.
@@ -133,13 +137,14 @@ namespace DocsExamples.Mail_Merge_and_Reporting
         }
         //ExEnd:ExecuteWithRegionsDataTableMethods
 
-        [Test]
+        [Test, Category("IgnoreOnJenkins")]
         public void ProduceMultipleDocuments()
         {
             //ExStart:ProduceMultipleDocuments
+            //GistId:341b834e9b6a84ac6885e907e0ea4229
             string connString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + DatabaseDir + "Northwind.accdb";
 
-            Document doc = new Document(MyDir + "Mail merge destination - Northwind suppliers.docx");
+            Document doc = new Document(MyDir + "Mail merge destination - Suppliers.docx");
 
             OleDbConnection conn = new OleDbConnection(connString);
             conn.Open();
@@ -168,10 +173,11 @@ namespace DocsExamples.Mail_Merge_and_Reporting
         }
 #endif
 
-        //ExStart:MailMergeWithRegions
         [Test]
         public void MailMergeWithRegions()
         {
+            //ExStart:MailMergeWithRegions
+            //GistId:341b834e9b6a84ac6885e907e0ea4229
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -204,15 +210,16 @@ namespace DocsExamples.Mail_Merge_and_Reporting
             // The end point of mail merge with regions.
             builder.InsertField(" MERGEFIELD TableEnd:Customers");
 
-            // Pass our dataset to perform mail merge with regions.          
+            // Pass our dataset to perform mail merge with regions.
             DataSet customersAndOrders = CreateDataSet();
             doc.MailMerge.ExecuteWithRegions(customersAndOrders);
 
             doc.Save(ArtifactsDir + "BaseOperations.MailMergeWithRegions.docx");
+            //ExEnd:MailMergeWithRegions
         }
-        //ExEnd:MailMergeWithRegions
 
         //ExStart:CreateDataSet
+        //GistId:341b834e9b6a84ac6885e907e0ea4229
         private DataSet CreateDataSet()
         {
             // Create the customers table.
@@ -247,19 +254,25 @@ namespace DocsExamples.Mail_Merge_and_Reporting
         public void GetRegionsByName()
         {
             //ExStart:GetRegionsByName
+            //GistId:b4bab1bf22437a86d8062e91cf154494
             Document doc = new Document(MyDir + "Mail merge regions.docx");
 
+            //ExStart:GetRegionsHierarchy
+            //GistId:b4bab1bf22437a86d8062e91cf154494
+            MailMergeRegionInfo regionInfo = doc.MailMerge.GetRegionsHierarchy();
+            //ExEnd:GetRegionsHierarchy
+
             IList<MailMergeRegionInfo> regions = doc.MailMerge.GetRegionsByName("Region1");
-            Assert.AreEqual(1, doc.MailMerge.GetRegionsByName("Region1").Count);
-            foreach (MailMergeRegionInfo region in regions) Assert.AreEqual("Region1", region.Name);
+            Assert.That(doc.MailMerge.GetRegionsByName("Region1").Count, Is.EqualTo(1));
+            foreach (MailMergeRegionInfo region in regions) Assert.That(region.Name, Is.EqualTo("Region1"));
 
             regions = doc.MailMerge.GetRegionsByName("Region2");
-            Assert.AreEqual(1, doc.MailMerge.GetRegionsByName("Region2").Count);
-            foreach (MailMergeRegionInfo region in regions) Assert.AreEqual("Region2", region.Name);
+            Assert.That(doc.MailMerge.GetRegionsByName("Region2").Count, Is.EqualTo(1));
+            foreach (MailMergeRegionInfo region in regions) Assert.That(region.Name, Is.EqualTo("Region2"));
 
             regions = doc.MailMerge.GetRegionsByName("NestedRegion1");
-            Assert.AreEqual(2, doc.MailMerge.GetRegionsByName("NestedRegion1").Count);
-            foreach (MailMergeRegionInfo region in regions) Assert.AreEqual("NestedRegion1", region.Name);
+            Assert.That(doc.MailMerge.GetRegionsByName("NestedRegion1").Count, Is.EqualTo(2));
+            foreach (MailMergeRegionInfo region in regions) Assert.That(region.Name, Is.EqualTo("NestedRegion1"));
             //ExEnd:GetRegionsByName
         }
     }

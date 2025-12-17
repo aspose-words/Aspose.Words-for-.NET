@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2024 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -8,7 +8,12 @@
 using System;
 using System.Collections.Generic;
 using Aspose.Words;
+using Aspose.Words.Comparing;
+using Aspose.Words.Drawing;
+using Aspose.Words.Fields;
 using Aspose.Words.Layout;
+using Aspose.Words.Notes;
+using Aspose.Words.Tables;
 using NUnit.Framework;
 
 namespace ApiExamples
@@ -41,48 +46,48 @@ namespace ApiExamples
             // Normal editing of the document does not count as a revision.
             builder.Write("This does not count as a revision. ");
 
-            Assert.IsFalse(doc.HasRevisions);
+            Assert.That(doc.HasRevisions, Is.False);
 
             // To register our edits as revisions, we need to declare an author, and then start tracking them.
             doc.StartTrackRevisions("John Doe", DateTime.Now);
 
             builder.Write("This is revision #1. ");
 
-            Assert.IsTrue(doc.HasRevisions);
-            Assert.AreEqual(1, doc.Revisions.Count);
+            Assert.That(doc.HasRevisions, Is.True);
+            Assert.That(doc.Revisions.Count, Is.EqualTo(1));
 
             // This flag corresponds to the "Review" -> "Tracking" -> "Track Changes" option in Microsoft Word.
             // The "StartTrackRevisions" method does not affect its value,
             // and the document is tracking revisions programmatically despite it having a value of "false".
             // If we open this document using Microsoft Word, it will not be tracking revisions.
-            Assert.IsFalse(doc.TrackRevisions);
+            Assert.That(doc.TrackRevisions, Is.False);
 
             // We have added text using the document builder, so the first revision is an insertion-type revision.
             Revision revision = doc.Revisions[0];
-            Assert.AreEqual("John Doe", revision.Author);
-            Assert.AreEqual("This is revision #1. ", revision.ParentNode.GetText());
-            Assert.AreEqual(RevisionType.Insertion, revision.RevisionType);
-            Assert.AreEqual(revision.DateTime.Date, DateTime.Now.Date);
-            Assert.AreEqual(doc.Revisions.Groups[0], revision.Group);
+            Assert.That(revision.Author, Is.EqualTo("John Doe"));
+            Assert.That(revision.ParentNode.GetText(), Is.EqualTo("This is revision #1. "));
+            Assert.That(revision.RevisionType, Is.EqualTo(RevisionType.Insertion));
+            Assert.That(DateTime.Now.Date, Is.EqualTo(revision.DateTime.Date));
+            Assert.That(revision.Group, Is.EqualTo(doc.Revisions.Groups[0]));
 
             // Remove a run to create a deletion-type revision.
             doc.FirstSection.Body.FirstParagraph.Runs[0].Remove();
 
             // Adding a new revision places it at the beginning of the revision collection.
-            Assert.AreEqual(RevisionType.Deletion, doc.Revisions[0].RevisionType);
-            Assert.AreEqual(2, doc.Revisions.Count);
+            Assert.That(doc.Revisions[0].RevisionType, Is.EqualTo(RevisionType.Deletion));
+            Assert.That(doc.Revisions.Count, Is.EqualTo(2));
 
             // Insert revisions show up in the document body even before we accept/reject the revision.
             // Rejecting the revision will remove its nodes from the body. Conversely, nodes that make up delete revisions
             // also linger in the document until we accept the revision.
-            Assert.AreEqual("This does not count as a revision. This is revision #1.", doc.GetText().Trim());
+            Assert.That(doc.GetText().Trim(), Is.EqualTo("This does not count as a revision. This is revision #1."));
 
             // Accepting the delete revision will remove its parent node from the paragraph text
             // and then remove the collection's revision itself.
             doc.Revisions[0].Accept();
 
-            Assert.AreEqual(1, doc.Revisions.Count);
-            Assert.AreEqual("This is revision #1.", doc.GetText().Trim());
+            Assert.That(doc.Revisions.Count, Is.EqualTo(1));
+            Assert.That(doc.GetText().Trim(), Is.EqualTo("This is revision #1."));
 
             builder.Writeln("");
             builder.Write("This is revision #2.");
@@ -99,15 +104,15 @@ namespace ApiExamples
                 node = nextNode;
             }
 
-            Assert.AreEqual(RevisionType.Moving, doc.Revisions[0].RevisionType);
-            Assert.AreEqual(8, doc.Revisions.Count);
-            Assert.AreEqual("This is revision #2.\rThis is revision #1. \rThis is revision #2.", doc.GetText().Trim());
+            Assert.That(doc.Revisions[0].RevisionType, Is.EqualTo(RevisionType.Moving));
+            Assert.That(doc.Revisions.Count, Is.EqualTo(8));
+            Assert.That(doc.GetText().Trim(), Is.EqualTo("This is revision #2.\rThis is revision #1. \rThis is revision #2."));
 
             // The moving revision is now at index 1. Reject the revision to discard its contents.
             doc.Revisions[1].Reject();
 
-            Assert.AreEqual(6, doc.Revisions.Count);
-            Assert.AreEqual("This is revision #1. \rThis is revision #2.", doc.GetText().Trim());
+            Assert.That(doc.Revisions.Count, Is.EqualTo(6));
+            Assert.That(doc.GetText().Trim(), Is.EqualTo("This is revision #1. \rThis is revision #2."));
             //ExEnd
         }
 
@@ -126,7 +131,7 @@ namespace ApiExamples
 
             // This collection itself has a collection of revision groups.
             // Each group is a sequence of adjacent revisions.
-            Assert.AreEqual(7, revisions.Groups.Count); //ExSkip
+            Assert.That(revisions.Groups.Count, Is.EqualTo(7)); //ExSkip
             Console.WriteLine($"{revisions.Groups.Count} revision groups:");
 
             // Iterate over the collection of groups and print the text that the revision concerns.
@@ -142,7 +147,7 @@ namespace ApiExamples
             // Each Run that a revision affects gets a corresponding Revision object.
             // The revisions' collection is considerably larger than the condensed form we printed above,
             // depending on how many Runs we have segmented the document into during Microsoft Word editing.
-            Assert.AreEqual(11, revisions.Count); //ExSkip
+            Assert.That(revisions.Count, Is.EqualTo(11)); //ExSkip
             Console.WriteLine($"\n{revisions.Count} revisions:");
 
             using (IEnumerator<Revision> e = revisions.GetEnumerator())
@@ -168,7 +173,7 @@ namespace ApiExamples
             // Reject all revisions via the collection, reverting the document to its original form.
             revisions.RejectAll();
 
-            Assert.AreEqual(0, revisions.Count);
+            Assert.That(revisions.Count, Is.EqualTo(0));
             //ExEnd
         }
 
@@ -185,7 +190,7 @@ namespace ApiExamples
             //ExSummary:Shows how to print info about a group of revisions in a document.
             Document doc = new Document(MyDir + "Revisions.docx");
 
-            Assert.AreEqual(7, doc.Revisions.Groups.Count);
+            Assert.That(doc.Revisions.Groups.Count, Is.EqualTo(7));
 
             foreach (RevisionGroup group in doc.Revisions.Groups)
             {
@@ -207,9 +212,8 @@ namespace ApiExamples
             RevisionGroup revisionGroup = doc.Revisions.Groups[0];
             //ExEnd
 
-            Assert.AreEqual(RevisionType.Deletion, revisionGroup.RevisionType);
-            Assert.AreEqual("Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. ",
-                revisionGroup.Text);
+            Assert.That(revisionGroup.RevisionType, Is.EqualTo(RevisionType.Deletion));
+            Assert.That(revisionGroup.Text, Is.EqualTo("Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. "));
         }
 
         [Test]
@@ -269,7 +273,7 @@ namespace ApiExamples
             revisionOptions.MovedFromTextColor = RevisionColor.Yellow;
             revisionOptions.MovedFromTextEffect = RevisionTextEffect.DoubleStrikeThrough;
             revisionOptions.MovedToTextColor = RevisionColor.ClassicBlue;
-            revisionOptions.MovedFromTextEffect = RevisionTextEffect.DoubleUnderline;
+            revisionOptions.MovedToTextEffect = RevisionTextEffect.DoubleUnderline;
 
             // Render format revisions in dark red and bold.
             revisionOptions.RevisedPropertiesColor = RevisionColor.DarkRed;
@@ -297,6 +301,8 @@ namespace ApiExamples
         //GistId:470c0da51e4317baae82ad9495747fed
         //ExFor:RevisionCollection.Accept(IRevisionCriteria)
         //ExFor:RevisionCollection.Reject(IRevisionCriteria)
+        //ExFor:IRevisionCriteria
+        //ExFor:IRevisionCriteria.IsMatch(Revision)
         //ExSummary:Shows how to accept or reject revision based on criteria.
         [Test] //ExSkip
         public void RevisionSpecifiedCriteria()
@@ -306,7 +312,7 @@ namespace ApiExamples
             builder.Write("This does not count as a revision. ");
 
             // To register our edits as revisions, we need to declare an author, and then start tracking them.
-            doc.StartTrackRevisions("John Doe", DateTime.Now);            
+            doc.StartTrackRevisions("John Doe", DateTime.Now);
             builder.Write("This is insertion revision #1. ");
             doc.StopTrackRevisions();
 
@@ -316,13 +322,13 @@ namespace ApiExamples
             doc.FirstSection.Body.FirstParagraph.Runs[0].Remove();
             doc.StopTrackRevisions();
 
-            Assert.AreEqual(3, doc.Revisions.Count);
+            Assert.That(doc.Revisions.Count, Is.EqualTo(3));
             // We have two revisions from different authors, so we need to accept only one.
             doc.Revisions.Accept(new RevisionCriteria("John Doe", RevisionType.Insertion));
-            Assert.AreEqual(2, doc.Revisions.Count);
+            Assert.That(doc.Revisions.Count, Is.EqualTo(2));
             // Reject revision with different author name and revision type.
             doc.Revisions.Reject(new RevisionCriteria("Jane Doe", RevisionType.Deletion));
-            Assert.AreEqual(1, doc.Revisions.Count);
+            Assert.That(doc.Revisions.Count, Is.EqualTo(1));
 
             doc.Save(ArtifactsDir + "Revision.RevisionSpecifiedCriteria.docx");
         }
@@ -347,5 +353,423 @@ namespace ApiExamples
             }
         }
         //ExEnd:RevisionSpecifiedCriteria
+
+        [Test]
+        public void TrackRevisions()
+        {
+            //ExStart
+            //ExFor:Document.StartTrackRevisions(String)
+            //ExFor:Document.StartTrackRevisions(String, DateTime)
+            //ExFor:Document.StopTrackRevisions
+            //ExSummary:Shows how to track revisions while editing a document.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Editing a document usually does not count as a revision until we begin tracking them.
+            builder.Write("Hello world! ");
+
+            Assert.That(doc.Revisions.Count, Is.EqualTo(0));
+            Assert.That(doc.FirstSection.Body.Paragraphs[0].Runs[0].IsInsertRevision, Is.False);
+
+            doc.StartTrackRevisions("John Doe");
+
+            builder.Write("Hello again! ");
+
+            Assert.That(doc.Revisions.Count, Is.EqualTo(1));
+            Assert.That(doc.FirstSection.Body.Paragraphs[0].Runs[1].IsInsertRevision, Is.True);
+            Assert.That(doc.Revisions[0].Author, Is.EqualTo("John Doe"));
+            Assert.That((DateTime.Now - doc.Revisions[0].DateTime).Milliseconds <= 10, Is.True);
+
+            // Stop tracking revisions to not count any future edits as revisions.
+            doc.StopTrackRevisions();
+            builder.Write("Hello again! ");
+
+            Assert.That(doc.Revisions.Count, Is.EqualTo(1));
+            Assert.That(doc.FirstSection.Body.Paragraphs[0].Runs[2].IsInsertRevision, Is.False);
+
+            // Creating revisions gives them a date and time of the operation.
+            // We can disable this by passing DateTime.MinValue when we start tracking revisions.
+            doc.StartTrackRevisions("John Doe", DateTime.MinValue);
+            builder.Write("Hello again! ");
+
+            Assert.That(doc.Revisions.Count, Is.EqualTo(2));
+            Assert.That(doc.Revisions[1].Author, Is.EqualTo("John Doe"));
+            Assert.That(doc.Revisions[1].DateTime, Is.EqualTo(DateTime.MinValue));
+
+            // We can accept/reject these revisions programmatically
+            // by calling methods such as Document.AcceptAllRevisions, or each revision's Accept method.
+            // In Microsoft Word, we can process them manually via "Review" -> "Changes".
+            doc.Save(ArtifactsDir + "Revision.StartTrackRevisions.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void AcceptAllRevisions()
+        {
+            //ExStart
+            //ExFor:Document.AcceptAllRevisions
+            //ExSummary:Shows how to accept all tracking changes in the document.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Edit the document while tracking changes to create a few revisions.
+            doc.StartTrackRevisions("John Doe");
+            builder.Write("Hello world! ");
+            builder.Write("Hello again! ");
+            builder.Write("This is another revision.");
+            doc.StopTrackRevisions();
+
+            Assert.That(doc.Revisions.Count, Is.EqualTo(3));
+
+            // We can iterate through every revision and accept/reject it as a part of our document.
+            // If we know we wish to accept every revision, we can do it more straightforwardly so by calling this method.
+            doc.AcceptAllRevisions();
+
+            Assert.That(doc.Revisions.Count, Is.EqualTo(0));
+            Assert.That(doc.GetText().Trim(), Is.EqualTo("Hello world! Hello again! This is another revision."));
+            //ExEnd
+        }
+
+        [Test]
+        public void GetRevisedPropertiesOfList()
+        {
+            //ExStart
+            //ExFor:RevisionsView
+            //ExFor:Document.RevisionsView
+            //ExSummary:Shows how to switch between the revised and the original view of a document.
+            Document doc = new Document(MyDir + "Revisions at list levels.docx");
+            doc.UpdateListLabels();
+
+            ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
+            Assert.That(paragraphs[0].ListLabel.LabelString, Is.EqualTo("1."));
+            Assert.That(paragraphs[1].ListLabel.LabelString, Is.EqualTo("a."));
+            Assert.That(paragraphs[2].ListLabel.LabelString, Is.EqualTo(string.Empty));
+
+            // View the document object as if all the revisions are accepted. Currently supports list labels.
+            doc.RevisionsView = RevisionsView.Final;
+
+            Assert.That(paragraphs[0].ListLabel.LabelString, Is.EqualTo(string.Empty));
+            Assert.That(paragraphs[1].ListLabel.LabelString, Is.EqualTo("1."));
+            Assert.That(paragraphs[2].ListLabel.LabelString, Is.EqualTo("a."));
+            //ExEnd
+
+            doc.RevisionsView = RevisionsView.Original;
+            doc.AcceptAllRevisions();
+
+            Assert.That(paragraphs[0].ListLabel.LabelString, Is.EqualTo("a."));
+            Assert.That(paragraphs[1].ListLabel.LabelString, Is.EqualTo(string.Empty));
+            Assert.That(paragraphs[2].ListLabel.LabelString, Is.EqualTo("b."));
+        }
+
+        [Test]
+        public void Compare()
+        {
+            //ExStart
+            //ExFor:Document.Compare(Document, String, DateTime)
+            //ExFor:RevisionCollection.AcceptAll
+            //ExSummary:Shows how to compare documents.
+            Document docOriginal = new Document();
+            DocumentBuilder builder = new DocumentBuilder(docOriginal);
+            builder.Writeln("This is the original document.");
+
+            Document docEdited = new Document();
+            builder = new DocumentBuilder(docEdited);
+            builder.Writeln("This is the edited document.");
+
+            // Comparing documents with revisions will throw an exception.
+            if (docOriginal.Revisions.Count == 0 && docEdited.Revisions.Count == 0)
+                docOriginal.Compare(docEdited, "authorName", DateTime.Now);
+
+            // After the comparison, the original document will gain a new revision
+            // for every element that is different in the edited document.
+            Assert.That(docOriginal.Revisions.Count, Is.EqualTo(2)); //ExSkip
+            foreach (Revision r in docOriginal.Revisions)
+            {
+                Console.WriteLine($"Revision type: {r.RevisionType}, on a node of type \"{r.ParentNode.NodeType}\"");
+                Console.WriteLine($"\tChanged text: \"{r.ParentNode.GetText()}\"");
+            }
+
+            // Accepting these revisions will transform the original document into the edited document.
+            docOriginal.Revisions.AcceptAll();
+
+            Assert.That(docEdited.GetText(), Is.EqualTo(docOriginal.GetText()));
+            //ExEnd
+
+            docOriginal = DocumentHelper.SaveOpen(docOriginal);
+            Assert.That(docOriginal.Revisions.Count, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void CompareDocumentWithRevisions()
+        {
+            Document doc1 = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc1);
+            builder.Writeln("Hello world! This text is not a revision.");
+
+            Document docWithRevision = new Document();
+            builder = new DocumentBuilder(docWithRevision);
+
+            docWithRevision.StartTrackRevisions("John Doe");
+            builder.Writeln("This is a revision.");
+
+            Assert.Throws<InvalidOperationException>(() => docWithRevision.Compare(doc1, "John Doe", DateTime.Now));
+        }
+
+        [Test]
+        public void CompareOptions()
+        {
+            //ExStart
+            //ExFor:CompareOptions
+            //ExFor:CompareOptions.CompareMoves
+            //ExFor:CompareOptions.IgnoreFormatting
+            //ExFor:CompareOptions.IgnoreCaseChanges
+            //ExFor:CompareOptions.IgnoreComments
+            //ExFor:CompareOptions.IgnoreTables
+            //ExFor:CompareOptions.IgnoreFields
+            //ExFor:CompareOptions.IgnoreFootnotes
+            //ExFor:CompareOptions.IgnoreTextboxes
+            //ExFor:CompareOptions.IgnoreHeadersAndFooters
+            //ExFor:CompareOptions.Target
+            //ExFor:ComparisonTargetType
+            //ExFor:Document.Compare(Document, String, DateTime, CompareOptions)
+            //ExSummary:Shows how to filter specific types of document elements when making a comparison.
+            // Create the original document and populate it with various kinds of elements.
+            Document docOriginal = new Document();
+            DocumentBuilder builder = new DocumentBuilder(docOriginal);
+
+            // Paragraph text referenced with an endnote:
+            builder.Writeln("Hello world! This is the first paragraph.");
+            builder.InsertFootnote(FootnoteType.Endnote, "Original endnote text.");
+
+            // Table:
+            builder.StartTable();
+            builder.InsertCell();
+            builder.Write("Original cell 1 text");
+            builder.InsertCell();
+            builder.Write("Original cell 2 text");
+            builder.EndTable();
+
+            // Textbox:
+            Shape textBox = builder.InsertShape(ShapeType.TextBox, 150, 20);
+            builder.MoveTo(textBox.FirstParagraph);
+            builder.Write("Original textbox contents");
+
+            // DATE field:
+            builder.MoveTo(docOriginal.FirstSection.Body.AppendParagraph(""));
+            builder.InsertField(" DATE ");
+
+            // Comment:
+            Comment newComment = new Comment(docOriginal, "John Doe", "J.D.", DateTime.Now);
+            newComment.SetText("Original comment.");
+            builder.CurrentParagraph.AppendChild(newComment);
+
+            // Header:
+            builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
+            builder.Writeln("Original header contents.");
+
+            // Create a clone of our document and perform a quick edit on each of the cloned document's elements.
+            Document docEdited = (Document)docOriginal.Clone(true);
+            Paragraph firstParagraph = docEdited.FirstSection.Body.FirstParagraph;
+
+            firstParagraph.Runs[0].Text = "hello world! this is the first paragraph, after editing.";
+            firstParagraph.ParagraphFormat.Style = docEdited.Styles[StyleIdentifier.Heading1];
+            ((Footnote)docEdited.GetChild(NodeType.Footnote, 0, true)).FirstParagraph.Runs[1].Text = "Edited endnote text.";
+            ((Table)docEdited.GetChild(NodeType.Table, 0, true)).FirstRow.Cells[1].FirstParagraph.Runs[0].Text = "Edited Cell 2 contents";
+            ((Shape)docEdited.GetChild(NodeType.Shape, 0, true)).FirstParagraph.Runs[0].Text = "Edited textbox contents";
+            ((FieldDate)docEdited.Range.Fields[0]).UseLunarCalendar = true;
+            ((Comment)docEdited.GetChild(NodeType.Comment, 0, true)).FirstParagraph.Runs[0].Text = "Edited comment.";
+            docEdited.FirstSection.HeadersFooters[HeaderFooterType.HeaderPrimary].FirstParagraph.Runs[0].Text =
+                "Edited header contents.";
+
+            // Comparing documents creates a revision for every edit in the edited document.
+            // A CompareOptions object has a series of flags that can suppress revisions
+            // on each respective type of element, effectively ignoring their change.
+            CompareOptions compareOptions = new CompareOptions
+            {
+                CompareMoves = false,
+                IgnoreFormatting = false,
+                IgnoreCaseChanges = false,
+                IgnoreComments = false,
+                IgnoreTables = false,
+                IgnoreFields = false,
+                IgnoreFootnotes = false,
+                IgnoreTextboxes = false,
+                IgnoreHeadersAndFooters = false,
+                Target = ComparisonTargetType.New
+            };
+
+            docOriginal.Compare(docEdited, "John Doe", DateTime.Now, compareOptions);
+            docOriginal.Save(ArtifactsDir + "Revision.CompareOptions.docx");
+            //ExEnd
+
+            docOriginal = new Document(ArtifactsDir + "Revision.CompareOptions.docx");
+
+            TestUtil.VerifyFootnote(FootnoteType.Endnote, true, string.Empty,
+                "OriginalEdited endnote text.", (Footnote)docOriginal.GetChild(NodeType.Footnote, 0, true));
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void IgnoreDmlUniqueId(bool isIgnoreDmlUniqueId)
+        {
+            //ExStart
+            //ExFor:CompareOptions.AdvancedOptions
+            //ExFor:AdvancedCompareOptions.IgnoreDmlUniqueId
+            //ExFor:CompareOptions.IgnoreDmlUniqueId
+            //ExSummary:Shows how to compare documents ignoring DML unique ID.
+            Document docA = new Document(MyDir + "DML unique ID original.docx");
+            Document docB = new Document(MyDir + "DML unique ID compare.docx");
+
+            // By default, Aspose.Words do not ignore DML's unique ID, and the revisions count was 2.
+            // If we are ignoring DML's unique ID, and revisions count were 0.
+            CompareOptions compareOptions = new CompareOptions();
+            compareOptions.AdvancedOptions.IgnoreDmlUniqueId = isIgnoreDmlUniqueId;
+
+            docA.Compare(docB, "Aspose.Words", DateTime.Now, compareOptions);
+
+            Assert.That(docA.Revisions.Count, Is.EqualTo(isIgnoreDmlUniqueId ? 0 : 2));
+            //ExEnd
+        }
+
+        [Test]
+        public void LayoutOptionsRevisions()
+        {
+            //ExStart
+            //ExFor:Document.LayoutOptions
+            //ExFor:LayoutOptions
+            //ExFor:LayoutOptions.RevisionOptions
+            //ExFor:RevisionColor
+            //ExFor:RevisionOptions
+            //ExFor:RevisionOptions.InsertedTextColor
+            //ExFor:RevisionOptions.ShowRevisionBars
+            //ExFor:RevisionOptions.RevisionBarsPosition
+            //ExSummary:Shows how to alter the appearance of revisions in a rendered output document.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a revision, then change the color of all revisions to green.
+            builder.Writeln("This is not a revision.");
+            doc.StartTrackRevisions("John Doe", DateTime.Now);
+            Assert.That(doc.LayoutOptions.RevisionOptions.InsertedTextColor, Is.EqualTo(RevisionColor.ByAuthor)); //ExSkip
+            Assert.That(doc.LayoutOptions.RevisionOptions.ShowRevisionBars, Is.True); //ExSkip
+            builder.Writeln("This is a revision.");
+            doc.StopTrackRevisions();
+            builder.Writeln("This is not a revision.");
+
+            // Remove the bar that appears to the left of every revised line.
+            doc.LayoutOptions.RevisionOptions.InsertedTextColor = RevisionColor.BrightGreen;
+            doc.LayoutOptions.RevisionOptions.ShowRevisionBars = false;
+            doc.LayoutOptions.RevisionOptions.RevisionBarsPosition = HorizontalAlignment.Right;
+
+            doc.Save(ArtifactsDir + "Revision.LayoutOptionsRevisions.pdf");
+            //ExEnd
+        }
+
+        [TestCase(Granularity.CharLevel)]
+        [TestCase(Granularity.WordLevel)]
+        public void GranularityCompareOption(Granularity granularity)
+        {
+            //ExStart
+            //ExFor:CompareOptions.Granularity
+            //ExFor:Granularity
+            //ExSummary:Shows to specify a granularity while comparing documents.
+            Document docA = new Document();
+            DocumentBuilder builderA = new DocumentBuilder(docA);
+            builderA.Writeln("Alpha Lorem ipsum dolor sit amet, consectetur adipiscing elit");
+
+            Document docB = new Document();
+            DocumentBuilder builderB = new DocumentBuilder(docB);
+            builderB.Writeln("Lorems ipsum dolor sit amet consectetur - \"adipiscing\" elit");
+
+            // Specify whether changes are tracking
+            // by character ('Granularity.CharLevel'), or by word ('Granularity.WordLevel').
+            CompareOptions compareOptions = new CompareOptions();
+            compareOptions.Granularity = granularity;
+
+            docA.Compare(docB, "author", DateTime.Now, compareOptions);
+
+            // The first document's collection of revision groups contains all the differences between documents.
+            RevisionGroupCollection groups = docA.Revisions.Groups;
+            Assert.That(groups.Count, Is.EqualTo(5));
+            //ExEnd
+
+            if (granularity == Granularity.CharLevel)
+            {
+                Assert.That(groups[0].RevisionType, Is.EqualTo(RevisionType.Deletion));
+                Assert.That(groups[0].Text, Is.EqualTo("Alpha "));
+
+                Assert.That(groups[1].RevisionType, Is.EqualTo(RevisionType.Deletion));
+                Assert.That(groups[1].Text, Is.EqualTo(","));
+
+                Assert.That(groups[2].RevisionType, Is.EqualTo(RevisionType.Insertion));
+                Assert.That(groups[2].Text, Is.EqualTo("s"));
+
+                Assert.That(groups[3].RevisionType, Is.EqualTo(RevisionType.Insertion));
+                Assert.That(groups[3].Text, Is.EqualTo("- \""));
+
+                Assert.That(groups[4].RevisionType, Is.EqualTo(RevisionType.Insertion));
+                Assert.That(groups[4].Text, Is.EqualTo("\""));
+            }
+            else
+            {
+                Assert.That(groups[0].RevisionType, Is.EqualTo(RevisionType.Deletion));
+                Assert.That(groups[0].Text, Is.EqualTo("Alpha Lorem"));
+
+                Assert.That(groups[1].RevisionType, Is.EqualTo(RevisionType.Deletion));
+                Assert.That(groups[1].Text, Is.EqualTo(","));
+
+                Assert.That(groups[2].RevisionType, Is.EqualTo(RevisionType.Insertion));
+                Assert.That(groups[2].Text, Is.EqualTo("Lorems"));
+
+                Assert.That(groups[3].RevisionType, Is.EqualTo(RevisionType.Insertion));
+                Assert.That(groups[3].Text, Is.EqualTo("- \""));
+
+                Assert.That(groups[4].RevisionType, Is.EqualTo(RevisionType.Insertion));
+                Assert.That(groups[4].Text, Is.EqualTo("\""));
+            }
+        }
+
+        [Test]
+        public void IgnoreStoreItemId()
+        {
+            //ExStart:IgnoreStoreItemId
+            //GistId:65919861586e42e24f61a3ccb65f8f4e
+            //ExFor:AdvancedCompareOptions
+            //ExFor:AdvancedCompareOptions.IgnoreStoreItemId
+            //ExSummary:Shows how to compare SDT with same content but different store item id.
+            Document docA = new Document(MyDir + "Document with SDT 1.docx");
+            Document docB = new Document(MyDir + "Document with SDT 2.docx");
+
+            // Configure options to compare SDT with same content but different store item id.
+            CompareOptions compareOptions = new CompareOptions();
+            compareOptions.AdvancedOptions.IgnoreStoreItemId = false;
+
+            docA.Compare(docB, "user", DateTime.Now, compareOptions);
+            Assert.That(docA.Revisions.Count, Is.EqualTo(8));
+
+            compareOptions.AdvancedOptions.IgnoreStoreItemId = true;
+
+            docA.Revisions.RejectAll();
+            docA.Compare(docB, "user", DateTime.Now, compareOptions);
+            Assert.That(docA.Revisions.Count, Is.EqualTo(0));
+            //ExEnd:IgnoreStoreItemId
+        }
+
+        [Test]
+        public void RevisionCellColor()
+        {
+            //ExStart:RevisionCellColor
+            //GistId:366eb64fd56dec3c2eaa40410e594182
+            //ExFor:RevisionOptions.InsertCellColor
+            //ExFor:RevisionOptions.DeleteCellColor
+            //ExSummary:Shows how to work with insert/delete cell revision color.
+            Document doc = new Document(MyDir + "Cell revisions.docx");
+
+            doc.LayoutOptions.RevisionOptions.InsertCellColor = RevisionColor.LightBlue;
+            doc.LayoutOptions.RevisionOptions.DeleteCellColor = RevisionColor.DarkRed;
+
+            doc.Save(ArtifactsDir + "Revision.RevisionCellColor.pdf");
+            //ExEnd:RevisionCellColor
+        }
     }
 }

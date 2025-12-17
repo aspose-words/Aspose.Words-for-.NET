@@ -56,6 +56,7 @@ namespace DocsExamples.Mail_Merge_and_Reporting
         public void RemoveUnmergedRegions()
         {
             //ExStart:RemoveUnmergedRegions
+            //GistId:f39874821cb317d245a769c9ce346fea
             Document doc = new Document(MyDir + "Mail merge destination - Northwind suppliers.docx");
 
             DataSet data = new DataSet();
@@ -63,7 +64,7 @@ namespace DocsExamples.Mail_Merge_and_Reporting
             doc.MailMerge.CleanupOptions = MailMergeCleanupOptions.RemoveUnusedRegions;
             // doc.MailMerge.CleanupOptions = MailMergeCleanupOptions.RemoveContainingFields;
             // doc.MailMerge.CleanupOptions |= MailMergeCleanupOptions.RemoveStaticFields;
-            // doc.MailMerge.CleanupOptions |= MailMergeCleanupOptions.RemoveEmptyParagraphs;           
+            // doc.MailMerge.CleanupOptions |= MailMergeCleanupOptions.RemoveEmptyParagraphs;
             // doc.MailMerge.CleanupOptions |= MailMergeCleanupOptions.RemoveUnusedFields;
             //ExEnd:MailMergeCleanupOptions
 
@@ -79,6 +80,7 @@ namespace DocsExamples.Mail_Merge_and_Reporting
         public void RemoveEmptyParagraphs()
         {
             //ExStart:RemoveEmptyParagraphs
+            //GistId:f39874821cb317d245a769c9ce346fea
             Document doc = new Document(MyDir + "Table with fields.docx");
 
             doc.MailMerge.CleanupOptions = MailMergeCleanupOptions.RemoveEmptyParagraphs;
@@ -94,6 +96,7 @@ namespace DocsExamples.Mail_Merge_and_Reporting
         public void RemoveUnusedFields()
         {
             //ExStart:RemoveUnusedFields
+            //GistId:f39874821cb317d245a769c9ce346fea
             Document doc = new Document(MyDir + "Table with fields.docx");
 
             doc.MailMerge.CleanupOptions = MailMergeCleanupOptions.RemoveUnusedFields;
@@ -109,6 +112,7 @@ namespace DocsExamples.Mail_Merge_and_Reporting
         public void RemoveContainingFields()
         {
             //ExStart:RemoveContainingFields
+            //GistId:f39874821cb317d245a769c9ce346fea
             Document doc = new Document(MyDir + "Table with fields.docx");
 
             doc.MailMerge.CleanupOptions = MailMergeCleanupOptions.RemoveContainingFields;
@@ -124,6 +128,7 @@ namespace DocsExamples.Mail_Merge_and_Reporting
         public void RemoveEmptyTableRows()
         {
             //ExStart:RemoveEmptyTableRows
+            //GistId:f39874821cb317d245a769c9ce346fea
             Document doc = new Document(MyDir + "Table with fields.docx");
 
             doc.MailMerge.CleanupOptions = MailMergeCleanupOptions.RemoveEmptyTableRows;

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Aspose.Words;
 using Aspose.Words.WebExtensions;
 using NUnit.Framework;
@@ -8,9 +8,10 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
     internal class WorkingWithWebExtension : DocsExamplesBase
     {
         [Test]
-        public void UsingWebExtensionTaskPanes()
+        public void WebExtensionTaskPanes()
         {
-            //ExStart:UsingWebExtensionTaskPanes
+            //ExStart:WebExtensionTaskPanes
+            //GistId:8c31c018ea71c92828223776b1a113f7
             Document doc = new Document();
 
             TaskPane taskPane = new TaskPane();
@@ -28,11 +29,12 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             taskPane.WebExtension.Bindings.Add(new WebExtensionBinding("UnnamedBinding_0_1506535429545",
                 WebExtensionBindingType.Text, "194740422"));
 
-            doc.Save(ArtifactsDir + "WorkingWithWebExtension.UsingWebExtensionTaskPanes.docx");
-            //ExEnd:UsingWebExtensionTaskPanes
-            
+            doc.Save(ArtifactsDir + "WorkingWithWebExtension.WebExtensionTaskPanes.docx");
+            //ExEnd:WebExtensionTaskPanes
+
             //ExStart:GetListOfAddins
-            doc = new Document(ArtifactsDir + "WorkingWithWebExtension.UsingWebExtensionTaskPanes.docx");
+            //GistId:8c31c018ea71c92828223776b1a113f7
+            doc = new Document(ArtifactsDir + "WorkingWithWebExtension.WebExtensionTaskPanes.docx");
             
             Console.WriteLine("Task panes sources:\n");
 

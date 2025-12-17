@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2024 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -62,7 +62,7 @@ namespace ApiExamples
 
             // To mail merge from your data source, we must wrap it into an object that implements the IMailMergeDataSource interface.
             CustomerMailMergeDataSource customersDataSource = new CustomerMailMergeDataSource(customers);
-            
+
             doc.MailMerge.ExecuteWithRegions(customersDataSource);
 
             doc.Save(ArtifactsDir + "NestedMailMergeCustom.CustomDataSource.docx");

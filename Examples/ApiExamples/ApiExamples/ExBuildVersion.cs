@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2024 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -26,8 +26,12 @@ namespace ApiExamples
             Console.WriteLine($"I am currently using {BuildVersionInfo.Product}, version number {BuildVersionInfo.Version}!");
             //ExEnd
 
-            Assert.AreEqual("Aspose.Words for .NET", BuildVersionInfo.Product);
-            Assert.True(Regex.IsMatch(BuildVersionInfo.Version, "[0-9]{2}.[0-9]{1,2}"));
+#if CPLUSPLUS
+            Assert.That(BuildVersionInfo.Product, Is.EqualTo("Aspose.Words for C++"));
+#else
+            Assert.That(BuildVersionInfo.Product, Is.EqualTo("Aspose.Words for .NET"));
+#endif
+            Assert.That(Regex.IsMatch(BuildVersionInfo.Version, "[0-9]{2}.[0-9]{1,2}"), Is.True);
         }
     }
 }

@@ -191,9 +191,9 @@ namespace ApiExamples
             xAxis.MinorTickMark = AxisTickMark.Cross;
             xAxis.MajorUnit = 10.0d;
             xAxis.MinorUnit = 15.0d;
-            xAxis.TickLabelOffset = 50;
-            xAxis.TickLabelPosition = AxisTickLabelPosition.Low;
-            xAxis.TickLabelSpacingIsAuto = false;
+            xAxis.TickLabels.Offset = 50;
+            xAxis.TickLabels.Position = AxisTickLabelPosition.Low;
+            xAxis.TickLabels.IsAutoSpacing = false;
             xAxis.TickMarkSpacing = 1;
 
             ChartAxis yAxis = chart.AxisY;
@@ -204,7 +204,7 @@ namespace ApiExamples
             yAxis.MinorTickMark = AxisTickMark.Cross;
             yAxis.MajorUnit = 100.0d;
             yAxis.MinorUnit = 20.0d;
-            yAxis.TickLabelPosition = AxisTickLabelPosition.NextToAxis;
+            yAxis.TickLabels.Position = AxisTickLabelPosition.NextToAxis;
 
             // Column charts do not have a Z-axis.
             Assert.Null(chart.AxisZ);
@@ -222,9 +222,9 @@ namespace ApiExamples
             Assert.Equal(AxisTickMark.Cross, chart.AxisX.MinorTickMark);
             Assert.Equal(1.0d, chart.AxisX.MajorUnit);
             Assert.Equal(0.5d, chart.AxisX.MinorUnit);
-            Assert.Equal(50, chart.AxisX.TickLabelOffset);
-            Assert.Equal(AxisTickLabelPosition.Low, chart.AxisX.TickLabelPosition);
-            Assert.False(chart.AxisX.TickLabelSpacingIsAuto);
+            Assert.Equal(50, chart.AxisX.TickLabels.Offset);
+            Assert.Equal(AxisTickLabelPosition.Low, chart.AxisX.TickLabels.Position);
+            Assert.False(chart.AxisX.TickLabels.IsAutoSpacing);
             Assert.Equal(1, chart.AxisX.TickMarkSpacing);
 
             Assert.Equal(AxisCategoryType.Category, chart.AxisY.CategoryType);
@@ -234,7 +234,7 @@ namespace ApiExamples
             Assert.Equal(AxisTickMark.Cross, chart.AxisY.MinorTickMark);
             Assert.Equal(100.0d, chart.AxisY.MajorUnit);
             Assert.Equal(20.0d, chart.AxisY.MinorUnit);
-            Assert.Equal(AxisTickLabelPosition.NextToAxis, chart.AxisY.TickLabelPosition);
+            Assert.Equal(AxisTickLabelPosition.NextToAxis, chart.AxisY.TickLabels.Position);
         }
 
         [Fact]
@@ -285,7 +285,7 @@ namespace ApiExamples
 
             // Define Y-axis properties for decimal values.
             ChartAxis yAxis = chart.AxisY;
-            yAxis.TickLabelPosition = AxisTickLabelPosition.High;
+            yAxis.TickLabels.Position = AxisTickLabelPosition.High;
             yAxis.MajorUnit = 100.0d;
             yAxis.MinorUnit = 50.0d;
             yAxis.DisplayUnit.Unit = AxisBuiltInUnit.Hundreds;
@@ -306,7 +306,7 @@ namespace ApiExamples
             Assert.Equal(AxisTickMark.Cross, chart.AxisX.MajorTickMark);
             Assert.Equal(AxisTickMark.Outside, chart.AxisX.MinorTickMark);
 
-            Assert.Equal(AxisTickLabelPosition.High, chart.AxisY.TickLabelPosition);
+            Assert.Equal(AxisTickLabelPosition.High, chart.AxisY.TickLabels.Position);
             Assert.Equal(100.0d, chart.AxisY.MajorUnit);
             Assert.Equal(50.0d, chart.AxisY.MinorUnit);
             Assert.Equal(AxisBuiltInUnit.Hundreds, chart.AxisY.DisplayUnit.Unit);
@@ -1170,9 +1170,9 @@ namespace ApiExamples
             // Set the X-axis bounds so that the X-axis spans 5 major tick marks and 12 minor tick marks.
             axis.Scaling.Minimum = new AxisBound(-10);
             axis.Scaling.Maximum = new AxisBound(30);
-            axis.TickLabelAlignment = ParagraphAlignment.Right;
+            axis.TickLabels.Alignment = ParagraphAlignment.Right;
 
-            Assert.Equal(1, axis.TickLabelSpacing);
+            Assert.Equal(1, axis.TickLabels.Spacing);
             
             // Set the tick labels to display their value in millions.
             axis.DisplayUnit.Unit = AxisBuiltInUnit.Millions;
@@ -1198,8 +1198,8 @@ namespace ApiExamples
             Assert.Equal(10.0d, axis.MajorUnit);
             Assert.Equal(-10.0d, axis.Scaling.Minimum.Value);
             Assert.Equal(30.0d, axis.Scaling.Maximum.Value);
-            Assert.Equal(1, axis.TickLabelSpacing);
-            Assert.Equal(ParagraphAlignment.Right, axis.TickLabelAlignment);
+            Assert.Equal(1, axis.TickLabels.Spacing);
+            Assert.Equal(ParagraphAlignment.Right, axis.TickLabels.Alignment);
             Assert.Equal(AxisBuiltInUnit.Custom, axis.DisplayUnit.Unit);
             Assert.Equal(1000000.0d, axis.DisplayUnit.CustomUnit);
 
