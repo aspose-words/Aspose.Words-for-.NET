@@ -1,0 +1,21 @@
+{
+  "subTemplateFile": "Salesperson Bonuses Sub-template.docx",
+  "items":
+  [
+    {
+      "salesPerson": "Martha Green",
+      "totalSales": 125000,
+      "productCategory": "Technology"
+    },
+    {
+      "salesPerson": "Andrew Hannock",
+      "totalSales": 75000,
+      "productCategory": "Industrial"
+    },
+    {
+      "salesPerson": "James O'Connel",
+      "totalSales": 42000,
+      "productCategory": "Technology"
+    }
+  ]
+}

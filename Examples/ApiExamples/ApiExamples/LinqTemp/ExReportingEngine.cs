@@ -2122,6 +2122,181 @@ namespace ApiExamples.LinqTemp
         }
 
         [Test]
+        public void InsertingDocument()
+        {
+            //ExStart:InsertingDocument
+            //GistId:3c3524dec0a8f2e460922e519cc01a03
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Document Inserting Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Document Inserting Data.json");
+
+            // Build a report. The name of a data source should match the one used in the template.
+            // The name of the first data source can be omitted.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, new object[] { dataSource, MyLinqDir }, new string[] { null, "dir" });
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Document Inserting Report.docx");
+            //ExEnd:InsertingDocument
+
+            // Test the report.
+            CompareDocs("Document Inserting Report.docx", "Document Inserting Report Gold.docx");
+        }
+
+        [Test]
+        public void InsertingDocumentKeepingSourceStyles()
+        {
+            //ExStart:InsertingDocumentKeepingSourceStyles
+            //GistId:a56501e020dfd2c3bf5f0c8a3ff41910
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Document Inserting with Source Styles Keeping Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(
+                MyLinqDir + "Document Inserting with Source Styles Keeping Data.json");
+
+            // Build a report. The name of a data source should match the one used in the template.
+            // The name of the first data source can be omitted.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, new object[] { dataSource, MyLinqDir }, new string[] { null, "dir" });
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Document Inserting with Source Styles Keeping Report.docx");
+            //ExEnd:InsertingDocumentKeepingSourceStyles
+
+            // Test the report.
+            CompareDocs("Document Inserting with Source Styles Keeping Report.docx",
+                "Document Inserting with Source Styles Keeping Report Gold.docx");
+        }
+
+        [Test]
+        public void InsertingDocumentKeepingSourceNumbering()
+        {
+            //ExStart:InsertingDocumentKeepingSourceNumbering
+            //GistId:066173699fd000a7ce63bc6c34babc65
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Document Inserting with Source Numbering Keeping Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(
+                MyLinqDir + "Document Inserting with Source Numbering Keeping Data.json");
+
+            // Build a report. The name of a data source should match the one used in the template.
+            // The name of the first data source can be omitted.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, new object[] { dataSource, MyLinqDir }, new string[] { null, "dir" });
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Document Inserting with Source Numbering Keeping Report.docx");
+            //ExEnd:InsertingDocumentKeepingSourceNumbering
+
+            // Test the report.
+            CompareDocs("Document Inserting with Source Numbering Keeping Report.docx", 
+                "Document Inserting with Source Numbering Keeping Report Gold.docx");
+        }
+
+        [Test]
+        public void InsertingDocumentInliningContent()
+        {
+            //ExStart:InsertingDocumentInliningContent
+            //GistId:b4f7d42cdf0b5d6cddf159e7fbc1337f
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Document Inserting with Content Inlining Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Document Inserting with Content Inlining Data.json");
+
+            // Build a report. The name of a data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, new object[] { dataSource, MyLinqDir }, new string[] { "items", "dir" });
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Document Inserting with Content Inlining Report.docx");
+            //ExEnd:InsertingDocumentInliningContent
+
+            // Test the report.
+            CompareDocs("Document Inserting with Content Inlining Report.docx",
+                "Document Inserting with Content Inlining Report Gold.docx");
+        }
+
+        [Test]
+        public void InsertingSubTemplate()
+        {
+            //ExStart:InsertingSubTemplate
+            //GistId:163634c0cc5926a3a5fd4e9b74594641
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Sub-template Inserting Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Sub-template Inserting Data.json");
+
+            // Build a report. The name of a data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, new object[] { dataSource, MyLinqDir }, new string[] { "ds", "dir" });
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Sub-template Inserting Report.docx");
+            //ExEnd:InsertingSubTemplate
+
+            // Test the report.
+            CompareDocs("Sub-template Inserting Report.docx", "Sub-template Inserting Report Gold.docx");
+        }
+
+        [Test]
+        public void InsertingHtml()
+        {
+            //ExStart:InsertingHtml
+            //GistId:3c23d9783e82ab2f06ceb01706f4594b
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "HTML Inserting Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "HTML Inserting Data.json");
+
+            // Build a report.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource);
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "HTML Inserting Report.docx");
+            //ExEnd:InsertingHtml
+
+            // Test the report.
+            CompareDocs("HTML Inserting Report.docx", "HTML Inserting Report Gold.docx");
+        }
+
+        [Test]
+        public void InsertingHtmlKeepingSourceStyles()
+        {
+            //ExStart:InsertingHtmlKeepingSourceStyles
+            //GistId:42a0b17f08762d99db5e5046fafd4955
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "HTML Inserting with Source Styles Keeping Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "HTML Inserting with Source Styles Keeping Data.json");
+
+            // Build a report.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource);
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "HTML Inserting with Source Styles Keeping Report.docx");
+            //ExEnd:InsertingHtmlKeepingSourceStyles
+
+            // Test the report.
+            CompareDocs("HTML Inserting with Source Styles Keeping Report.docx",
+                "HTML Inserting with Source Styles Keeping Report Gold.docx");
+        }
+
+        [Test]
         public void InsertingBookmark()
         {
             //ExStart:InsertingBookmark
@@ -2272,7 +2447,7 @@ namespace ApiExamples.LinqTemp
             if (!File.Exists(linqGoldPath))
                 File.Copy(artifactPath, linqGoldPath);
             else
-                Assert.IsTrue(DocumentHelper.CompareDocs(artifactPath, linqGoldPath));
+                Assert.That(DocumentHelper.CompareDocs(artifactPath, linqGoldPath), Is.True);
         }
 
         /// <summary>

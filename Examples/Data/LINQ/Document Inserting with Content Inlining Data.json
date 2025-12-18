@@ -1,0 +1,18 @@
+[
+  {
+    "milestone": "Strategic Alignment Verified",
+    "definitionFile": "Milestone 1 Definition Block.docx"
+  },
+  {
+    "milestone": "MVP Functional Baseline",
+    "definitionFile": "Milestone 2 Definition Block.docx"
+  },
+  {
+    "milestone": "User Acceptance Testing (UAT) Sign-off",
+    "definitionFile": "Milestone 3 Definition Block.docx"
+  },
+  {
+    "milestone": "Operational Readiness Review (ORR)",
+    "definitionFile": "Milestone 4 Definition Block.docx"
+  }
+]
