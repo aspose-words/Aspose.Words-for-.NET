@@ -167,7 +167,8 @@ namespace ApiExamples
             //ExStart:Gemini
             //GistId:0da8468118377c4860b28603bc95ffe6
             //ExFor:GoogleAiModel
-            //ExFor:GoogleAiModel(String, String)
+            //ExFor:GoogleAiModel.#ctor(String)
+            //ExFor:GoogleAiModel.#ctor(String, String)
             //ExSummary:Shows how to use google AI model.
             string apiKey = Environment.GetEnvironmentVariable("API_KEY");
             GoogleAiModel model = new GoogleAiModel("gemini-flash-latest", apiKey);
