@@ -66,7 +66,7 @@ namespace ApiExamples
 
             string apiKey = Environment.GetEnvironmentVariable("API_KEY");
             // Use Google generative language models.
-            AiModel model = AiModel.Create(AiModelType.Gemini15Flash).WithApiKey(apiKey);
+            AiModel model = AiModel.Create(AiModelType.GeminiFlashLatest).WithApiKey(apiKey);
 
             Document translatedDoc = model.Translate(doc, Language.Arabic);
             translatedDoc.Save(ArtifactsDir + "AI.AiTranslate.docx");
@@ -159,6 +159,23 @@ namespace ApiExamples
             //ExEnd:ChangeDefaultTimeout
 
             Assert.That(model.Timeout, Is.EqualTo(250000));
+        }
+
+        [Test, Explicit("This test should be run manually to manage API requests amount")]
+        public void Gemini()
+        {
+            //ExStart:Gemini
+            //GistId:0da8468118377c4860b28603bc95ffe6
+            //ExFor:GoogleAiModel
+            //ExFor:GoogleAiModel(String, String)
+            //ExSummary:Shows how to use google AI model.
+            string apiKey = Environment.GetEnvironmentVariable("API_KEY");
+            GoogleAiModel model = new GoogleAiModel("gemini-flash-latest", apiKey);
+
+            Document doc = new Document(MyDir + "Big document.docx");
+            SummarizeOptions summarizeOptions = new SummarizeOptions() { SummaryLength = SummaryLength.VeryShort };
+            Document summary = model.Summarize(doc, summarizeOptions);
+            //ExEnd:Gemini
         }
     }
 }

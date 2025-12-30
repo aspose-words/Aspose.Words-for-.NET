@@ -2070,7 +2070,7 @@ namespace ApiExamples
             Assert.That(doc.WebExtensionTaskPanes.Count, Is.EqualTo(0));
 
             doc = new Document(ArtifactsDir + "Document.WebExtension.docx");
-            
+
             myScriptTaskPane = doc.WebExtensionTaskPanes[0];
             Assert.That(myScriptTaskPane.DockState, Is.EqualTo(TaskPaneDockState.Right));
             Assert.That(myScriptTaskPane.IsVisible, Is.True);
@@ -2693,6 +2693,46 @@ namespace ApiExamples
             //ExEnd:ExtractPagesWithOptions
 
             Assert.That(extractedDoc2.Range.Fields.Count, Is.EqualTo(2));
+        }
+
+        [Test]
+        public void AppendDocumentWithNewPage()
+        {
+            //ExStart:AppendDocumentWithNewPage
+            //GistId:0da8468118377c4860b28603bc95ffe6
+            //ExFor:ImportFormatOptions.AppendDocumentWithNewPage
+            //ExSummary:Shows how to preserve original section type.
+            Document dstDoc = new Document();
+            Document srcDoc = new Document();
+
+            srcDoc.FirstSection.PageSetup.SectionStart = SectionStart.Continuous;
+
+            ImportFormatOptions options = new ImportFormatOptions { AppendDocumentWithNewPage = false };
+            dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepSourceFormatting, options);
+
+            Assert.That(dstDoc.Sections[1].PageSetup.SectionStart, Is.EqualTo(SectionStart.Continuous));
+            //ExEnd:AppendDocumentWithNewPage
+        }
+
+        [Test]
+        public void DoclingJson()
+        {
+            //ExStart:DoclingJson
+            //GistId:0da8468118377c4860b28603bc95ffe6
+            //ExFor:DoclingSaveOptions
+            //ExFor:DoclingSaveOptions.SaveFormat
+            //ExFor:DoclingSaveOptions.RenderNonImageShapes
+            //ExSummary:Shows how to save a document into a Docling JSON format.
+            Document doc = new Document(MyDir + "Rendering.docx");
+
+            DoclingSaveOptions saveOptions = new DoclingSaveOptions();
+            saveOptions.SaveFormat = SaveFormat.Docling;
+            // Set to true to render non-image shapes and include them in the output.
+            // Set to false (default) to exclude non-image shapes from the output.
+            saveOptions.RenderNonImageShapes = true;
+
+            doc.Save(ArtifactsDir + "DoclingSaveOptions.DoclingJson.json", saveOptions);
+            //ExEnd:DoclingJson
         }
     }
 }
