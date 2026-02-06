@@ -1468,7 +1468,7 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test, Category("SkipGitHub")]
+        [Test, Category("IgnoreOnJenkins")]
         public void CheckScanUserFontsFolder()
         {
             var userProfile = Environment.GetEnvironmentVariable("USERPROFILE");
