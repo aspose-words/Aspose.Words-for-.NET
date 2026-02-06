@@ -2602,5 +2602,43 @@ namespace ApiExamples
             Assert.That(chart.Style, Is.EqualTo(ChartStyle.Black));
             //ExEnd
         }
+
+        [Test]
+        public void TitleOrientation()
+        {
+            //ExStart:TitleOrientation
+            //GistId:358242737ad81fe9046ab090a4fbbf66
+            //ExFor:ChartTitle.Orientation
+            //ExFor:ChartTitle.Rotation
+            //ExFor:ChartAxisTitle.Orientation
+            //ExFor:ChartAxisTitle.Rotation
+            //ExSummary:Shows how to set orientation and rotation of chart and axis titles.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            Shape chartShape = builder.InsertChart(ChartType.Column, 400, 300);
+            Chart chart = chartShape.Chart;
+
+            chart.Title.Text = "Sample Chart";
+            chart.Title.Orientation = ShapeTextOrientation.Horizontal;
+            chart.Title.Rotation = 90;
+
+            // Before setting title properties, make sure that this title will be displayed.
+            chart.AxisX.Title.Show = true;
+            chart.AxisX.Title.Text = "X Axis";
+            chart.AxisX.Title.Orientation = ShapeTextOrientation.Horizontal;
+            chart.AxisX.Title.Rotation = -90;
+
+            doc.Save(ArtifactsDir + "Charts.TitleOrientation.docx");
+            //ExEnd:TitleOrientation
+
+            doc = new Document(ArtifactsDir + "Charts.TitleOrientation.docx");
+            chartShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            chart = chartShape.Chart;
+
+            Assert.That(chart.Title.Orientation, Is.EqualTo(ShapeTextOrientation.Horizontal));
+            Assert.That(chart.Title.Rotation, Is.EqualTo(90));
+            Assert.That(chart.AxisX.Title.Orientation, Is.EqualTo(ShapeTextOrientation.Horizontal));
+            Assert.That(chart.AxisX.Title.Rotation, Is.EqualTo(-90));
+        }
     }
 }
