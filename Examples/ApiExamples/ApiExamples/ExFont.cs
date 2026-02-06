@@ -1471,7 +1471,7 @@ namespace ApiExamples
         [Test, Category("SkipGitHub")]
         public void CheckScanUserFontsFolder()
         {
-            var userProfile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            var userProfile = Environment.GetEnvironmentVariable("USERPROFILE");
             var currentUserFontsFolder = Path.Combine(userProfile, @"AppData\Local\Microsoft\Windows\Fonts");
             var currentUserFonts = Directory.GetFiles(currentUserFontsFolder, "*.ttf");
             if (currentUserFonts.Length != 0)
