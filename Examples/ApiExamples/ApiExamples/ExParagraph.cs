@@ -649,6 +649,7 @@ namespace ApiExamples
             //ExStart:JoinRunsWithSameFormattingWithOptions
             //GistId:8c640b84550c83678329a9a92f10bcdd
             //ExFor:Paragraph.JoinRunsWithSameFormatting(JoinRunsOptions)
+            //ExFor:JoinRunsOptions
             //ExSummary:Shows how to join runs with the same formatting while ignoring redundant and insignificant attributes.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
