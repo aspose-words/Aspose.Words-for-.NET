@@ -1537,7 +1537,7 @@ namespace ApiExamples
 
         [TestCase(0, MathObjectType.OMathPara)]
         [TestCase(1, MathObjectType.OMath)]
-        [TestCase(2, MathObjectType.Supercript)]
+        [TestCase(2, MathObjectType.Superscript)]
         [TestCase(3, MathObjectType.Argument)]
         [TestCase(4, MathObjectType.SuperscriptPart)]
         public void WorkWithMathObjectType(int index, MathObjectType objectType)

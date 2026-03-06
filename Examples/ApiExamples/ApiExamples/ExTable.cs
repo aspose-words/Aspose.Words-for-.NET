@@ -1282,7 +1282,6 @@ namespace ApiExamples
             //ExFor:Table.StyleName
             //ExFor:TableStyle
             //ExFor:TableStyle.AllowBreakAcrossPages
-            //ExFor:TableStyle.Bidi
             //ExFor:TableStyle.CellSpacing
             //ExFor:TableStyle.BottomPadding
             //ExFor:TableStyle.LeftPadding
@@ -1307,7 +1306,6 @@ namespace ApiExamples
  
             TableStyle tableStyle = (TableStyle)doc.Styles.Add(StyleType.Table, "MyTableStyle1");
             tableStyle.AllowBreakAcrossPages = true;
-            tableStyle.Bidi = true;
             tableStyle.CellSpacing = 5;
             tableStyle.BottomPadding = 20;
             tableStyle.LeftPadding = 5;
@@ -1317,8 +1315,10 @@ namespace ApiExamples
             tableStyle.Borders.Color = Color.Blue;
             tableStyle.Borders.LineStyle = LineStyle.DotDash;
             tableStyle.VerticalAlignment = CellVerticalAlignment.Center;
-
+            
             table.Style = tableStyle;
+            
+            table.Bidi = true;
 
             // Setting the style properties of a table may affect the properties of the table itself.
             Assert.That(table.Bidi, Is.True);
@@ -1344,7 +1344,6 @@ namespace ApiExamples
             tableStyle = (TableStyle)doc.Styles["MyTableStyle1"];
 
             Assert.That(tableStyle.AllowBreakAcrossPages, Is.True);
-            Assert.That(tableStyle.Bidi, Is.True);
             Assert.That(tableStyle.CellSpacing, Is.EqualTo(5.0d));
             Assert.That(tableStyle.BottomPadding, Is.EqualTo(20.0d));
             Assert.That(tableStyle.LeftPadding, Is.EqualTo(5.0d));

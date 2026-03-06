@@ -107,8 +107,7 @@ namespace ApiExamples
 
             string apiKey = Environment.GetEnvironmentVariable("API_KEY");
             // Use OpenAI generative language models.
-            AiModel model = new CustomAiModel().WithApiKey(apiKey);
-            model.Url = "https://my.a.com/";
+            AiModel model = new CustomAiModel("my-model-24b", "https://my.a.com/").WithApiKey(apiKey);
 
             Document translatedDoc = model.Translate(doc, Language.Russian);
             translatedDoc.Save(ArtifactsDir + "AI.SelfHostedModel.docx");
@@ -119,13 +118,17 @@ namespace ApiExamples
         /// </summary>
         internal class CustomAiModel : OpenAiModel
         {
-            /// <summary>
-            /// Gets model name.
-            /// </summary>
-            protected override string Name
+            internal CustomAiModel(string name, string url) : base(name)
             {
-                get { return "my-model-24b"; }
+                mUrl = url;
             }
+
+            public override string Url
+            {
+                get { return mUrl; }
+            }
+
+            private readonly string mUrl;
         }
         //ExEnd:SelfHostedModel
 
@@ -177,6 +180,29 @@ namespace ApiExamples
             SummarizeOptions summarizeOptions = new SummarizeOptions() { SummaryLength = SummaryLength.VeryShort };
             Document summary = model.Summarize(doc, summarizeOptions);
             //ExEnd:Gemini
+        }
+
+        [Test, Explicit("This test should be run manually to manage API requests amount")]
+        public void OpenAiModelConstructor()
+        {
+            //ExStart:OpenAiModelConstructor
+            //GistId:8c640b84550c83678329a9a92f10bcdd
+            //ExFor:OpenAiModel.#ctor(String,String)
+            //ExSummary:Shows how to create an OpenAI model instance directly using an API key and model name.
+            string apiKey = Environment.GetEnvironmentVariable("API_KEY");
+            // Create an OpenAI model instance using the constructor with model name and API key.
+            OpenAiModel model = new OpenAiModel("gpt-4o-mini", apiKey);
+
+            Document doc = new Document(MyDir + "Big document.docx");
+            // Summarize the document using the OpenAI model with short summary length.
+            SummarizeOptions summarizeOptions = new SummarizeOptions() { SummaryLength = SummaryLength.VeryShort };
+            Document summary = model.Summarize(doc, summarizeOptions);
+
+            summary.Save(ArtifactsDir + "OpenAiModel.OpenAiModelConstructor.docx");
+            //ExEnd:OpenAiModelConstructor
+
+            // Verify the summary was generated (non-empty content).
+            Assert.That(summary.GetText().Trim().Length, Is.GreaterThan(0));
         }
     }
 }
