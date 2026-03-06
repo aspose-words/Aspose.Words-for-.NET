@@ -6,7 +6,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System.Data;
-using System.Data.OleDb;
+using Microsoft.Data.Sqlite;
 using System.Drawing;
 using System.IO;
 using Aspose.Words;
@@ -355,29 +355,29 @@ namespace ApiExamples
         //ExFor:IFieldMergingCallback.ImageFieldMerging
         //ExFor:ImageFieldMergingArgs.ImageStream
         //ExSummary:Shows how to insert images stored in a database BLOB field into a report.
-        [Test, Category("IgnoreOnJenkins"), Category("SkipGitHub")] //ExSkip
+        [Test] //ExSkip
         public void ImageFromBlob()
         {
             Document doc = new Document(MyDir + "Mail merge destination - Northwind employees.docx");
 
             doc.MailMerge.FieldMergingCallback = new HandleMergeImageFieldFromBlob();
 
-            string connString = $"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={DatabaseDir + "Northwind.accdb"};";
+            string connString = $"Data Source={DatabaseDir + "Northwind.db"}";
             string query = "SELECT FirstName, LastName, Title, Address, City, Region, Country, PhotoBLOB FROM Employees";
 
-            using (OleDbConnection conn = new OleDbConnection(connString))
+            using (SqliteConnection conn = new SqliteConnection(connString))
             {
                 conn.Open();
 
                 // Open the data reader, which needs to be in a mode that reads all records at once.
-                OleDbCommand cmd = new OleDbCommand(query, conn);
+                SqliteCommand cmd = new SqliteCommand(query, conn);
                 IDataReader dataReader = cmd.ExecuteReader();
 
                 doc.MailMerge.ExecuteWithRegions(dataReader, "Employees");
             }
 
             doc.Save(ArtifactsDir + "MailMergeEvent.ImageFromBlob.docx");
-            TestUtil.MailMergeMatchesQueryResult(DatabaseDir + "Northwind.accdb", query, new Document(ArtifactsDir + "MailMergeEvent.ImageFromBlob.docx"), false); //ExSkip
+            TestUtil.MailMergeMatchesQueryResult(DatabaseDir + "Northwind.db", query, new Document(ArtifactsDir + "MailMergeEvent.ImageFromBlob.docx"), false); //ExSkip
         }
 
         private class HandleMergeImageFieldFromBlob : IFieldMergingCallback
