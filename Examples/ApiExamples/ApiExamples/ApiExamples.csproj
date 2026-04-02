@@ -131,17 +131,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aspose.BarCode" Version="26.2.0" />
+    <PackageReference Include="Aspose.BarCode" Version="26.3.0" />
     <PackageReference Include="Aspose.Page" Version="26.2.0" />
-    <PackageReference Include="Aspose.PDF" Version="26.2.0" />
+    <PackageReference Include="Aspose.PDF" Version="26.3.0" />
     <PackageReference Include="Aspose.Words" Version="26.3.0" />
-    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="26.2.0" />
+    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="26.3.0" />
     <PackageReference Include="BouncyCastle.Cryptography" Version="2.6.2" />
-    <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="10.0.3" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.3" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.5" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.5" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.3.0" />
     <PackageReference Include="NUnit" Version="4.5.1" />
-    <PackageReference Include="NUnit3TestAdapter" Version="6.1.0">
+    <PackageReference Include="NUnit3TestAdapter" Version="6.2.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
