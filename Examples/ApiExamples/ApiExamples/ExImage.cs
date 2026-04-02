@@ -408,6 +408,7 @@ namespace ApiExamples
             Assert.That(imageSize.HeightPoints, Is.EqualTo(300.0d));
         }
 
+#if NET5_0_OR_GREATER
         [Test]
         public void InsertWebpImage()
         {
@@ -423,6 +424,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Image.InsertWebpImage.docx");
             //ExEnd:InsertWebpImage
         }
+#endif
 
         [Test]
         public void ReadWebpImage()
