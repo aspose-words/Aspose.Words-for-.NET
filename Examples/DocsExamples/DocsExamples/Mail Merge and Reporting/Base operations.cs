@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data;
-using System.Data.OleDb;
+using Microsoft.Data.Sqlite;
 using Aspose.Words;
 using Aspose.Words.MailMerging;
 using NUnit.Framework;
@@ -73,45 +73,58 @@ namespace DocsExamples.Mail_Merge_and_Reporting
             //ExEnd:MustacheSyntaxUsingDataTable
         }
 
-#if NET48 || JAVA
         [Test, Category("IgnoreOnJenkins")]
         public void ExecuteWithRegionsDataTable()
         {
             //ExStart:ExecuteWithRegionsDataTable
             //GistId:de5e13f5d5bb7d8cb88da900b4f9ed8b
-            Document doc = new Document(MyDir + "Mail merge destinations - Orders.docx");
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Build a template with two mail merge regions: "Suppliers" and "Products".
+            builder.InsertField(" MERGEFIELD TableStart:Suppliers");
+            builder.Write("Company: ");
+            builder.InsertField(" MERGEFIELD CompanyName");
+            builder.Write(", Contact: ");
+            builder.InsertField(" MERGEFIELD ContactName");
+            builder.InsertField(" MERGEFIELD TableEnd:Suppliers");
+            builder.InsertParagraph();
+            builder.InsertField(" MERGEFIELD TableStart:Products");
+            builder.Write("Product: ");
+            builder.InsertField(" MERGEFIELD ProductName");
+            builder.Write(", Price: ");
+            builder.InsertField(" MERGEFIELD UnitPrice");
+            builder.InsertField(" MERGEFIELD TableEnd:Products");
 
             // Use DataTable as a data source.
-            int orderId = 10444;
-            DataTable orderTable = GetTestOrder(orderId);
-            doc.MailMerge.ExecuteWithRegions(orderTable);
+            DataTable suppliersTable = GetTestSuppliers();
+            doc.MailMerge.ExecuteWithRegions(suppliersTable);
 
             // Instead of using DataTable, you can create a DataView for custom sort or filter and then mail merge.
-            DataView orderDetailsView = new DataView(GetTestOrderDetails(orderId));
-            orderDetailsView.Sort = "ExtendedPrice DESC";
+            DataView productsView = new DataView(GetTestProducts());
+            productsView.Sort = "UnitPrice DESC";
 
             // Execute the mail merge operation.
-            doc.MailMerge.ExecuteWithRegions(orderDetailsView);
+            doc.MailMerge.ExecuteWithRegions(productsView);
 
-            doc.Save(ArtifactsDir + "MailMerge.ExecuteWithRegions.docx");
+            doc.Save(ArtifactsDir + "BaseOperations.ExecuteWithRegions.docx");
             //ExEnd:ExecuteWithRegionsDataTable
         }
 
         //ExStart:ExecuteWithRegionsDataTableMethods
-        private DataTable GetTestOrder(int orderId)
+        private DataTable GetTestSuppliers()
         {
-            DataTable table = ExecuteDataTable($"SELECT * FROM AsposeWordOrders WHERE OrderId = {orderId}");
-            table.TableName = "Orders";
-            
+            DataTable table = ExecuteDataTable("SELECT CompanyName, ContactName FROM Suppliers");
+            table.TableName = "Suppliers";
+
             return table;
         }
 
-        private DataTable GetTestOrderDetails(int orderId)
+        private DataTable GetTestProducts()
         {
-            DataTable table = ExecuteDataTable(
-                $"SELECT * FROM AsposeWordOrderDetails WHERE OrderId = {orderId} ORDER BY ProductID");
-            table.TableName = "OrderDetails";
-            
+            DataTable table = ExecuteDataTable("SELECT ProductName, UnitPrice FROM Products ORDER BY ProductName");
+            table.TableName = "Products";
+
             return table;
         }
 
@@ -120,20 +133,20 @@ namespace DocsExamples.Mail_Merge_and_Reporting
         /// </summary>
         private DataTable ExecuteDataTable(string commandText)
         {
-            string connString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + DatabaseDir + "Northwind.accdb";
+            string connString = "Data Source=" + DatabaseDir + "Northwind.db";
 
-            OleDbConnection conn = new OleDbConnection(connString);
-            conn.Open();
+            using (SqliteConnection conn = new SqliteConnection(connString))
+            {
+                conn.Open();
 
-            OleDbCommand cmd = new OleDbCommand(commandText, conn);
-            OleDbDataAdapter da = new OleDbDataAdapter(cmd);
+                SqliteCommand cmd = new SqliteCommand(commandText, conn);
 
-            DataTable table = new DataTable();
-            da.Fill(table);
+                DataTable table = new DataTable();
+                using (SqliteDataReader reader = cmd.ExecuteReader())
+                    table.Load(reader);
 
-            conn.Close();
-
-            return table;
+                return table;
+            }
         }
         //ExEnd:ExecuteWithRegionsDataTableMethods
 
@@ -142,18 +155,18 @@ namespace DocsExamples.Mail_Merge_and_Reporting
         {
             //ExStart:ProduceMultipleDocuments
             //GistId:341b834e9b6a84ac6885e907e0ea4229
-            string connString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + DatabaseDir + "Northwind.accdb";
+            string connString = "Data Source=" + DatabaseDir + "Northwind.db";
 
             Document doc = new Document(MyDir + "Mail merge destination - Suppliers.docx");
 
-            OleDbConnection conn = new OleDbConnection(connString);
-            conn.Open();
-            
-            OleDbCommand cmd = new OleDbCommand("SELECT * FROM Customers", conn);
-            OleDbDataAdapter da = new OleDbDataAdapter(cmd);
-            
             DataTable data = new DataTable();
-            da.Fill(data);
+            using (SqliteConnection conn = new SqliteConnection(connString))
+            {
+                conn.Open();
+                SqliteCommand cmd = new SqliteCommand("SELECT * FROM Customers", conn);
+                using (SqliteDataReader reader = cmd.ExecuteReader())
+                    data.Load(reader);
+            }
 
             // Perform a loop through each DataRow to iterate through the DataTable. Clone the template document
             // instead of loading it from disk for better speed performance before the mail merge operation.
@@ -171,7 +184,6 @@ namespace DocsExamples.Mail_Merge_and_Reporting
             }
             //ExEnd:ProduceMultipleDocuments
         }
-#endif
 
         [Test]
         public void MailMergeWithRegions()

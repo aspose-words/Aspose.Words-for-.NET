@@ -1,21 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net48;net8.0</TargetFrameworks>
+    <TargetFrameworks>net48;net10.0</TargetFrameworks>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net462|AnyCPU'">
-    <PlatformTarget>x86</PlatformTarget>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp2.1|AnyCPU'">
-    <PlatformTarget>x86</PlatformTarget>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net462|AnyCPU'">
-    <PlatformTarget>x86</PlatformTarget>
-    <Optimize>false</Optimize>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp2.1|AnyCPU'">
-    <PlatformTarget>x86</PlatformTarget>
-  </PropertyGroup>
+
   <ItemGroup>
     <Content Include="DocsExamplesBase.cs" />
     <Content Include="AI-powered Features\Working with AI.cs" />
@@ -111,16 +99,16 @@
     <Content Include="Rendering and Printing\Rendering shapes.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Aspose.BarCode" Version="25.8.0" />
-    <PackageReference Include="Aspose.Email" Version="25.8.0" />
-    <PackageReference Include="Aspose.Words" Version="25.12.0" />
-    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="25.12.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
-    <PackageReference Include="NUnit" Version="4.4.0" />
-    <PackageReference Include="NUnit3TestAdapter" Version="5.1.0" />
-    <PackageReference Include="System.Data.OleDb" Version="9.0.2" />
+    <PackageReference Include="Aspose.BarCode" Version="26.3.0" />
+    <PackageReference Include="Aspose.Email" Version="26.3.0" />
+    <PackageReference Include="Aspose.Words" Version="26.4.0" />
+    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="26.4.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.3.0" />
+    <PackageReference Include="NUnit" Version="4.5.1" />
+    <PackageReference Include="NUnit3TestAdapter" Version="6.2.0" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.5" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System.Windows.Forms" Condition="'$(TargetFramework)' == 'net462'" />
+    <Reference Include="System.Windows.Forms" Condition="$(TargetFramework.StartsWith('net4'))" />
   </ItemGroup>
 </Project>

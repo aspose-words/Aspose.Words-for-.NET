@@ -497,7 +497,7 @@ namespace ApiExamples
             Document template =
                 DocumentHelper.CreateTemplateDocumentWithDrawObjects("<<image [src.ImageString]>>", ShapeType.TextBox);
             ImageTestClass imageUri = new ImageTestBuilder()
-                .WithImageString("https://metrics.aspose.com/img/headergraphics.svg")
+                .WithImageString(new Uri(ImageDir + "Transparent background logo.png").ToString())
                 .Build();
 
             BuildReport(template, imageUri, "src", ReportBuildOptions.None);

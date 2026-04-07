@@ -243,7 +243,7 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Pdf Document.pdf");
 
-            Assert.That(doc.Range.Text, Is.EqualTo("Heading 1\rHeading 1.1.1.1 Heading 1.1.1.2\rHeading 1.1.1.1.1.1.1.1.1 Heading 1.1.1.1.1.1.1.1.2\u000c"));
+            Assert.That(doc.Range.Text, Is.EqualTo("Heading 1\rHeading 1.1.1.1\rHeading 1.1.1.2\rHeading 1.1.1.1.1.1.1.1.1\rHeading 1.1.1.1.1.1.1.1.2\u000c"));
         }
 
         [Test]

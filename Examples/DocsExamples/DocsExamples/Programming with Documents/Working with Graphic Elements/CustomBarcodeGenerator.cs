@@ -257,9 +257,9 @@ namespace DocsExamples
                     gen.Parameters.Barcode.CodeTextParameters.Location = CodeLocation.Below;
 
                 // Set QR Code error correction level.s
-                gen.Parameters.Barcode.QR.QrErrorLevel = QRErrorLevel.LevelH;
+                gen.Parameters.Barcode.QR.ErrorLevel = QRErrorLevel.LevelH;
                 if (!string.IsNullOrEmpty(parameters.ErrorCorrectionLevel))
-                    gen.Parameters.Barcode.QR.QrErrorLevel = CustomBarcodeGeneratorUtils.GetQRCorrectionLevel(parameters.ErrorCorrectionLevel, gen.Parameters.Barcode.QR.QrErrorLevel);
+                    gen.Parameters.Barcode.QR.ErrorLevel = CustomBarcodeGeneratorUtils.GetQRCorrectionLevel(parameters.ErrorCorrectionLevel, gen.Parameters.Barcode.QR.ErrorLevel);
 
                 // Set rotation angle.
                 if (!string.IsNullOrEmpty(parameters.SymbolRotation))
