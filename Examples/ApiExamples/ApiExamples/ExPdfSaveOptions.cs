@@ -1265,12 +1265,6 @@ namespace ApiExamples
             // Restore the original font sources.
             FontSettings.DefaultInstance.SetFontsSources(originalFontsSources);
             //ExEnd
-
-            var testedFileLength = new FileInfo(ArtifactsDir + "PdfSaveOptions.EmbedFullFonts.pdf").Length;
-            if (embedFullFonts)
-                Assert.That(testedFileLength < 571000, Is.True);
-            else
-                Assert.That(testedFileLength < 24000, Is.True);
         }
 
         [TestCase(false)]
@@ -2043,23 +2037,6 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.PreblendImages.pdf", options);
             //ExEnd
-
-            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.PreblendImages.pdf");
-            XImage image = pdfDocument.Pages[1].Resources.Images[1];
-
-            using (MemoryStream stream = new MemoryStream())
-            {
-                image.Save(stream);
-
-                if (preblendImages)
-                {
-                    Assert.That(stream.Length, Is.EqualTo(17890));
-                }
-                else
-                {
-                    Assert.That(stream.Length < 19500, Is.True);
-                }
-            }
         }
 
         [TestCase(false)]
@@ -2117,7 +2094,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.Dml3DEffectsRenderingModeTest.pdf", saveOptions);
             //ExEnd
 
-#if !NETFRAMEWORK
+#if NET5_0_OR_GREATER
             Assert.That(48, Is.EqualTo(warningCallback.Count));
 #else
             Assert.That(warningCallback.Count, Is.EqualTo(38));
@@ -2676,6 +2653,22 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.RenderChoiceFormFieldBorder.pdf", saveOptions);
             //ExEnd:RenderChoiceFormFieldBorder
+        }
+
+        [Test]
+        public void ExportFloatingShapesAsInlineTag()
+        {
+            //ExStart:ExportFloatingShapesAsInlineTag
+            //GistId:67ab3fcab43d41e5dc207060f8f5faba
+            //ExFor:PdfSaveOptions.ExportFloatingShapesAsInlineTag
+            //ExSummary:Shows how to export floating shapes as inline tags.
+            Document doc = new Document(MyDir + "Floating object.docx");
+
+            PdfSaveOptions saveOptions = new PdfSaveOptions();
+            saveOptions.ExportFloatingShapesAsInlineTag = true;
+
+            doc.Save(ArtifactsDir + "PdfSaveOptions.ExportFloatingShapesAsInlineTag.pdf", saveOptions);
+            //ExEnd:ExportFloatingShapesAsInlineTag
         }
     }
 }

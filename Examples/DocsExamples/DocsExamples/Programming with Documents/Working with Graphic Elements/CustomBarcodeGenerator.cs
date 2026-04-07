@@ -228,30 +228,19 @@ namespace DocsExamples
             return bmp;
         }
 
-#if NET5_0_OR_GREATER
-        public static SKBitmap ConvertImageToWord(Bitmap bmp)
+        public static Stream ConvertImageToWord(Bitmap bmp)
         {
             MemoryStream ms = new MemoryStream();
             bmp.Save(ms, ImageFormat.Png);
             ms.Position = 0;
 
-            return SKBitmap.Decode(ms);
+            return ms;
         }
-#else
-        public static Image ConvertImageToWord(Bitmap bmp)
-        {
-            return bmp;
-        }
-#endif
     }
 
     internal class CustomBarcodeGenerator : IBarcodeGenerator
     {
-#if NET5_0_OR_GREATER
-        public SKBitmap GetBarcodeImage(Aspose.Words.Fields.BarcodeParameters parameters)
-#else
-        public Image GetBarcodeImage(Aspose.Words.Fields.BarcodeParameters parameters)
-#endif
+        Stream IBarcodeGenerator.GetBarcodeImage(Aspose.Words.Fields.BarcodeParameters parameters)
         {
             try
             {
@@ -268,9 +257,9 @@ namespace DocsExamples
                     gen.Parameters.Barcode.CodeTextParameters.Location = CodeLocation.Below;
 
                 // Set QR Code error correction level.s
-                gen.Parameters.Barcode.QR.QrErrorLevel = QRErrorLevel.LevelH;
+                gen.Parameters.Barcode.QR.ErrorLevel = QRErrorLevel.LevelH;
                 if (!string.IsNullOrEmpty(parameters.ErrorCorrectionLevel))
-                    gen.Parameters.Barcode.QR.QrErrorLevel = CustomBarcodeGeneratorUtils.GetQRCorrectionLevel(parameters.ErrorCorrectionLevel, gen.Parameters.Barcode.QR.QrErrorLevel);
+                    gen.Parameters.Barcode.QR.ErrorLevel = CustomBarcodeGeneratorUtils.GetQRCorrectionLevel(parameters.ErrorCorrectionLevel, gen.Parameters.Barcode.QR.ErrorLevel);
 
                 // Set rotation angle.
                 if (!string.IsNullOrEmpty(parameters.SymbolRotation))
@@ -303,11 +292,7 @@ namespace DocsExamples
             }
         }
 
-#if NET5_0_OR_GREATER
-        public SKBitmap GetOldBarcodeImage(Aspose.Words.Fields.BarcodeParameters parameters)
-#else
-        public Image GetOldBarcodeImage(Aspose.Words.Fields.BarcodeParameters parameters)
-#endif
+        Stream IBarcodeGenerator.GetOldBarcodeImage(Aspose.Words.Fields.BarcodeParameters parameters)
         {
             throw new NotImplementedException();
         }

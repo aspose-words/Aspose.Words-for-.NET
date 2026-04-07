@@ -1,7 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net48;net8.0</TargetFrameworks>
+    <TargetFrameworks>net48;net10.0</TargetFrameworks>
+    <LangVersion>latest</LangVersion>
     <Platforms>AnyCPU</Platforms>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     <EnableDefaultItems>false</EnableDefaultItems>
@@ -131,30 +132,30 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aspose.BarCode" Version="25.8.0" />
-    <PackageReference Include="Aspose.Page" Version="25.9.3" />
-    <PackageReference Include="Aspose.PDF" Version="25.9.0" />
-    <PackageReference Include="Aspose.Words" Version="25.9.0" />
-    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="25.9.0" />
+    <PackageReference Include="Aspose.BarCode" Version="26.3.0" />
+    <PackageReference Include="Aspose.Page" Version="26.2.0" />
+    <PackageReference Include="Aspose.PDF" Version="26.3.0" />
+    <PackageReference Include="Aspose.Words" Version="26.4.0" />
+    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="26.4.0" />
     <PackageReference Include="BouncyCastle.Cryptography" Version="2.6.2" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.9" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
-    <PackageReference Include="NUnit" Version="4.4.0" />
-    <PackageReference Include="NUnit3TestAdapter" Version="5.1.0">
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.5" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.5" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.3.0" />
+    <PackageReference Include="NUnit" Version="4.5.1" />
+    <PackageReference Include="NUnit3TestAdapter" Version="6.2.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="SkiaSharp" Version="3.119.0" />
-    <PackageReference Include="System.Data.OleDb" Version="9.0.2" />
-    <PackageReference Include="System.IO.Compression" Version="4.3.0" />
-    <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
+    <PackageReference Include="SkiaSharp" Version="3.119.2" />
+    <PackageReference Include="System.IO.Compression" Version="4.3.0" Condition="'$(TargetFramework)' == 'net48'" />
+    <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" Condition="'$(TargetFramework)' == 'net48'" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="Interop.ADODB">
       <HintPath>..\..\Data\Dlls\Interop.ADODB.dll</HintPath>
     </Reference>    
-    <Reference Include="System.Web" Condition="'$(TargetFramework)' != 'net8.0'" />
+    <Reference Include="System.Web" Condition="$(TargetFramework.StartsWith('net4'))" />
     <Reference Include="System.Windows.Forms" Condition="$(TargetFramework.StartsWith('net4'))" />
   </ItemGroup>
 

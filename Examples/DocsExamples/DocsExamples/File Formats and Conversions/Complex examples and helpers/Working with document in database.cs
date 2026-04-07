@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using System.Data.OleDb;
+using Microsoft.Data.Sqlite;
 using System.IO;
 using Aspose.Words;
 using NUnit.Framework;
@@ -9,23 +9,22 @@ namespace DocsExamples.File_Formats_and_Conversions.Complex_examples_and_helpers
 {
     public class WorkingWithDocumentInDatabase : DocsExamplesBase
     {
-#if NET48 || JAVA
         [Test, Category("IgnoreOnJenkins")]
         public void LoadAndSaveDocToDatabase()
         {
             Document doc = new Document(MyDir + "Document.docx");
             //ExStart:OpenDatabaseConnection
             //GistId:f8a622f8bc1cf3c2fa8a7a9be359faa2
-            string connString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + DatabaseDir + "Northwind.accdb";
-            
-            OleDbConnection connection = new OleDbConnection(connString);
+            string connString = "Data Source=" + DatabaseDir + "Northwind.db";
+
+            SqliteConnection connection = new SqliteConnection(connString);
             connection.Open();
             //ExEnd:OpenDatabaseConnection
 
             //ExStart:OpenRetrieveAndDelete
             //GistId:f8a622f8bc1cf3c2fa8a7a9be359faa2
             StoreToDatabase(doc, connection);
-            
+
             Document dbDoc = ReadFromDatabase("Document.docx", connection);
             dbDoc.Save(ArtifactsDir + "WorkingWithDocumentInDatabase.LoadAndSaveDocToDatabase.docx");
 
@@ -37,37 +36,44 @@ namespace DocsExamples.File_Formats_and_Conversions.Complex_examples_and_helpers
 
         //ExStart:StoreToDatabase
         //GistId:f8a622f8bc1cf3c2fa8a7a9be359faa2
-        public void StoreToDatabase(Document doc, OleDbConnection connection)
+        public void StoreToDatabase(Document doc, SqliteConnection connection)
         {
+            // Ensure the Documents table exists.
+            SqliteCommand createTable = new SqliteCommand(
+                "CREATE TABLE IF NOT EXISTS Documents (Name TEXT NOT NULL, Data BLOB NOT NULL)", connection);
+            createTable.ExecuteNonQuery();
+
             MemoryStream stream = new MemoryStream();
             doc.Save(stream, SaveFormat.Docx);
 
             string fileName = Path.GetFileName(doc.OriginalFileName);
-            string commandString = "INSERT INTO Documents (Name, Data) VALUES('" + fileName + "', @Doc)";
-            
-            OleDbCommand command = new OleDbCommand(commandString, connection);
-            command.Parameters.AddWithValue("Doc", stream.ToArray());
+            string commandString = "INSERT INTO Documents (Name, Data) VALUES(@Name, @Doc)";
+
+            SqliteCommand command = new SqliteCommand(commandString, connection);
+            command.Parameters.AddWithValue("@Name", fileName);
+            command.Parameters.AddWithValue("@Doc", stream.ToArray());
             command.ExecuteNonQuery();
         }
         //ExEnd:StoreToDatabase
 
         //ExStart:ReadFromDatabase
         //GistId:f8a622f8bc1cf3c2fa8a7a9be359faa2
-        public Document ReadFromDatabase(string fileName, OleDbConnection connection)
+        public Document ReadFromDatabase(string fileName, SqliteConnection connection)
         {
-            string commandString = "SELECT * FROM Documents WHERE Name='" + fileName + "'";
-            
-            OleDbCommand command = new OleDbCommand(commandString, connection);
-            OleDbDataAdapter adapter = new OleDbDataAdapter(command);
+            string commandString = "SELECT * FROM Documents WHERE Name=@Name";
+
+            SqliteCommand command = new SqliteCommand(commandString, connection);
+            command.Parameters.AddWithValue("@Name", fileName);
 
             DataTable dataTable = new DataTable();
-            adapter.Fill(dataTable);
+            using (SqliteDataReader reader = command.ExecuteReader())
+                dataTable.Load(reader);
 
             if (dataTable.Rows.Count == 0)
                 throw new ArgumentException(
                     $"Could not find any record matching the document \"{fileName}\" in the database.");
 
-            // The document is stored in byte form in the FileContent column.
+            // The document is stored in byte form in the Data column.
             // Retrieve these bytes of the first matching record to a new buffer.
             byte[] buffer = (byte[]) dataTable.Rows[0]["Data"];
 
@@ -81,14 +87,14 @@ namespace DocsExamples.File_Formats_and_Conversions.Complex_examples_and_helpers
 
         //ExStart:DeleteFromDatabase
         //GistId:f8a622f8bc1cf3c2fa8a7a9be359faa2
-        public void DeleteFromDatabase(string fileName, OleDbConnection connection)
+        public void DeleteFromDatabase(string fileName, SqliteConnection connection)
         {
-            string commandString = "DELETE * FROM Documents WHERE Name='" + fileName + "'";
-            
-            OleDbCommand command = new OleDbCommand(commandString, connection);
+            string commandString = "DELETE FROM Documents WHERE Name=@Name";
+
+            SqliteCommand command = new SqliteCommand(commandString, connection);
+            command.Parameters.AddWithValue("@Name", fileName);
             command.ExecuteNonQuery();
         }
         //ExEnd:DeleteFromDatabase
-#endif
     }
 }

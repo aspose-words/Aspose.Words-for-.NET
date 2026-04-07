@@ -13,8 +13,10 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
+using Aspose.Pdf.Text;
 using Aspose.Words;
 using Aspose.Words.DigitalSignatures;
 using Aspose.Words.Drawing;
@@ -27,17 +29,15 @@ using Aspose.Words.Notes;
 using Aspose.Words.Rendering;
 using Aspose.Words.Replacing;
 using Aspose.Words.Saving;
+using Aspose.Words.Settings;
+using Aspose.Words.Shaping.HarfBuzz;
 using Aspose.Words.Tables;
 using Aspose.Words.Vba;
 using Aspose.Words.WebExtensions;
 using NUnit.Framework;
-using MemoryFontSource = Aspose.Words.Fonts.MemoryFontSource;
 using LoadOptions = Aspose.Words.Loading.LoadOptions;
-using Aspose.Words.Settings;
-using Aspose.Pdf.Text;
-using Aspose.Words.Shaping.HarfBuzz;
-using System.Net.Http;
-#if NET6_0_OR_GREATER
+using MemoryFontSource = Aspose.Words.Fonts.MemoryFontSource;
+#if NET5_0_OR_GREATER || __MOBILE__
 using SkiaSharp;
 #endif
 
@@ -182,7 +182,7 @@ namespace ApiExamples
                     Assert.That(image.Height, Is.EqualTo(1056));
                 }
             }
-#elif NET6_0_OR_GREATER
+#elif NET5_0_OR_GREATER
             using (MemoryStream stream = new MemoryStream())
             {
                 doc.Save(stream, SaveFormat.Bmp);
@@ -243,7 +243,7 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Pdf Document.pdf");
 
-            Assert.That(doc.Range.Text, Is.EqualTo("Heading 1\rHeading 1.1.1.1 Heading 1.1.1.2\rHeading 1.1.1.1.1.1.1.1.1 Heading 1.1.1.1.1.1.1.1.2\u000c"));
+            Assert.That(doc.Range.Text, Is.EqualTo("Heading 1\rHeading 1.1.1.1\rHeading 1.1.1.2\rHeading 1.1.1.1.1.1.1.1.1\rHeading 1.1.1.1.1.1.1.1.2\u000c"));
         }
 
         [Test]
@@ -2070,7 +2070,7 @@ namespace ApiExamples
             Assert.That(doc.WebExtensionTaskPanes.Count, Is.EqualTo(0));
 
             doc = new Document(ArtifactsDir + "Document.WebExtension.docx");
-            
+
             myScriptTaskPane = doc.WebExtensionTaskPanes[0];
             Assert.That(myScriptTaskPane.DockState, Is.EqualTo(TaskPaneDockState.Right));
             Assert.That(myScriptTaskPane.IsVisible, Is.True);
@@ -2223,7 +2223,7 @@ namespace ApiExamples
 
             doc.Watermark.SetImage(ImageDir + "Logo.jpg", imageWatermarkOptions);
 
-#elif NET6_0_OR_GREATER
+#elif NET5_0_OR_GREATER
             using (SKBitmap image = SKBitmap.Decode(ImageDir + "Logo.jpg"))
                 doc.Watermark.SetImage(image, imageWatermarkOptions);
 #endif
@@ -2693,6 +2693,46 @@ namespace ApiExamples
             //ExEnd:ExtractPagesWithOptions
 
             Assert.That(extractedDoc2.Range.Fields.Count, Is.EqualTo(2));
+        }
+
+        [Test]
+        public void AppendDocumentWithNewPage()
+        {
+            //ExStart:AppendDocumentWithNewPage
+            //GistId:0da8468118377c4860b28603bc95ffe6
+            //ExFor:ImportFormatOptions.AppendDocumentWithNewPage
+            //ExSummary:Shows how to preserve original section type.
+            Document dstDoc = new Document();
+            Document srcDoc = new Document();
+
+            srcDoc.FirstSection.PageSetup.SectionStart = SectionStart.Continuous;
+
+            ImportFormatOptions options = new ImportFormatOptions { AppendDocumentWithNewPage = false };
+            dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepSourceFormatting, options);
+
+            Assert.That(dstDoc.Sections[1].PageSetup.SectionStart, Is.EqualTo(SectionStart.Continuous));
+            //ExEnd:AppendDocumentWithNewPage
+        }
+
+        [Test]
+        public void DoclingJson()
+        {
+            //ExStart:DoclingJson
+            //GistId:0da8468118377c4860b28603bc95ffe6
+            //ExFor:DoclingSaveOptions
+            //ExFor:DoclingSaveOptions.SaveFormat
+            //ExFor:DoclingSaveOptions.RenderNonImageShapes
+            //ExSummary:Shows how to save a document into a Docling JSON format.
+            Document doc = new Document(MyDir + "Rendering.docx");
+
+            DoclingSaveOptions saveOptions = new DoclingSaveOptions();
+            saveOptions.SaveFormat = SaveFormat.Docling;
+            // Set to true to render non-image shapes and include them in the output.
+            // Set to false (default) to exclude non-image shapes from the output.
+            saveOptions.RenderNonImageShapes = true;
+
+            doc.Save(ArtifactsDir + "DoclingSaveOptions.DoclingJson.json", saveOptions);
+            //ExEnd:DoclingJson
         }
     }
 }

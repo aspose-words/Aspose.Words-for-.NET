@@ -7,7 +7,7 @@
 
 using System;
 using System.Data;
-using System.Data.OleDb;
+using Microsoft.Data.Sqlite;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -45,8 +45,10 @@ namespace ApiExamples
         /// <param name="filename">Local file system filename of the image file.</param>
         internal static void VerifyImage(int expectedWidth, int expectedHeight, string filename)
         {
+            PlatformID pid = Environment.OSVersion.Platform;
+            bool isWindows = (pid == PlatformID.Win32NT) || (pid == PlatformID.Win32S) ||
+                             (pid == PlatformID.Win32Windows) || (pid == PlatformID.WinCE);
             string ext = Path.GetExtension(filename).ToLower();
-            bool isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 
             if (isWindows && (ext == ".emf" || ext == ".wmf"))
             {
@@ -201,24 +203,23 @@ namespace ApiExamples
         /// <param name="sqlQuery">Microsoft.Jet.OLEDB.4.0-compliant SQL query.</param>
         internal static void TableMatchesQueryResult(Table expectedResult, string dbFilename, string sqlQuery)
         {
-            using (OleDbConnection connection = new OleDbConnection())
+            using (SqliteConnection connection = new SqliteConnection($"Data Source={dbFilename}"))
             {
-                connection.ConnectionString = $"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={dbFilename};";
                 connection.Open();
 
-                OleDbCommand command = connection.CreateCommand();
-                command.CommandText = sqlQuery;
-                OleDbDataReader reader = command.ExecuteReader(CommandBehavior.CloseConnection);
+                using (SqliteCommand command = new SqliteCommand(sqlQuery, connection))
+                using (SqliteDataReader reader = command.ExecuteReader())
+                {
+                    DataTable myDataTable = new DataTable();
+                    myDataTable.Load(reader);
 
-                DataTable myDataTable = new DataTable();
-                myDataTable.Load(reader);
+                    Assert.That(myDataTable.Rows.Count, Is.EqualTo(expectedResult.Rows.Count));
+                    Assert.That(myDataTable.Columns.Count, Is.EqualTo(expectedResult.Rows[0].Cells.Count));
 
-                Assert.That(myDataTable.Rows.Count, Is.EqualTo(expectedResult.Rows.Count));
-                Assert.That(myDataTable.Columns.Count, Is.EqualTo(expectedResult.Rows[0].Cells.Count));
-
-                for (int i = 0; i < myDataTable.Rows.Count; i++)
-                    for (int j = 0; j < myDataTable.Columns.Count; j++)
-                        Assert.That(myDataTable.Rows[i][j].ToString(), Is.EqualTo(expectedResult.Rows[i].Cells[j].GetText().Replace(ControlChar.Cell, string.Empty)));
+                    for (int i = 0; i < myDataTable.Rows.Count; i++)
+                        for (int j = 0; j < myDataTable.Columns.Count; j++)
+                            Assert.That(myDataTable.Rows[i][j].ToString(), Is.EqualTo(expectedResult.Rows[i].Cells[j].GetText().Replace(ControlChar.Cell, string.Empty)));
+                }
             }
         }
 
@@ -250,44 +251,43 @@ namespace ApiExamples
         /// <param name="onePagePerRow">True if the mail merge produced a document with one page per row in the data source.</param>
         internal static void MailMergeMatchesQueryResult(string dbFilename, string sqlQuery, Document doc, bool onePagePerRow)
         {
-            List<string[]> expectedStrings = new List<string[]>(); 
-            string connectionString = @"Provider = Microsoft.ACE.OLEDB.12.0; Data Source=" + dbFilename;
+            List<string[]> expectedStrings = new List<string[]>();
 
-            using (OleDbConnection connection = new OleDbConnection(connectionString))
+            using (SqliteConnection connection = new SqliteConnection($"Data Source={dbFilename}"))
             {
-                OleDbCommand command = new OleDbCommand(sqlQuery, connection);
-                command.CommandText = sqlQuery;
-
-                try
+                connection.Open();
+                using (SqliteCommand command = new SqliteCommand(sqlQuery, connection))
                 {
-                    connection.Open();
-                    using (OleDbDataReader reader = command.ExecuteReader())
+                    try
                     {
-                        while (reader.Read())
+                        using (SqliteDataReader reader = command.ExecuteReader())
                         {
-                            string[] row = new string[reader.FieldCount];
+                            while (reader.Read())
+                            {
+                                string[] row = new string[reader.FieldCount];
 
-                            for (int i = 0; i < reader.FieldCount; i++)
-                                switch (reader[i])
-                                {
-                                    case decimal d:
-                                        row[i] = d.ToString("G29");
-                                        break;
-                                    case string s:
-                                        row[i] = s.Trim().Replace("\n", string.Empty);
-                                        break;
-                                    default:
-                                        row[i] = string.Empty;
-                                        break;
-                                }
+                                for (int i = 0; i < reader.FieldCount; i++)
+                                    switch (reader[i])
+                                    {
+                                        case decimal d:
+                                            row[i] = d.ToString("G29");
+                                            break;
+                                        case string s:
+                                            row[i] = s.Trim().Replace("\n", string.Empty);
+                                            break;
+                                        default:
+                                            row[i] = string.Empty;
+                                            break;
+                                    }
 
-                            expectedStrings.Add(row);
+                                expectedStrings.Add(row);
+                            }
                         }
                     }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
                 }
             }
 

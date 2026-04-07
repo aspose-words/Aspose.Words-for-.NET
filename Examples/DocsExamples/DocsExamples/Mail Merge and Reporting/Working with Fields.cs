@@ -1,5 +1,5 @@
 ﻿using System.Data;
-using System.Data.OleDb;
+using Microsoft.Data.Sqlite;
 using System.Drawing;
 using System.IO;
 using Aspose.Words;
@@ -216,7 +216,6 @@ namespace DocsExamples.Mail_Merge_and_Reporting
             //ExEnd:MailMergeAndConditionalField
         }
 
-#if NET48 || JAVA
         [Test, Category("IgnoreOnJenkins")]
         public void MailMergeImageFromBlob()
         {
@@ -226,17 +225,17 @@ namespace DocsExamples.Mail_Merge_and_Reporting
 
             doc.MailMerge.FieldMergingCallback = new HandleMergeImageFieldFromBlob();
 
-            string connString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + DatabaseDir + "Northwind.accdb";
-            OleDbConnection conn = new OleDbConnection(connString);
-            conn.Open();
+            string connString = "Data Source=" + DatabaseDir + "Northwind.db";
+            using (SqliteConnection conn = new SqliteConnection(connString))
+            {
+                conn.Open();
 
-            OleDbCommand cmd = new OleDbCommand("SELECT * FROM Employees", conn);
-            IDataReader dataReader = cmd.ExecuteReader();
+                SqliteCommand cmd = new SqliteCommand("SELECT * FROM Employees", conn);
+                IDataReader dataReader = cmd.ExecuteReader();
 
-            doc.MailMerge.ExecuteWithRegions(dataReader, "Employees");
+                doc.MailMerge.ExecuteWithRegions(dataReader, "Employees");
+            }
 
-            conn.Close();
-            
             doc.Save(ArtifactsDir + "WorkingWithFields.MailMergeImageFromBlob.docx");
             //ExEnd:MailMergeImageFromBlob
         }
@@ -263,7 +262,6 @@ namespace DocsExamples.Mail_Merge_and_Reporting
             }
         }
         //ExEnd:HandleMergeImageFieldFromBlob
-#endif
 
         [Test]
         public void HandleMailMergeSwitches()

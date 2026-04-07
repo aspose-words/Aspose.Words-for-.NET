@@ -89,11 +89,9 @@ namespace ApiExamples
                         Console.WriteLine(line);
                         Assert.Pass();
                     }
-                    else
-                    {
-                        Assert.Fail();
-                    }
                 }
+
+                Assert.Fail();
             }
         }
 

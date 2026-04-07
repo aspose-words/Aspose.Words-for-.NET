@@ -5,8 +5,8 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
-using System.Drawing;
 using System.Globalization;
+using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading;
 using Aspose.Words;
@@ -14,10 +14,6 @@ using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
 using Aspose.Words.Loading;
 using NUnit.Framework;
-#if !NETFRAMEWORK
-using SkiaSharp;
-using Image = SkiaSharp.SKBitmap;
-#endif
 
 namespace ApiExamples
 {
@@ -434,16 +430,16 @@ namespace ApiExamples
                 SymbolRotation = "0"
             };
 
-            Image img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
-#if NETFRAMEWORK || JAVA
-            img.Save(ArtifactsDir + "FieldOptions.BarcodeGenerator.QR.jpg");
-#elif NET6_0_OR_GREATER
-            using (SKFileWStream fs = new SKFileWStream(ArtifactsDir + "FieldOptions.BarcodeGenerator.QR.jpg"))
+            using (Stream img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters))
             {
-                img.Encode(fs, SKEncodedImageFormat.Jpeg, 100);
+                using (FileStream fs = new FileStream(ArtifactsDir + "FieldOptions.BarcodeGenerator.QR.jpg", FileMode.Create))
+                {
+                    img.CopyTo(fs);
+                }
+
+                img.Position = 0;
+                builder.InsertImage(img);
             }
-#endif
-            builder.InsertImage(img);
 
             // 2 -  EAN13 barcode:
             barcodeParameters = new BarcodeParameters
@@ -455,16 +451,16 @@ namespace ApiExamples
                 FixCheckDigit = true
             };
 
-            img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
-#if NETFRAMEWORK || JAVA
-            img.Save(ArtifactsDir + "FieldOptions.BarcodeGenerator.EAN13.jpg");
-#elif NET6_0_OR_GREATER
-            using (SKFileWStream fs = new SKFileWStream(ArtifactsDir + "FieldOptions.BarcodeGenerator.EAN13.jpg"))
+            using (Stream img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters))
             {
-                img.Encode(fs, SKEncodedImageFormat.Jpeg, 100);
+                using (FileStream fs = new FileStream(ArtifactsDir + "FieldOptions.BarcodeGenerator.EAN13.jpg", FileMode.Create))
+                {
+                    img.CopyTo(fs);
+                }
+
+                img.Position = 0;
+                builder.InsertImage(img);
             }
-#endif
-            builder.InsertImage(img);
 
             // 3 -  CODE39 barcode:
             barcodeParameters = new BarcodeParameters
@@ -474,16 +470,16 @@ namespace ApiExamples
                 AddStartStopChar = true
             };
 
-            img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
-#if NETFRAMEWORK || JAVA
-            img.Save(ArtifactsDir + "FieldOptions.BarcodeGenerator.CODE39.jpg");
-#elif NET6_0_OR_GREATER
-            using (SKFileWStream fs = new SKFileWStream(ArtifactsDir + "FieldOptions.BarcodeGenerator.CODE39.jpg"))
+            using (Stream img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters))
             {
-                img.Encode(fs, SKEncodedImageFormat.Jpeg, 100);
+                using (FileStream fs = new FileStream(ArtifactsDir + "FieldOptions.BarcodeGenerator.CODE39.jpg", FileMode.Create))
+                {
+                    img.CopyTo(fs);
+                }
+
+                img.Position = 0;
+                builder.InsertImage(img);
             }
-#endif
-            builder.InsertImage(img);
 
             // 4 -  ITF14 barcode:
             barcodeParameters = new BarcodeParameters
@@ -493,16 +489,16 @@ namespace ApiExamples
                 CaseCodeStyle = "STD"
             };
 
-            img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
-#if NETFRAMEWORK || JAVA
-            img.Save(ArtifactsDir + "FieldOptions.BarcodeGenerator.ITF14.jpg");
-#elif NET6_0_OR_GREATER
-            using (SKFileWStream fs = new SKFileWStream(ArtifactsDir + "FieldOptions.BarcodeGenerator.ITF14.jpg"))
+            using (Stream img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters))
             {
-                img.Encode(fs, SKEncodedImageFormat.Jpeg, 100);
+                using (FileStream fs = new FileStream(ArtifactsDir + "FieldOptions.BarcodeGenerator.ITF14.jpg", FileMode.Create))
+                {
+                    img.CopyTo(fs);
+                }
+
+                img.Position = 0;
+                builder.InsertImage(img);
             }
-#endif            
-            builder.InsertImage(img);
 
             doc.Save(ArtifactsDir + "FieldOptions.BarcodeGenerator.docx");
             //ExEnd

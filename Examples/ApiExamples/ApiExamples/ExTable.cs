@@ -81,7 +81,7 @@ namespace ApiExamples
             builder.Write("Row 1, cell 2.");
             builder.EndTable();
 
-            // For every cell in the table, set the distance between its contents and each of its borders. 
+            // For every cell in the table, set the distance between its contents and each of its borders.
             // This table will maintain the minimum padding distance by wrapping text.
             table.LeftPadding = 30;
             table.RightPadding = 60;
@@ -754,19 +754,19 @@ namespace ApiExamples
             if (allowAutoFit)
             {
                 TestUtil.FileContainsString(
-                    "<td style=\"width:89.2pt; border-right-style:solid; border-right-width:0.75pt; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top; -aw-border-right:0.5pt single\">",
+                    "<td style=\"width:89.2pt; border-right-style:solid; border-right-width:0.75pt; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top; -aw-border-right:0.5pt single #000000\">",
                     ArtifactsDir + "Table.AllowAutoFitOnTable.html");
                 TestUtil.FileContainsString(
-                    "<td style=\"border-left-style:solid; border-left-width:0.75pt; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top; -aw-border-left:0.5pt single\">",
+                    "<td style=\"border-left-style:solid; border-left-width:0.75pt; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top; -aw-border-left:0.5pt single #000000\">",
                     ArtifactsDir + "Table.AllowAutoFitOnTable.html");
             }
             else
             {
                 TestUtil.FileContainsString(
-                    "<td style=\"width:89.2pt; border-right-style:solid; border-right-width:0.75pt; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top; -aw-border-right:0.5pt single\">",
+                    "<td style=\"width:89.2pt; border-right-style:solid; border-right-width:0.75pt; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top; -aw-border-right:0.5pt single #000000\">",
                     ArtifactsDir + "Table.AllowAutoFitOnTable.html");
                 TestUtil.FileContainsString(
-                    "<td style=\"width:7.2pt; border-left-style:solid; border-left-width:0.75pt; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top; -aw-border-left:0.5pt single\">",
+                    "<td style=\"width:7.2pt; border-left-style:solid; border-left-width:0.75pt; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top; -aw-border-left:0.5pt single #000000\">",
                     ArtifactsDir + "Table.AllowAutoFitOnTable.html");
             }
         }
@@ -901,9 +901,9 @@ namespace ApiExamples
 
             TestUtil.FileContainsString(
                 allowCellSpacing
-                    ? "<td style=\"border-style:solid; border-width:0.75pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:top; -aw-border:0.5pt single\">"
+                    ? "<td style=\"border-style:solid; border-width:0.75pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:top; -aw-border:0.5pt single #000000\">"
                     : "<td style=\"border-right-style:solid; border-right-width:0.75pt; border-bottom-style:solid; border-bottom-width:0.75pt; " +
-                      "padding-right:5.03pt; padding-left:5.03pt; vertical-align:top; -aw-border-bottom:0.5pt single; -aw-border-right:0.5pt single\">",
+                      "padding-right:5.03pt; padding-left:5.03pt; vertical-align:top; -aw-border-bottom:0.5pt single #000000; -aw-border-right:0.5pt single #000000\">",
                 ArtifactsDir + "Table.AllowCellSpacing.html");
         }
 
@@ -1282,7 +1282,6 @@ namespace ApiExamples
             //ExFor:Table.StyleName
             //ExFor:TableStyle
             //ExFor:TableStyle.AllowBreakAcrossPages
-            //ExFor:TableStyle.Bidi
             //ExFor:TableStyle.CellSpacing
             //ExFor:TableStyle.BottomPadding
             //ExFor:TableStyle.LeftPadding
@@ -1307,7 +1306,6 @@ namespace ApiExamples
  
             TableStyle tableStyle = (TableStyle)doc.Styles.Add(StyleType.Table, "MyTableStyle1");
             tableStyle.AllowBreakAcrossPages = true;
-            tableStyle.Bidi = true;
             tableStyle.CellSpacing = 5;
             tableStyle.BottomPadding = 20;
             tableStyle.LeftPadding = 5;
@@ -1317,8 +1315,10 @@ namespace ApiExamples
             tableStyle.Borders.Color = Color.Blue;
             tableStyle.Borders.LineStyle = LineStyle.DotDash;
             tableStyle.VerticalAlignment = CellVerticalAlignment.Center;
-
+            
             table.Style = tableStyle;
+            
+            table.Bidi = true;
 
             // Setting the style properties of a table may affect the properties of the table itself.
             Assert.That(table.Bidi, Is.True);
@@ -1344,7 +1344,6 @@ namespace ApiExamples
             tableStyle = (TableStyle)doc.Styles["MyTableStyle1"];
 
             Assert.That(tableStyle.AllowBreakAcrossPages, Is.True);
-            Assert.That(tableStyle.Bidi, Is.True);
             Assert.That(tableStyle.CellSpacing, Is.EqualTo(5.0d));
             Assert.That(tableStyle.BottomPadding, Is.EqualTo(20.0d));
             Assert.That(tableStyle.LeftPadding, Is.EqualTo(5.0d));
