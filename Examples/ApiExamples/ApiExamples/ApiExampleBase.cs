@@ -227,7 +227,7 @@ namespace ApiExamples
             ImageDir = new Uri(new Uri(CodeBaseDir), @"Data/Images/").LocalPath;
             DatabaseDir = new Uri(new Uri(CodeBaseDir), @"Data/Database/").LocalPath;
             FontsDir = new Uri(new Uri(CodeBaseDir), @"Data/MyFonts/").LocalPath;
-            ImageUrl = new Uri("https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png").AbsoluteUri;
+            ImageUrl = new Uri("https://httpbin.org/image/png").AbsoluteUri;
         }
     }
 }
