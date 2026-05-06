@@ -5,19 +5,20 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
-using System;
+using Aspose.Pdf;
 using Aspose.Words;
 using Aspose.Words.BuildingBlocks;
 using Aspose.Words.Drawing;
+using Aspose.Words.Loading;
+using Aspose.Words.Themes;
 using NUnit.Framework;
+using System;
+using System.IO;
+using System.Net;
+using System.Net.Http;
 using Document = Aspose.Words.Document;
 using IResourceLoadingCallback = Aspose.Words.Loading.IResourceLoadingCallback;
 using SaveFormat = Aspose.Words.SaveFormat;
-using System.IO;
-using Aspose.Words.Loading;
-using System.Net;
-using Aspose.Pdf;
-using System.Net.Http;
 
 namespace ApiExamples
 {
@@ -276,6 +277,36 @@ namespace ApiExamples
                 Assert.That(shape.HasImage, Is.True);
                 Assert.That(shape.ImageData.ImageBytes, Is.Not.Empty);
             }
+        }
+
+        [Test]
+        public void ImportNodeWithResolveThemeColors()
+        {
+            //ExStart:ImportNodeWithResolveThemeColors
+            //GistId:0c1fc06a3be66ff29f2a4483a931c1eb
+            //ExFor:DocumentBase.ImportNode(Node, Boolean, ImportFormatMode, ImportFormatOptions)
+            //ExFor:ImportFormatOptions.ResolveThemeColors
+            //ExSummary:Shows how to import a node with resolving source theme colors of shapes.
+            Document srcDoc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(srcDoc);
+
+            // Move to the primary footer and insert a shape that uses theme colors.
+            builder.MoveToHeaderFooter(HeaderFooterType.FooterPrimary);
+            Shape shape = builder.InsertShape(ShapeType.Rectangle, 100, 50);
+            shape.Stroke.ForeThemeColor = ThemeColor.Dark1;
+
+            Document dstDoc = new Document();
+            // Import the source footer into the destination document with theme colors resolved,
+            // so the shape preserves its actual color from the source document.
+            Aspose.Words.HeaderFooter footer = srcDoc.FirstSection.HeadersFooters[HeaderFooterType.FooterPrimary];
+
+            ImportFormatOptions options = new ImportFormatOptions { ResolveThemeColors = true };
+            Aspose.Words.HeaderFooter importedFooter = (Aspose.Words.HeaderFooter)dstDoc.ImportNode(footer, true, ImportFormatMode.KeepSourceFormatting, options);
+
+            dstDoc.FirstSection.HeadersFooters.Add(importedFooter);
+
+            dstDoc.Save(ArtifactsDir + "DocumentBase.ImportNodeWithResolveThemeColors.docx");
+            //ExEnd:ImportNodeWithResolveThemeColors
         }
     }
 }

@@ -79,7 +79,7 @@ namespace ApiExamples
 
             Assert.That(shapes.Count, Is.EqualTo(2));
             TestUtil.VerifyImageInShape(400, 400, ImageType.Jpeg, (Shape)shapes[0]);
-            TestUtil.VerifyImageInShape(272, 92, ImageType.Png, (Shape)shapes[1]);
+            TestUtil.VerifyImageInShape(100, 100, ImageType.Png, (Shape)shapes[1]);
         }
 
         [Test]
