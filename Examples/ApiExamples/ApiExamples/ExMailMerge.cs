@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -114,12 +114,12 @@ namespace ApiExamples
             TestUtil.MailMergeMatchesArray(new[] { new[] { "James Bond", "MI5 Headquarters", "Milbank", "London" } }, doc, true);
         }
 
-        //ExStart
-        //ExFor:MailMerge.ExecuteADO(Object)
-        //ExSummary:Shows how to run a mail merge with data from an ADO dataset.
-        [Test, Ignore("Run only under x86")] //ExSkip
+        [Test, Ignore("Run only under x86")]
         public void ExecuteADO()
         {
+            //ExStart
+            //ExFor:MailMerge.ExecuteADO(Object)
+            //ExSummary:Shows how to run a mail merge with data from an ADO dataset.
             Document doc = CreateSourceDocADOMailMerge();
 
             // To work with ADO DataSets, we will need to add a reference to the Microsoft ActiveX Data Objects library,
@@ -143,8 +143,12 @@ namespace ApiExamples
             doc.MailMerge.ExecuteADO(recordset);
             doc.Save(ArtifactsDir + "MailMerge.ExecuteADO.docx");
             TestUtil.MailMergeMatchesQueryResult(DatabaseDir + "Northwind.db", command, doc, true); //ExSkip
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:MailMerge.ExecuteADO(Object)
+        //ExSummary:Shows how to run a mail merge with data from an ADO dataset (CreateSourceDocADOMailMerge).
         /// <summary>
         /// Create a blank document and populate it with MERGEFIELDS that will accept data when a mail merge is executed.
         /// </summary>
@@ -164,12 +168,12 @@ namespace ApiExamples
         }
         //ExEnd
 
-        //ExStart
-        //ExFor:MailMerge.ExecuteWithRegionsADO(Object,String)
-        //ExSummary:Shows how to run a mail merge with multiple regions, compiled with data from an ADO dataset.
-        [Test, Ignore("Run only under x86")] //ExSkip
+        [Test, Ignore("Run only under x86")]
         public void ExecuteWithRegionsADO()
         {
+            //ExStart
+            //ExFor:MailMerge.ExecuteWithRegionsADO(Object,String)
+            //ExSummary:Shows how to run a mail merge with multiple regions, compiled with data from an ADO dataset.
             Document doc = CreateSourceDocADOMailMergeWithRegions();
 
             // To work with ADO DataSets, we will need to add a reference to the Microsoft ActiveX Data Objects library,
@@ -204,8 +208,12 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "MailMerge.ExecuteWithRegionsADO.docx");
 
             TestUtil.MailMergeMatchesQueryResultMultiple(DatabaseDir + "Northwind.db", new[] { "SELECT FirstName, LastName, City FROM Employees", "SELECT ContactName, Address, City FROM Customers" }, new Document(ArtifactsDir + "MailMerge.ExecuteWithRegionsADO.docx"), false); //ExSkip
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:MailMerge.ExecuteWithRegionsADO(Object,String)
+        //ExSummary:Shows how to run a mail merge with multiple regions, compiled with data from an ADO dataset (CreateSourceDocADOMailMergeWithRegions).
         /// <summary>
         /// Create a document with two mail merge regions.
         /// </summary>
@@ -238,16 +246,16 @@ namespace ApiExamples
         //ExEnd
 #endif
 
-        //ExStart
-        //ExFor:Document
-        //ExFor:MailMerge
-        //ExFor:MailMerge.Execute(DataTable)
-        //ExFor:MailMerge.Execute(DataRow)
-        //ExFor:Document.MailMerge
-        //ExSummary:Shows how to execute a mail merge with data from a DataTable.
-        [Test] //ExSkip
+        [Test]
         public void ExecuteDataTable()
         {
+            //ExStart
+            //ExFor:Document
+            //ExFor:MailMerge
+            //ExFor:MailMerge.Execute(DataTable)
+            //ExFor:MailMerge.Execute(DataRow)
+            //ExFor:Document.MailMerge
+            //ExSummary:Shows how to execute a mail merge with data from a DataTable.
             DataTable table = new DataTable("Test");
             table.Columns.Add("CustomerName");
             table.Columns.Add("Address");
@@ -269,8 +277,16 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "MailMerge.ExecuteDataTable.OneRow.docx");
             TestADODataTable(new Document(ArtifactsDir + "MailMerge.ExecuteDataTable.WholeTable.docx"), new Document(ArtifactsDir + "MailMerge.ExecuteDataTable.OneRow.docx"), table); //ExSkip
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:Document
+        //ExFor:MailMerge
+        //ExFor:MailMerge.Execute(DataTable)
+        //ExFor:MailMerge.Execute(DataRow)
+        //ExFor:Document.MailMerge
+        //ExSummary:Shows how to execute a mail merge with data from a DataTable (CreateSourceDocExecuteDataTable).
         /// <summary>
         /// Creates a mail merge source document.
         /// </summary>
@@ -335,12 +351,12 @@ namespace ApiExamples
             TestUtil.MailMergeMatchesDataTable(view.ToTable(), new Document(ArtifactsDir + "MailMerge.ExecuteDataView.docx"), true);
         }
 
-        //ExStart
-        //ExFor:MailMerge.ExecuteWithRegions(DataSet)
-        //ExSummary:Shows how to execute a nested mail merge with two merge regions and two data tables.
-        [Test]//ExSkip
+        [Test]
         public void ExecuteWithRegionsNested()
         {
+            //ExStart
+            //ExFor:MailMerge.ExecuteWithRegions(DataSet)
+            //ExSummary:Shows how to execute a nested mail merge with two merge regions and two data tables.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -386,8 +402,12 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "MailMerge.ExecuteWithRegionsNested.docx");
             TestUtil.MailMergeMatchesDataSet(customersAndOrders, new Document(ArtifactsDir + "MailMerge.ExecuteWithRegionsNested.docx"), false); //ExSkip
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:MailMerge.ExecuteWithRegions(DataSet)
+        //ExSummary:Shows how to execute a nested mail merge with two merge regions and two data tables (CreateDataSet).
         /// <summary>
         /// Generates a data set that has two data tables named "Customers" and "Orders", with a one-to-many relationship on the "CustomerID" column.
         /// </summary>
@@ -538,13 +558,13 @@ namespace ApiExamples
             //ExEnd
         }
 
-        //ExStart
-        //ExFor:MailMerge.MergeDuplicateRegions
-        //ExSummary:Shows how to work with duplicate mail merge regions.
-        [TestCase(true)] //ExSkip
-        [TestCase(false)] //ExSkip
+        [TestCase(true)]
+        [TestCase(false)]
         public void MergeDuplicateRegions(bool mergeDuplicateRegions)
         {
+            //ExStart
+            //ExFor:MailMerge.MergeDuplicateRegions
+            //ExSummary:Shows how to work with duplicate mail merge regions.
             Document doc = CreateSourceDocMergeDuplicateRegions();
             DataTable dataTable = CreateSourceTableMergeDuplicateRegions();
 
@@ -558,8 +578,12 @@ namespace ApiExamples
             doc.MailMerge.ExecuteWithRegions(dataTable);
             doc.Save(ArtifactsDir + "MailMerge.MergeDuplicateRegions.docx");
             TestMergeDuplicateRegions(dataTable, doc, mergeDuplicateRegions); //ExSkip
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:MailMerge.MergeDuplicateRegions
+        //ExSummary:Shows how to work with duplicate mail merge regions (CreateSourceDocMergeDuplicateRegions).
         /// <summary>
         /// Returns a document that contains two duplicate mail merge regions (sharing the same name in the "TableStart/End" tags).
         /// </summary>
@@ -605,14 +629,14 @@ namespace ApiExamples
             }
         }
 
-        //ExStart
-        //ExFor:MailMerge.PreserveUnusedTags
-        //ExFor:MailMerge.UseNonMergeFields
-        //ExSummary:Shows how to preserve the appearance of alternative mail merge tags that go unused during a mail merge. 
-        [TestCase(false)] //ExSkip
-        [TestCase(true)] //ExSkip
+        [TestCase(false)]
+        [TestCase(true)]
         public void PreserveUnusedTags(bool preserveUnusedTags)
         {
+            //ExStart
+            //ExFor:MailMerge.PreserveUnusedTags
+            //ExFor:MailMerge.UseNonMergeFields
+            //ExSummary:Shows how to preserve the appearance of alternative mail merge tags that go unused during a mail merge. 
             Document doc = CreateSourceDocWithAlternativeMergeFields();
             DataTable dataTable = CreateSourceTablePreserveUnusedTags();
 
@@ -636,8 +660,13 @@ namespace ApiExamples
             else
                 Assert.That(doc.Range.Fields.Count(f => f.Type == FieldType.FieldMergeField), Is.EqualTo(1));
             TestUtil.MailMergeMatchesDataTable(dataTable, doc, true); //ExSkip
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:MailMerge.PreserveUnusedTags
+        //ExFor:MailMerge.UseNonMergeFields
+        //ExSummary:Shows how to preserve the appearance of alternative mail merge tags that go unused during a mail merge (CreateSourceDocWithAlternativeMergeFields).
         /// <summary>
         /// Create a document and add two plaintext tags that may act as MERGEFIELDs during a mail merge.
         /// </summary>
@@ -668,13 +697,13 @@ namespace ApiExamples
         }
         //ExEnd
         
-        //ExStart
-        //ExFor:MailMerge.MergeWholeDocument
-        //ExSummary:Shows the relationship between mail merges with regions, and field updating.
-        [TestCase(false)] //ExSkip
-        [TestCase(true)] //ExSkip
+        [TestCase(false)]
+        [TestCase(true)]
         public void MergeWholeDocument(bool mergeWholeDocument)
         {
+            //ExStart
+            //ExFor:MailMerge.MergeWholeDocument
+            //ExSummary:Shows the relationship between mail merges with regions, and field updating.
             Document doc = CreateSourceDocMergeWholeDocument();
             DataTable dataTable = CreateSourceTableMergeWholeDocument();
 
@@ -692,8 +721,12 @@ namespace ApiExamples
             Assert.That(doc.GetText().Contains("This QUOTE field is inside the \"MyTable\" merge region."), Is.True);
             Assert.That(doc.GetText().Contains("This QUOTE field is outside of the \"MyTable\" merge region."), Is.EqualTo(mergeWholeDocument));
             TestUtil.MailMergeMatchesDataTable(dataTable, doc, true); //ExSkip
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:MailMerge.MergeWholeDocument
+        //ExSummary:Shows the relationship between mail merges with regions, and field updating (CreateSourceDocMergeWholeDocument).
         /// <summary>
         /// Create a document with a mail merge region that belongs to a data source named "MyTable".
         /// Insert one QUOTE field inside this region, and one more outside it.
@@ -732,13 +765,13 @@ namespace ApiExamples
         }
         //ExEnd
 
-        //ExStart
-        //ExFor:MailMerge.UseWholeParagraphAsRegion
-        //ExSummary:Shows the relationship between mail merge regions and paragraphs.
-        [TestCase(false)] //ExSkip
-        [TestCase(true)] //ExSkip
+        [TestCase(false)]
+        [TestCase(true)]
         public void UseWholeParagraphAsRegion(bool useWholeParagraphAsRegion)
         {
+            //ExStart
+            //ExFor:MailMerge.UseWholeParagraphAsRegion
+            //ExSummary:Shows the relationship between mail merge regions and paragraphs.
             Document doc = CreateSourceDocWithNestedMergeRegions();
             DataTable dataTable = CreateSourceTableDataTableForOneRegion();
 
@@ -760,8 +793,12 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "MailMerge.UseWholeParagraphAsRegion.docx");
             if (!useWholeParagraphAsRegion) //ExSkip
                 TestUtil.MailMergeMatchesDataTable(dataTable, new Document(ArtifactsDir + "MailMerge.UseWholeParagraphAsRegion.docx"), true); //ExSkip
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:MailMerge.UseWholeParagraphAsRegion
+        //ExSummary:Shows the relationship between mail merge regions and paragraphs (CreateSourceDocWithNestedMergeRegions).
         /// <summary>
         /// Create a document with two mail merge regions sharing one paragraph.
         /// </summary>
@@ -1021,21 +1058,21 @@ namespace ApiExamples
             Assert.That(doc.GetText(), Is.EqualTo(resultText));
         }
 
-        //ExStart
-        //ExFor:MailMerge.MappedDataFields
-        //ExFor:MappedDataFieldCollection
-        //ExFor:MappedDataFieldCollection.Add
-        //ExFor:MappedDataFieldCollection.Clear
-        //ExFor:MappedDataFieldCollection.ContainsKey(String)
-        //ExFor:MappedDataFieldCollection.ContainsValue(String)
-        //ExFor:MappedDataFieldCollection.Count
-        //ExFor:MappedDataFieldCollection.GetEnumerator
-        //ExFor:MappedDataFieldCollection.Item(String)
-        //ExFor:MappedDataFieldCollection.Remove(String)
-        //ExSummary:Shows how to map data columns and MERGEFIELDs with different names so the data is transferred between them during a mail merge.
-        [Test] //ExSkip
+        [Test]
         public void MappedDataFieldCollection()
         {
+            //ExStart
+            //ExFor:MailMerge.MappedDataFields
+            //ExFor:MappedDataFieldCollection
+            //ExFor:MappedDataFieldCollection.Add
+            //ExFor:MappedDataFieldCollection.Clear
+            //ExFor:MappedDataFieldCollection.ContainsKey(String)
+            //ExFor:MappedDataFieldCollection.ContainsValue(String)
+            //ExFor:MappedDataFieldCollection.Count
+            //ExFor:MappedDataFieldCollection.GetEnumerator
+            //ExFor:MappedDataFieldCollection.Item(String)
+            //ExFor:MappedDataFieldCollection.Remove(String)
+            //ExSummary:Shows how to map data columns and MERGEFIELDs with different names so the data is transferred between them during a mail merge.
             Document doc = CreateSourceDocMappedDataFields();
             DataTable dataTable = CreateSourceTableMappedDataFields();
 
@@ -1079,8 +1116,21 @@ namespace ApiExamples
 
             Assert.That(mappedDataFields.Count, Is.EqualTo(0));
             TestUtil.MailMergeMatchesDataTable(dataTable, new Document(ArtifactsDir + "MailMerge.MappedDataFieldCollection.docx"), true); //ExSkip
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:MailMerge.MappedDataFields
+        //ExFor:MappedDataFieldCollection
+        //ExFor:MappedDataFieldCollection.Add
+        //ExFor:MappedDataFieldCollection.Clear
+        //ExFor:MappedDataFieldCollection.ContainsKey(String)
+        //ExFor:MappedDataFieldCollection.ContainsValue(String)
+        //ExFor:MappedDataFieldCollection.Count
+        //ExFor:MappedDataFieldCollection.GetEnumerator
+        //ExFor:MappedDataFieldCollection.Item(String)
+        //ExFor:MappedDataFieldCollection.Remove(String)
+        //ExSummary:Shows how to map data columns and MERGEFIELDs with different names so the data is transferred between them during a mail merge (CreateSourceDocMappedDataFields).
         /// <summary>
         /// Create a document with 2 MERGEFIELDs, one of which does not have a
         /// corresponding column in the data table from the method below.
@@ -1243,14 +1293,14 @@ namespace ApiExamples
             //ExEnd
         }
 
-        //ExStart
-        //ExFor:MailMerge.MailMergeCallback
-        //ExFor:IMailMergeCallback
-        //ExFor:IMailMergeCallback.TagsReplaced
-        //ExSummary:Shows how to define custom logic for handling events during mail merge.
-        [Test] //ExSkip
+        [Test]
         public void Callback()
         {
+            //ExStart
+            //ExFor:MailMerge.MailMergeCallback
+            //ExFor:IMailMergeCallback
+            //ExFor:IMailMergeCallback.TagsReplaced
+            //ExSummary:Shows how to define custom logic for handling events during mail merge.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -1276,8 +1326,14 @@ namespace ApiExamples
             doc.MailMerge.Execute(table);
 
             Assert.That(counter.TagsReplacedCount, Is.EqualTo(1));
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:MailMerge.MailMergeCallback
+        //ExFor:IMailMergeCallback
+        //ExFor:IMailMergeCallback.TagsReplaced
+        //ExSummary:Shows how to define custom logic for handling events during mail merge (MailMergeTagReplacementCounter).
         /// <summary>
         /// Counts the number of times a mail merge replaces mail merge tags that it could not fill with data with MERGEFIELDs.
         /// </summary>

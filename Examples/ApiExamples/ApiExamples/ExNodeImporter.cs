@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -73,15 +73,15 @@ namespace ApiExamples
             //ExEnd
         }
 
-        //ExStart
-        //ExFor:Paragraph.IsEndOfSection
-        //ExFor:NodeImporter
-        //ExFor:NodeImporter.#ctor(DocumentBase, DocumentBase, ImportFormatMode)
-        //ExFor:NodeImporter.ImportNode(Node, Boolean)
-        //ExSummary:Shows how to insert the contents of one document to a bookmark in another document.
-        [Test]//ExSkip
+        [Test]
         public void InsertAtBookmark()
         {
+            //ExStart
+            //ExFor:Paragraph.IsEndOfSection
+            //ExFor:NodeImporter
+            //ExFor:NodeImporter.#ctor(DocumentBase, DocumentBase, ImportFormatMode)
+            //ExFor:NodeImporter.ImportNode(Node, Boolean)
+            //ExSummary:Shows how to insert the contents of one document to a bookmark in another document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -101,8 +101,15 @@ namespace ApiExamples
 
             Assert.That(doc.GetText().Trim(), Is.EqualTo("We will insert a document here: " +
                             "\rHello world!"));
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:Paragraph.IsEndOfSection
+        //ExFor:NodeImporter
+        //ExFor:NodeImporter.#ctor(DocumentBase, DocumentBase, ImportFormatMode)
+        //ExFor:NodeImporter.ImportNode(Node, Boolean)
+        //ExSummary:Shows how to insert the contents of one document to a bookmark in another document (InsertDocument).
         /// <summary>
         /// Inserts the contents of a document after the specified node.
         /// </summary>

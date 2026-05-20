@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -438,20 +438,20 @@ namespace ApiExamples
             //ExEnd
         }
 
-        //ExStart
-        //ExFor:Range.Fields
-        //ExFor:INodeChangingCallback
-        //ExFor:INodeChangingCallback.NodeInserting
-        //ExFor:INodeChangingCallback.NodeInserted
-        //ExFor:INodeChangingCallback.NodeRemoving
-        //ExFor:INodeChangingCallback.NodeRemoved
-        //ExFor:NodeChangingArgs
-        //ExFor:NodeChangingArgs.Node
-        //ExFor:DocumentBase.NodeChangingCallback
-        //ExSummary:Shows how customize node changing with a callback.
-        [Test] //ExSkip
+        [Test]
         public void FontChangeViaCallback()
         {
+            //ExStart
+            //ExFor:Range.Fields
+            //ExFor:INodeChangingCallback
+            //ExFor:INodeChangingCallback.NodeInserting
+            //ExFor:INodeChangingCallback.NodeInserted
+            //ExFor:INodeChangingCallback.NodeRemoving
+            //ExFor:INodeChangingCallback.NodeRemoved
+            //ExFor:NodeChangingArgs
+            //ExFor:NodeChangingArgs.Node
+            //ExFor:DocumentBase.NodeChangingCallback
+            //ExSummary:Shows how customize node changing with a callback.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -469,8 +469,20 @@ namespace ApiExamples
 
             Console.WriteLine(callback.GetLog());
             TestFontChangeViaCallback(callback.GetLog()); //ExSkip
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:Range.Fields
+        //ExFor:INodeChangingCallback
+        //ExFor:INodeChangingCallback.NodeInserting
+        //ExFor:INodeChangingCallback.NodeInserted
+        //ExFor:INodeChangingCallback.NodeRemoving
+        //ExFor:INodeChangingCallback.NodeRemoved
+        //ExFor:NodeChangingArgs
+        //ExFor:NodeChangingArgs.Node
+        //ExFor:DocumentBase.NodeChangingCallback
+        //ExSummary:Shows how customize node changing with a callback (HandleNodeChangingFontChanger).
         /// <summary>
         /// Logs the date and time of each node insertion and removal.
         /// Sets a custom font name/size for the text contents of Run nodes.

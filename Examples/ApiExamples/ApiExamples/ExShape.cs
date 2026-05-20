@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -1890,6 +1890,34 @@ namespace ApiExamples
             TestUtil.VerifyShape(ShapeType.DiagonalCornersRounded, "DiagonalCornersRounded 100004", 50.0d, 50.0d, 0.0d, 0.0d, shapes[1]);
         }
 
+        [Test]
+        public void VisitShapes()
+        {
+            //ExStart
+            //ExFor:Shape.Accept(DocumentVisitor)
+            //ExFor:Shape.AcceptStart(DocumentVisitor)
+            //ExFor:Shape.AcceptEnd(DocumentVisitor)
+            //ExFor:Shape.Chart
+            //ExFor:Shape.ExtrusionEnabled
+            //ExFor:Shape.Filled
+            //ExFor:Shape.HasChart
+            //ExFor:Shape.OleFormat
+            //ExFor:Shape.ShadowEnabled
+            //ExFor:Shape.StoryType
+            //ExFor:Shape.StrokeColor
+            //ExFor:Shape.Stroked
+            //ExFor:Shape.StrokeWeight
+            //ExSummary:Shows how to iterate over all the shapes in a document.
+            Document doc = new Document(MyDir + "Revision shape.docx");
+            Assert.That(doc.GetChildNodes(NodeType.Shape, true).Count, Is.EqualTo(2)); //ExSkip
+
+            ShapeAppearancePrinter visitor = new ShapeAppearancePrinter();
+            doc.Accept(visitor);
+
+            Console.WriteLine(visitor.GetText());
+            //ExEnd
+        }
+
         //ExStart
         //ExFor:Shape.Accept(DocumentVisitor)
         //ExFor:Shape.AcceptStart(DocumentVisitor)
@@ -1904,19 +1932,7 @@ namespace ApiExamples
         //ExFor:Shape.StrokeColor
         //ExFor:Shape.Stroked
         //ExFor:Shape.StrokeWeight
-        //ExSummary:Shows how to iterate over all the shapes in a document.
-        [Test] //ExSkip
-        public void VisitShapes()
-        {
-            Document doc = new Document(MyDir + "Revision shape.docx");
-            Assert.That(doc.GetChildNodes(NodeType.Shape, true).Count, Is.EqualTo(2)); //ExSkip
-
-            ShapeAppearancePrinter visitor = new ShapeAppearancePrinter();
-            doc.Accept(visitor);
-
-            Console.WriteLine(visitor.GetText());
-        }
-
+        //ExSummary:Shows how to iterate over all the shapes in a document (ShapeAppearancePrinter).
         /// <summary>
         /// Logs appearance-related information about visited shapes.
         /// </summary>
@@ -2395,35 +2411,35 @@ namespace ApiExamples
             Assert.That(shape.GetText().Trim(), Is.EqualTo("Hello world!"));
         }
 
-        //ExStart
-        //ExFor:Shape.TextPath
-        //ExFor:ShapeBase.IsWordArt
-        //ExFor:TextPath
-        //ExFor:TextPath.Bold
-        //ExFor:TextPath.FitPath
-        //ExFor:TextPath.FitShape
-        //ExFor:TextPath.FontFamily
-        //ExFor:TextPath.Italic
-        //ExFor:TextPath.Kerning
-        //ExFor:TextPath.On
-        //ExFor:TextPath.ReverseRows
-        //ExFor:TextPath.RotateLetters
-        //ExFor:TextPath.SameLetterHeights
-        //ExFor:TextPath.Shadow
-        //ExFor:TextPath.SmallCaps
-        //ExFor:TextPath.Spacing
-        //ExFor:TextPath.StrikeThrough
-        //ExFor:TextPath.Text
-        //ExFor:TextPath.TextPathAlignment
-        //ExFor:TextPath.Trim
-        //ExFor:TextPath.Underline
-        //ExFor:TextPath.XScale
-        //ExFor:TextPath.Size
-        //ExFor:TextPathAlignment
-        //ExSummary:Shows how to work with WordArt.
-        [Test] //ExSkip
+        [Test]
         public void InsertTextPaths()
         {
+            //ExStart
+            //ExFor:Shape.TextPath
+            //ExFor:ShapeBase.IsWordArt
+            //ExFor:TextPath
+            //ExFor:TextPath.Bold
+            //ExFor:TextPath.FitPath
+            //ExFor:TextPath.FitShape
+            //ExFor:TextPath.FontFamily
+            //ExFor:TextPath.Italic
+            //ExFor:TextPath.Kerning
+            //ExFor:TextPath.On
+            //ExFor:TextPath.ReverseRows
+            //ExFor:TextPath.RotateLetters
+            //ExFor:TextPath.SameLetterHeights
+            //ExFor:TextPath.Shadow
+            //ExFor:TextPath.SmallCaps
+            //ExFor:TextPath.Spacing
+            //ExFor:TextPath.StrikeThrough
+            //ExFor:TextPath.Text
+            //ExFor:TextPath.TextPathAlignment
+            //ExFor:TextPath.Trim
+            //ExFor:TextPath.Underline
+            //ExFor:TextPath.XScale
+            //ExFor:TextPath.Size
+            //ExFor:TextPathAlignment
+            //ExSummary:Shows how to work with WordArt.
             Document doc = new Document();
 
             // Insert a WordArt object to display text in a shape that we can re-size and move by using the mouse in Microsoft Word.
@@ -2489,8 +2505,35 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Shape.InsertTextPaths.docx");
             TestInsertTextPaths(ArtifactsDir + "Shape.InsertTextPaths.docx"); //ExSkip
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:Shape.TextPath
+        //ExFor:ShapeBase.IsWordArt
+        //ExFor:TextPath
+        //ExFor:TextPath.Bold
+        //ExFor:TextPath.FitPath
+        //ExFor:TextPath.FitShape
+        //ExFor:TextPath.FontFamily
+        //ExFor:TextPath.Italic
+        //ExFor:TextPath.Kerning
+        //ExFor:TextPath.On
+        //ExFor:TextPath.ReverseRows
+        //ExFor:TextPath.RotateLetters
+        //ExFor:TextPath.SameLetterHeights
+        //ExFor:TextPath.Shadow
+        //ExFor:TextPath.SmallCaps
+        //ExFor:TextPath.Spacing
+        //ExFor:TextPath.StrikeThrough
+        //ExFor:TextPath.Text
+        //ExFor:TextPath.TextPathAlignment
+        //ExFor:TextPath.Trim
+        //ExFor:TextPath.Underline
+        //ExFor:TextPath.XScale
+        //ExFor:TextPath.Size
+        //ExFor:TextPathAlignment
+        //ExSummary:Shows how to work with WordArt (AppendWordArt).
         /// <summary>
         /// Insert a new paragraph with a WordArt shape inside it.
         /// </summary>

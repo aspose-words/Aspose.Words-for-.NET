@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -71,16 +71,16 @@ namespace ApiExamples
             //ExEnd
         }
 
-        //ExStart
-        //ExFor:MarkdownSaveOptions
-        //ExFor:MarkdownSaveOptions.#ctor
-        //ExFor:MarkdownSaveOptions.ImageSavingCallback
-        //ExFor:MarkdownSaveOptions.SaveFormat
-        //ExFor:IImageSavingCallback
-        //ExSummary:Shows how to rename the image name during saving into Markdown document.
-        [Test] //ExSkip
+        [Test]
         public void RenameImages()
         {
+            //ExStart
+            //ExFor:MarkdownSaveOptions
+            //ExFor:MarkdownSaveOptions.#ctor
+            //ExFor:MarkdownSaveOptions.ImageSavingCallback
+            //ExFor:MarkdownSaveOptions.SaveFormat
+            //ExFor:IImageSavingCallback
+            //ExSummary:Shows how to rename the image name during saving into Markdown document.
             Document doc = new Document(MyDir + "Rendering.docx");
 
             MarkdownSaveOptions saveOptions = new MarkdownSaveOptions();
@@ -99,8 +99,16 @@ namespace ApiExamples
             Assert.That(Directory.GetFiles(ArtifactsDir)
                     .Where(s => s.StartsWith(ArtifactsDir + "MarkdownSaveOptions.HandleDocument.md shape"))
                     .Count(f => f.EndsWith(".png")), Is.EqualTo(8));
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:MarkdownSaveOptions
+        //ExFor:MarkdownSaveOptions.#ctor
+        //ExFor:MarkdownSaveOptions.ImageSavingCallback
+        //ExFor:MarkdownSaveOptions.SaveFormat
+        //ExFor:IImageSavingCallback
+        //ExSummary:Shows how to rename the image name during saving into Markdown document (SavedImageRename).
         /// <summary>
         /// Renames saved images that are produced when an Markdown document is saved.
         /// </summary>

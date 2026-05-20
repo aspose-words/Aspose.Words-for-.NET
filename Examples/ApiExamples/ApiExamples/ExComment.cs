@@ -165,27 +165,27 @@ namespace ApiExamples
             Assert.That(doc.FirstSection.Body.FirstParagraph.Runs[0].Text, Is.EqualTo("Hello world!"));
         }
 
-        //ExStart
-        //ExFor:Comment.Done
-        //ExFor:Comment.#ctor(DocumentBase)
-        //ExFor:Comment.Accept(DocumentVisitor)
-        //ExFor:Comment.AcceptStart(DocumentVisitor)
-        //ExFor:Comment.AcceptEnd(DocumentVisitor)
-        //ExFor:Comment.DateTime
-        //ExFor:Comment.Id
-        //ExFor:Comment.Initial
-        //ExFor:CommentRangeEnd
-        //ExFor:CommentRangeEnd.#ctor(DocumentBase,Int32)
-        //ExFor:CommentRangeEnd.Accept(DocumentVisitor)
-        //ExFor:CommentRangeEnd.Id
-        //ExFor:CommentRangeStart
-        //ExFor:CommentRangeStart.#ctor(DocumentBase,Int32)
-        //ExFor:CommentRangeStart.Accept(DocumentVisitor)
-        //ExFor:CommentRangeStart.Id
-        //ExSummary:Shows how print the contents of all comments and their comment ranges using a document visitor.
-        [Test] //ExSkip
+        [Test]
         public void CreateCommentsAndPrintAllInfo()
         {
+            //ExStart
+            //ExFor:Comment.Done
+            //ExFor:Comment.#ctor(DocumentBase)
+            //ExFor:Comment.Accept(DocumentVisitor)
+            //ExFor:Comment.AcceptStart(DocumentVisitor)
+            //ExFor:Comment.AcceptEnd(DocumentVisitor)
+            //ExFor:Comment.DateTime
+            //ExFor:Comment.Id
+            //ExFor:Comment.Initial
+            //ExFor:CommentRangeEnd
+            //ExFor:CommentRangeEnd.#ctor(DocumentBase,Int32)
+            //ExFor:CommentRangeEnd.Accept(DocumentVisitor)
+            //ExFor:CommentRangeEnd.Id
+            //ExFor:CommentRangeStart
+            //ExFor:CommentRangeStart.#ctor(DocumentBase,Int32)
+            //ExFor:CommentRangeStart.Accept(DocumentVisitor)
+            //ExFor:CommentRangeStart.Id
+            //ExSummary:Shows how print the contents of all comments and their comment ranges using a document visitor.
             Document doc = new Document();
             
             Comment newComment = new Comment(doc)
@@ -209,8 +209,27 @@ namespace ApiExamples
             newComment.AddReply("John Doe", "JD", DateTime.Now, "Another reply.");
 
             PrintAllCommentInfo(doc.GetChildNodes(NodeType.Comment, true));
+            //ExEnd
         }
-        
+
+        //ExStart
+        //ExFor:Comment.Done
+        //ExFor:Comment.#ctor(DocumentBase)
+        //ExFor:Comment.Accept(DocumentVisitor)
+        //ExFor:Comment.AcceptStart(DocumentVisitor)
+        //ExFor:Comment.AcceptEnd(DocumentVisitor)
+        //ExFor:Comment.DateTime
+        //ExFor:Comment.Id
+        //ExFor:Comment.Initial
+        //ExFor:CommentRangeEnd
+        //ExFor:CommentRangeEnd.#ctor(DocumentBase,Int32)
+        //ExFor:CommentRangeEnd.Accept(DocumentVisitor)
+        //ExFor:CommentRangeEnd.Id
+        //ExFor:CommentRangeStart
+        //ExFor:CommentRangeStart.#ctor(DocumentBase,Int32)
+        //ExFor:CommentRangeStart.Accept(DocumentVisitor)
+        //ExFor:CommentRangeStart.Id
+        //ExSummary:Shows how print the contents of all comments and their comment ranges using a document visitor (PrintAllCommentInfo).
         /// <summary>
         /// Iterates over every top-level comment and prints its comment range, contents, and replies.
         /// </summary>

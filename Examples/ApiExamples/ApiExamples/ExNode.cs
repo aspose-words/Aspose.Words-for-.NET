@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -164,6 +164,50 @@ namespace ApiExamples
             Assert.That(doc.GetText().Trim(), Is.EqualTo("Hello world! Hello again!"));
         }
 
+        [Test]
+        public void RecurseChildren()
+        {
+            //ExStart
+            //ExFor:Node.NextSibling
+            //ExFor:CompositeNode.FirstChild
+            //ExFor:Node.IsComposite
+            //ExFor:CompositeNode.IsComposite
+            //ExFor:Node.NodeTypeToString
+            //ExFor:Paragraph.NodeType
+            //ExFor:Table.NodeType
+            //ExFor:Node.NodeType
+            //ExFor:Footnote.NodeType
+            //ExFor:FormField.NodeType
+            //ExFor:SmartTag.NodeType
+            //ExFor:Cell.NodeType
+            //ExFor:Row.NodeType
+            //ExFor:Document.NodeType
+            //ExFor:Comment.NodeType
+            //ExFor:Run.NodeType
+            //ExFor:Section.NodeType
+            //ExFor:SpecialChar.NodeType
+            //ExFor:Shape.NodeType
+            //ExFor:FieldEnd.NodeType
+            //ExFor:FieldSeparator.NodeType
+            //ExFor:FieldStart.NodeType
+            //ExFor:BookmarkStart.NodeType
+            //ExFor:CommentRangeEnd.NodeType
+            //ExFor:BuildingBlock.NodeType
+            //ExFor:GlossaryDocument.NodeType
+            //ExFor:BookmarkEnd.NodeType
+            //ExFor:GroupShape.NodeType
+            //ExFor:CommentRangeStart.NodeType
+            //ExSummary:Shows how to traverse a composite node's tree of child nodes.
+            Document doc = new Document(MyDir + "Paragraphs.docx");
+
+            // Any node that can contain child nodes, such as the document itself, is composite.
+            Assert.That(doc.IsComposite, Is.True);
+
+            // Invoke the recursive function that will go through and print all the child nodes of a composite node.
+            TraverseAllNodes(doc, 0);
+            //ExEnd
+        }
+
         //ExStart
         //ExFor:Node.NextSibling
         //ExFor:CompositeNode.FirstChild
@@ -194,19 +238,7 @@ namespace ApiExamples
         //ExFor:BookmarkEnd.NodeType
         //ExFor:GroupShape.NodeType
         //ExFor:CommentRangeStart.NodeType
-        //ExSummary:Shows how to traverse a composite node's tree of child nodes.
-        [Test] //ExSkip
-        public void RecurseChildren()
-        {
-            Document doc = new Document(MyDir + "Paragraphs.docx");
-
-            // Any node that can contain child nodes, such as the document itself, is composite.
-            Assert.That(doc.IsComposite, Is.True);
-
-            // Invoke the recursive function that will go through and print all the child nodes of a composite node.
-            TraverseAllNodes(doc, 0);
-        }
-
+        //ExSummary:Shows how to traverse a composite node's tree of child nodes (TraverseAllNodes).
         /// <summary>
         /// Recursively traverses a node tree while printing the type of each node
         /// with an indent depending on depth as well as the contents of all inline nodes.
@@ -505,12 +537,12 @@ namespace ApiExamples
             //ExEnd
         }
 
-        //ExStart
-        //ExFor:CompositeNode.CreateNavigator
-        //ExSummary:Shows how to create an XPathNavigator, and then use it to traverse and read nodes.
-        [Test] //ExSkip
+        [Test]
         public void NodeXPathNavigator()
         {
+            //ExStart
+            //ExFor:CompositeNode.CreateNavigator
+            //ExSummary:Shows how to create an XPathNavigator, and then use it to traverse and read nodes.
             Document doc = new Document();
             XPathNavigator navigator = doc.CreateNavigator();
 
@@ -537,8 +569,12 @@ namespace ApiExamples
                 Console.Write(stringBuilder.ToString());
                 TestNodeXPathNavigator(stringBuilder.ToString(), doc); //ExSkip
             }
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:CompositeNode.CreateNavigator
+        //ExSummary:Shows how to create an XPathNavigator, and then use it to traverse and read nodes (MapDocument).
         /// <summary>
         /// Traverses all children of a composite node and map the structure in the style of a directory tree.
         /// The amount of space indentation indicates depth relative to the initial node.
@@ -574,15 +610,15 @@ namespace ApiExamples
                 Assert.That(navigatorResult.Contains(run.GetText().Trim()), Is.True);
         }
 
-        //ExStart
-        //ExFor:NodeChangingAction
-        //ExFor:NodeChangingArgs.Action
-        //ExFor:NodeChangingArgs.NewParent
-        //ExFor:NodeChangingArgs.OldParent
-        //ExSummary:Shows how to use a NodeChangingCallback to monitor changes to the document tree in real-time as we edit it.
-        [Test] //ExSkip
+        [Test]
         public void NodeChangingCallback()
         {
+            //ExStart
+            //ExFor:NodeChangingAction
+            //ExFor:NodeChangingArgs.Action
+            //ExFor:NodeChangingArgs.NewParent
+            //ExFor:NodeChangingArgs.OldParent
+            //ExSummary:Shows how to use a NodeChangingCallback to monitor changes to the document tree in real-time as we edit it.
             Document doc = new Document();
             doc.NodeChangingCallback = new NodeChangingPrinter();
 
@@ -598,8 +634,15 @@ namespace ApiExamples
             builder.InsertImage(ImageDir + "Logo.jpg");
 
             builder.CurrentParagraph.ParentNode.RemoveAllChildren();
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:NodeChangingAction
+        //ExFor:NodeChangingArgs.Action
+        //ExFor:NodeChangingArgs.NewParent
+        //ExFor:NodeChangingArgs.OldParent
+        //ExSummary:Shows how to use a NodeChangingCallback to monitor changes to the document tree in real-time as we edit it (NodeChangingPrinter).
         /// <summary>
         /// Prints every node insertion/removal as it takes place in the document.
         /// </summary>

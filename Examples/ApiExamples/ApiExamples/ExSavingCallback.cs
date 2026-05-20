@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -41,19 +41,19 @@ namespace ApiExamples
             xpsSaveOptions.PageSavingCallback = new CustomFileNamePageSavingCallback();
         }
 
-        //ExStart
-        //ExFor:IPageSavingCallback
-        //ExFor:IPageSavingCallback.PageSaving(PageSavingArgs)
-        //ExFor:PageSavingArgs
-        //ExFor:PageSavingArgs.PageFileName
-        //ExFor:PageSavingArgs.KeepPageStreamOpen
-        //ExFor:PageSavingArgs.PageIndex
-        //ExFor:PageSavingArgs.PageStream
-        //ExFor:FixedPageSaveOptions.PageSavingCallback
-        //ExSummary:Shows how to use a callback to save a document to HTML page by page.
-        [Test] //ExSkip
+        [Test]
         public void PageFileNames()
         {
+            //ExStart
+            //ExFor:IPageSavingCallback
+            //ExFor:IPageSavingCallback.PageSaving(PageSavingArgs)
+            //ExFor:PageSavingArgs
+            //ExFor:PageSavingArgs.PageFileName
+            //ExFor:PageSavingArgs.KeepPageStreamOpen
+            //ExFor:PageSavingArgs.PageIndex
+            //ExFor:PageSavingArgs.PageStream
+            //ExFor:FixedPageSaveOptions.PageSavingCallback
+            //ExSummary:Shows how to use a callback to save a document to HTML page by page.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -78,8 +78,19 @@ namespace ApiExamples
                 s => s.StartsWith(ArtifactsDir + "SavingCallback.PageFileNames.Page_")).OrderBy(s => s).ToArray();
 
             Assert.That(filePaths.Length, Is.EqualTo(3));
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:IPageSavingCallback
+        //ExFor:IPageSavingCallback.PageSaving(PageSavingArgs)
+        //ExFor:PageSavingArgs
+        //ExFor:PageSavingArgs.PageFileName
+        //ExFor:PageSavingArgs.KeepPageStreamOpen
+        //ExFor:PageSavingArgs.PageIndex
+        //ExFor:PageSavingArgs.PageStream
+        //ExFor:FixedPageSaveOptions.PageSavingCallback
+        //ExSummary:Shows how to use a callback to save a document to HTML page by page (CustomFileNamePageSavingCallback).
         /// <summary>
         /// Saves all pages to a file and directory specified within.
         /// </summary>
@@ -101,25 +112,25 @@ namespace ApiExamples
         }
         //ExEnd
 
-        //ExStart
-        //ExFor:DocumentPartSavingArgs
-        //ExFor:DocumentPartSavingArgs.Document
-        //ExFor:DocumentPartSavingArgs.DocumentPartFileName
-        //ExFor:DocumentPartSavingArgs.DocumentPartStream
-        //ExFor:DocumentPartSavingArgs.KeepDocumentPartStreamOpen
-        //ExFor:IDocumentPartSavingCallback
-        //ExFor:IDocumentPartSavingCallback.DocumentPartSaving(DocumentPartSavingArgs)
-        //ExFor:IImageSavingCallback
-        //ExFor:IImageSavingCallback.ImageSaving
-        //ExFor:ImageSavingArgs
-        //ExFor:ImageSavingArgs.ImageFileName
-        //ExFor:HtmlSaveOptions
-        //ExFor:HtmlSaveOptions.DocumentPartSavingCallback
-        //ExFor:HtmlSaveOptions.ImageSavingCallback
-        //ExSummary:Shows how to split a document into parts and save them.
-        [Test] //ExSkip
+        [Test]
         public void DocumentPartsFileNames()
         {
+            //ExStart
+            //ExFor:DocumentPartSavingArgs
+            //ExFor:DocumentPartSavingArgs.Document
+            //ExFor:DocumentPartSavingArgs.DocumentPartFileName
+            //ExFor:DocumentPartSavingArgs.DocumentPartStream
+            //ExFor:DocumentPartSavingArgs.KeepDocumentPartStreamOpen
+            //ExFor:IDocumentPartSavingCallback
+            //ExFor:IDocumentPartSavingCallback.DocumentPartSaving(DocumentPartSavingArgs)
+            //ExFor:IImageSavingCallback
+            //ExFor:IImageSavingCallback.ImageSaving
+            //ExFor:ImageSavingArgs
+            //ExFor:ImageSavingArgs.ImageFileName
+            //ExFor:HtmlSaveOptions
+            //ExFor:HtmlSaveOptions.DocumentPartSavingCallback
+            //ExFor:HtmlSaveOptions.ImageSavingCallback
+            //ExSummary:Shows how to split a document into parts and save them.
             Document doc = new Document(MyDir + "Rendering.docx");
             string outFileName = "SavingCallback.DocumentPartsFileNames.html";
 
@@ -142,8 +153,25 @@ namespace ApiExamples
             options.ImageSavingCallback = new SavedImageRename(outFileName);
 
             doc.Save(ArtifactsDir + outFileName, options);
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:DocumentPartSavingArgs
+        //ExFor:DocumentPartSavingArgs.Document
+        //ExFor:DocumentPartSavingArgs.DocumentPartFileName
+        //ExFor:DocumentPartSavingArgs.DocumentPartStream
+        //ExFor:DocumentPartSavingArgs.KeepDocumentPartStreamOpen
+        //ExFor:IDocumentPartSavingCallback
+        //ExFor:IDocumentPartSavingCallback.DocumentPartSaving(DocumentPartSavingArgs)
+        //ExFor:IImageSavingCallback
+        //ExFor:IImageSavingCallback.ImageSaving
+        //ExFor:ImageSavingArgs
+        //ExFor:ImageSavingArgs.ImageFileName
+        //ExFor:HtmlSaveOptions
+        //ExFor:HtmlSaveOptions.DocumentPartSavingCallback
+        //ExFor:HtmlSaveOptions.ImageSavingCallback
+        //ExSummary:Shows how to split a document into parts and save them (SavedDocumentPartRename).
         /// <summary>
         /// Sets custom filenames for output documents that the saving operation splits a document into.
         /// </summary>
@@ -227,22 +255,22 @@ namespace ApiExamples
         }
         //ExEnd
 
-        //ExStart
-        //ExFor:CssSavingArgs
-        //ExFor:CssSavingArgs.CssStream
-        //ExFor:CssSavingArgs.Document
-        //ExFor:CssSavingArgs.IsExportNeeded
-        //ExFor:CssSavingArgs.KeepCssStreamOpen
-        //ExFor:CssStyleSheetType
-        //ExFor:HtmlSaveOptions.CssSavingCallback
-        //ExFor:HtmlSaveOptions.CssStyleSheetFileName
-        //ExFor:HtmlSaveOptions.CssStyleSheetType
-        //ExFor:ICssSavingCallback
-        //ExFor:ICssSavingCallback.CssSaving(CssSavingArgs)
-        //ExSummary:Shows how to work with CSS stylesheets that an HTML conversion creates.
-        [Test] //ExSkip
+        [Test]
         public void ExternalCssFilenames()
         {
+            //ExStart
+            //ExFor:CssSavingArgs
+            //ExFor:CssSavingArgs.CssStream
+            //ExFor:CssSavingArgs.Document
+            //ExFor:CssSavingArgs.IsExportNeeded
+            //ExFor:CssSavingArgs.KeepCssStreamOpen
+            //ExFor:CssStyleSheetType
+            //ExFor:HtmlSaveOptions.CssSavingCallback
+            //ExFor:HtmlSaveOptions.CssStyleSheetFileName
+            //ExFor:HtmlSaveOptions.CssStyleSheetType
+            //ExFor:ICssSavingCallback
+            //ExFor:ICssSavingCallback.CssSaving(CssSavingArgs)
+            //ExSummary:Shows how to work with CSS stylesheets that an HTML conversion creates.
             Document doc = new Document(MyDir + "Rendering.docx");
 
             // Create an "HtmlFixedSaveOptions" object, which we can pass to the document's "Save" method
@@ -262,8 +290,22 @@ namespace ApiExamples
                 new CustomCssSavingCallback(ArtifactsDir + "SavingCallback.ExternalCssFilenames.css", true, false);
 
             doc.Save(ArtifactsDir + "SavingCallback.ExternalCssFilenames.html", options);
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:CssSavingArgs
+        //ExFor:CssSavingArgs.CssStream
+        //ExFor:CssSavingArgs.Document
+        //ExFor:CssSavingArgs.IsExportNeeded
+        //ExFor:CssSavingArgs.KeepCssStreamOpen
+        //ExFor:CssStyleSheetType
+        //ExFor:HtmlSaveOptions.CssSavingCallback
+        //ExFor:HtmlSaveOptions.CssStyleSheetFileName
+        //ExFor:HtmlSaveOptions.CssStyleSheetType
+        //ExFor:ICssSavingCallback
+        //ExFor:ICssSavingCallback.CssSaving(CssSavingArgs)
+        //ExSummary:Shows how to work with CSS stylesheets that an HTML conversion creates (CustomCssSavingCallback).
         /// <summary>
         /// Sets a custom filename, along with other parameters for an external CSS stylesheet.
         /// </summary>

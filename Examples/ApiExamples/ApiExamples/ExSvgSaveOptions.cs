@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -40,17 +40,17 @@ namespace ApiExamples
             //ExEnd
         }
 
-        //ExStart
-        //ExFor:SvgSaveOptions
-        //ExFor:SvgSaveOptions.ExportEmbeddedImages
-        //ExFor:SvgSaveOptions.ResourceSavingCallback
-        //ExFor:SvgSaveOptions.ResourcesFolder
-        //ExFor:SvgSaveOptions.ResourcesFolderAlias
-        //ExFor:SvgSaveOptions.SaveFormat
-        //ExSummary:Shows how to manipulate and print the URIs of linked resources created while converting a document to .svg.
-        [Test] //ExSkip
+        [Test]
         public void SvgResourceFolder()
         {
+            //ExStart
+            //ExFor:SvgSaveOptions
+            //ExFor:SvgSaveOptions.ExportEmbeddedImages
+            //ExFor:SvgSaveOptions.ResourceSavingCallback
+            //ExFor:SvgSaveOptions.ResourcesFolder
+            //ExFor:SvgSaveOptions.ResourcesFolderAlias
+            //ExFor:SvgSaveOptions.SaveFormat
+            //ExSummary:Shows how to manipulate and print the URIs of linked resources created while converting a document to .svg.
             Document doc = new Document(MyDir + "Rendering.docx");
 
             SvgSaveOptions options = new SvgSaveOptions
@@ -67,8 +67,17 @@ namespace ApiExamples
             Directory.CreateDirectory(options.ResourcesFolderAlias);
 
             doc.Save(ArtifactsDir + "SvgSaveOptions.SvgResourceFolder.svg", options);
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:SvgSaveOptions
+        //ExFor:SvgSaveOptions.ExportEmbeddedImages
+        //ExFor:SvgSaveOptions.ResourceSavingCallback
+        //ExFor:SvgSaveOptions.ResourcesFolder
+        //ExFor:SvgSaveOptions.ResourcesFolderAlias
+        //ExFor:SvgSaveOptions.SaveFormat
+        //ExSummary:Shows how to manipulate and print the URIs of linked resources created while converting a document to .svg (ResourceUriPrinter).
         /// <summary>
         /// Counts and prints URIs of resources contained by as they are converted to .svg.
         /// </summary>

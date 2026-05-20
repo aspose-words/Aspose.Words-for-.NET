@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -995,17 +995,17 @@ namespace ApiExamples
             Assert.That(linkAnnot.Action.GetType(), Is.EqualTo(openHyperlinksInNewWindow ? typeof(JavascriptAction) : typeof(GoToURIAction)));
         }
 
-        //ExStart
-        //ExFor:MetafileRenderingMode
-        //ExFor:MetafileRenderingOptions
-        //ExFor:MetafileRenderingOptions.EmulateRasterOperations
-        //ExFor:MetafileRenderingOptions.RenderingMode
-        //ExFor:IWarningCallback
-        //ExFor:FixedPageSaveOptions.MetafileRenderingOptions
-        //ExSummary:Shows added a fallback to bitmap rendering and changing type of warnings about unsupported metafile records.
-        [Test, Category("SkipMono")] //ExSkip
+        [Test, Category("SkipMono")]
         public void HandleBinaryRasterWarnings()
         {
+            //ExStart
+            //ExFor:MetafileRenderingMode
+            //ExFor:MetafileRenderingOptions
+            //ExFor:MetafileRenderingOptions.EmulateRasterOperations
+            //ExFor:MetafileRenderingOptions.RenderingMode
+            //ExFor:IWarningCallback
+            //ExFor:FixedPageSaveOptions.MetafileRenderingOptions
+            //ExSummary:Shows added a fallback to bitmap rendering and changing type of warnings about unsupported metafile records.
             Document doc = new Document(MyDir + "WMF with image.docx");
 
             MetafileRenderingOptions metafileRenderingOptions = new MetafileRenderingOptions();
@@ -1030,8 +1030,17 @@ namespace ApiExamples
 
             Assert.That(callback.Warnings.Count, Is.EqualTo(1));
             Assert.That(callback.Warnings[0].Description, Is.EqualTo("'R2_XORPEN' binary raster operation is not supported."));
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:MetafileRenderingMode
+        //ExFor:MetafileRenderingOptions
+        //ExFor:MetafileRenderingOptions.EmulateRasterOperations
+        //ExFor:MetafileRenderingOptions.RenderingMode
+        //ExFor:IWarningCallback
+        //ExFor:FixedPageSaveOptions.MetafileRenderingOptions
+        //ExSummary:Shows added a fallback to bitmap rendering and changing type of warnings about unsupported metafile records (HandleDocumentWarnings).
         /// <summary>
         /// Prints and collects formatting loss-related warnings that occur upon saving a document.
         /// </summary>

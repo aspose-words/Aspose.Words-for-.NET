@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -17,16 +17,16 @@ namespace ApiExamples
     [TestFixture]
     public class ExXamlFixedSaveOptions : ApiExampleBase
     {
-        //ExStart
-        //ExFor:XamlFixedSaveOptions
-        //ExFor:XamlFixedSaveOptions.ResourceSavingCallback
-        //ExFor:XamlFixedSaveOptions.ResourcesFolder
-        //ExFor:XamlFixedSaveOptions.ResourcesFolderAlias
-        //ExFor:XamlFixedSaveOptions.SaveFormat
-        //ExSummary:Shows how to print the URIs of linked resources created while converting a document to fixed-form .xaml.
-        [Test] //ExSkip
+        [Test]
         public void ResourceFolder()
         {
+            //ExStart
+            //ExFor:XamlFixedSaveOptions
+            //ExFor:XamlFixedSaveOptions.ResourceSavingCallback
+            //ExFor:XamlFixedSaveOptions.ResourcesFolder
+            //ExFor:XamlFixedSaveOptions.ResourcesFolderAlias
+            //ExFor:XamlFixedSaveOptions.SaveFormat
+            //ExSummary:Shows how to print the URIs of linked resources created while converting a document to fixed-form .xaml.
             Document doc = new Document(MyDir + "Rendering.docx");
             ResourceUriPrinter callback = new ResourceUriPrinter();
 
@@ -55,8 +55,16 @@ namespace ApiExamples
             foreach (string resource in callback.Resources)
                 Console.WriteLine(resource);
             TestResourceFolder(callback); //ExSkip
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:XamlFixedSaveOptions
+        //ExFor:XamlFixedSaveOptions.ResourceSavingCallback
+        //ExFor:XamlFixedSaveOptions.ResourcesFolder
+        //ExFor:XamlFixedSaveOptions.ResourcesFolderAlias
+        //ExFor:XamlFixedSaveOptions.SaveFormat
+        //ExSummary:Shows how to print the URIs of linked resources created while converting a document to fixed-form .xaml (ResourceUriPrinter).
         /// <summary>
         /// Counts and prints URIs of resources created during conversion to fixed .xaml.
         /// </summary>

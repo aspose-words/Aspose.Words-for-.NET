@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -201,20 +201,20 @@ namespace ApiExamples
             Assert.That(pdfDocImage.GetColorType(), Is.EqualTo(ColorType.Rgb));
         }
 
-        //ExStart
-        //ExFor:DocumentBase.ResourceLoadingCallback
-        //ExFor:IResourceLoadingCallback
-        //ExFor:IResourceLoadingCallback.ResourceLoading(ResourceLoadingArgs)
-        //ExFor:ResourceLoadingAction
-        //ExFor:ResourceLoadingArgs
-        //ExFor:ResourceLoadingArgs.OriginalUri
-        //ExFor:ResourceLoadingArgs.ResourceType
-        //ExFor:ResourceLoadingArgs.SetData(Byte[])
-        //ExFor:ResourceType
-        //ExSummary:Shows how to customize the process of loading external resources into a document.
-        [Test] //ExSkip
+        [Test]
         public void ResourceLoadingCallback()
         {
+            //ExStart
+            //ExFor:DocumentBase.ResourceLoadingCallback
+            //ExFor:IResourceLoadingCallback
+            //ExFor:IResourceLoadingCallback.ResourceLoading(ResourceLoadingArgs)
+            //ExFor:ResourceLoadingAction
+            //ExFor:ResourceLoadingArgs
+            //ExFor:ResourceLoadingArgs.OriginalUri
+            //ExFor:ResourceLoadingArgs.ResourceType
+            //ExFor:ResourceLoadingArgs.SetData(Byte[])
+            //ExFor:ResourceType
+            //ExSummary:Shows how to customize the process of loading external resources into a document.
             Document doc = new Document();
             doc.ResourceLoadingCallback = new ImageNameHandler();
 
@@ -230,8 +230,20 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "DocumentBase.ResourceLoadingCallback.docx");
             TestResourceLoadingCallback(new Document(ArtifactsDir + "DocumentBase.ResourceLoadingCallback.docx")); //ExSkip
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:DocumentBase.ResourceLoadingCallback
+        //ExFor:IResourceLoadingCallback
+        //ExFor:IResourceLoadingCallback.ResourceLoading(ResourceLoadingArgs)
+        //ExFor:ResourceLoadingAction
+        //ExFor:ResourceLoadingArgs
+        //ExFor:ResourceLoadingArgs.OriginalUri
+        //ExFor:ResourceLoadingArgs.ResourceType
+        //ExFor:ResourceLoadingArgs.SetData(Byte[])
+        //ExFor:ResourceType
+        //ExSummary:Shows how to customize the process of loading external resources into a document (ImageNameHandler).
         /// <summary>
         /// Allows us to load images into a document using predefined shorthands, as opposed to URIs.
         /// This will separate image loading logic from the rest of the document construction.

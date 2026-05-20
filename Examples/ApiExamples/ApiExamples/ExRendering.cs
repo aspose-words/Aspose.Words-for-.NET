@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -26,15 +26,15 @@ namespace ApiExamples
     public class ExRendering : ApiExampleBase
     {
 #if NET461_OR_GREATER || JAVA
-        //ExStart
-        //ExFor:NodeRendererBase.RenderToScale(Graphics, Single, Single, Single)
-        //ExFor:NodeRendererBase.RenderToSize(Graphics, Single, Single, Single, Single)
-        //ExFor:ShapeRenderer
-        //ExFor:ShapeRenderer.#ctor(ShapeBase)
-        //ExSummary:Shows how to render a shape with a Graphics object and display it using a Windows Form.
-        [Test, Category("IgnoreOnJenkins"), Category("SkipMono")] //ExSkip
+        [Test, Category("IgnoreOnJenkins"), Category("SkipMono")]
         public void RenderShapesOnForm()
         {
+            //ExStart
+            //ExFor:NodeRendererBase.RenderToScale(Graphics, Single, Single, Single)
+            //ExFor:NodeRendererBase.RenderToSize(Graphics, Single, Single, Single, Single)
+            //ExFor:ShapeRenderer
+            //ExFor:ShapeRenderer.#ctor(ShapeBase)
+            //ExSummary:Shows how to render a shape with a Graphics object and display it using a Windows Form.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -79,8 +79,15 @@ namespace ApiExamples
             shapeForm.AddShapeToRenderToSize(groupShape, 880, 680, 100, 100);
 
             shapeForm.ShowDialog();
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:NodeRendererBase.RenderToScale(Graphics, Single, Single, Single)
+        //ExFor:NodeRendererBase.RenderToSize(Graphics, Single, Single, Single, Single)
+        //ExFor:ShapeRenderer
+        //ExFor:ShapeRenderer.#ctor(ShapeBase)
+        //ExSummary:Shows how to render a shape with a Graphics object and display it using a Windows Form (ShapeForm).
         /// <summary>
         /// Renders and displays a list of shapes.
         /// </summary>

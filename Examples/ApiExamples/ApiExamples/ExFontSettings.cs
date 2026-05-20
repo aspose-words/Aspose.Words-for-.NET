@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -136,14 +136,14 @@ namespace ApiExamples
             public WarningInfoCollection FontWarnings = new WarningInfoCollection();
         }
 
-        //ExStart
-        //ExFor:IWarningCallback
-        //ExFor:DocumentBase.WarningCallback
-        //ExFor:FontSettings.DefaultInstance
-        //ExSummary:Shows how to use the IWarningCallback interface to monitor font substitution warnings.
-        [Test] //ExSkip
+        [Test]
         public void SubstitutionWarning()
         {
+            //ExStart
+            //ExFor:IWarningCallback
+            //ExFor:DocumentBase.WarningCallback
+            //ExFor:FontSettings.DefaultInstance
+            //ExSummary:Shows how to use the IWarningCallback interface to monitor font substitution warnings.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -171,8 +171,14 @@ namespace ApiExamples
             Assert.That(callback.FontSubstitutionWarnings[0].Description
                 .Equals(
                     "Font 'Times New Roman' has not been found. Using 'Fanwood' font instead. Reason: first available font."), Is.True);
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:IWarningCallback
+        //ExFor:DocumentBase.WarningCallback
+        //ExFor:FontSettings.DefaultInstance
+        //ExSummary:Shows how to use the IWarningCallback interface to monitor font substitution warnings (FontSubstitutionWarningCollector).
         private class FontSubstitutionWarningCollector : IWarningCallback
         {
             /// <summary>
@@ -188,12 +194,12 @@ namespace ApiExamples
         }
         //ExEnd
 
-        //ExStart
-        //ExFor:FontSourceBase.WarningCallback
-        //ExSummary:Shows how to call warning callback when the font sources working with.
-        [Test]//ExSkip
+        [Test]
         public void FontSourceWarning()
         {
+            //ExStart
+            //ExFor:FontSourceBase.WarningCallback
+            //ExSummary:Shows how to call warning callback when the font sources working with.
             FontSettings settings = new FontSettings();
             settings.SetFontsFolder("bad folder?", false);
 
@@ -206,8 +212,12 @@ namespace ApiExamples
 
             Assert.That(callback.FontSubstitutionWarnings[0].Description
                 .Contains("Error loading font from the folder \"bad folder?\""), Is.True);
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:FontSourceBase.WarningCallback
+        //ExSummary:Shows how to call warning callback when the font sources working with (FontSourceWarningCollector).
         private class FontSourceWarningCollector : IWarningCallback
         {
             /// <summary>
@@ -1245,13 +1255,13 @@ namespace ApiExamples
             //ExEnd
         }
 
-        //ExStart
-        //ExFor:StreamFontSource
-        //ExFor:StreamFontSource.OpenFontDataStream
-        //ExSummary:Shows how to load fonts from stream.
-        [Test] //ExSkip
+        [Test]
         public void StreamFontSourceFileRendering()
         {
+            //ExStart
+            //ExFor:StreamFontSource
+            //ExFor:StreamFontSource.OpenFontDataStream
+            //ExSummary:Shows how to load fonts from stream.
             FontSettings fontSettings = new FontSettings();
             fontSettings.SetFontsSources(new FontSourceBase[] {new StreamFontSourceFile()});
 
@@ -1261,8 +1271,13 @@ namespace ApiExamples
             builder.Writeln("Test aspose text when saving to PDF.");
 
             builder.Document.Save(ArtifactsDir + "FontSettings.StreamFontSourceFileRendering.pdf");
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:StreamFontSource
+        //ExFor:StreamFontSource.OpenFontDataStream
+        //ExSummary:Shows how to load fonts from stream (StreamFontSourceFile).
         /// <summary>
         /// Load the font data only when required instead of storing it in the memory
         /// for the entire lifetime of the "FontSettings" object.
@@ -1276,18 +1291,18 @@ namespace ApiExamples
         }
         //ExEnd
 
-        //ExStart
-        //ExFor:FileFontSource.#ctor(String, Int32, String)
-        //ExFor:MemoryFontSource.#ctor(Byte[], Int32, String)
-        //ExFor:FontSettings.SaveSearchCache(Stream)
-        //ExFor:FontSettings.SetFontsSources(FontSourceBase[], Stream)
-        //ExFor:FileFontSource.CacheKey
-        //ExFor:MemoryFontSource.CacheKey
-        //ExFor:StreamFontSource.CacheKey
-        //ExSummary:Shows how to speed up the font cache initialization process.
-        [Test]//ExSkip
+        [Test]
         public void LoadFontSearchCache()
         {
+            //ExStart
+            //ExFor:FileFontSource.#ctor(String, Int32, String)
+            //ExFor:MemoryFontSource.#ctor(Byte[], Int32, String)
+            //ExFor:FontSettings.SaveSearchCache(Stream)
+            //ExFor:FontSettings.SetFontsSources(FontSourceBase[], Stream)
+            //ExFor:FileFontSource.CacheKey
+            //ExFor:MemoryFontSource.CacheKey
+            //ExFor:StreamFontSource.CacheKey
+            //ExSummary:Shows how to speed up the font cache initialization process.
             const string cacheKey1 = "Arvo";
             const string cacheKey2 = "Arvo-Bold";
             FontSettings parsedFonts = new FontSettings();
@@ -1310,8 +1325,18 @@ namespace ApiExamples
             }
 
             Assert.That(loadedCache.GetFontsSources().Length, Is.EqualTo(parsedFonts.GetFontsSources().Length));
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:FileFontSource.#ctor(String, Int32, String)
+        //ExFor:MemoryFontSource.#ctor(Byte[], Int32, String)
+        //ExFor:FontSettings.SaveSearchCache(Stream)
+        //ExFor:FontSettings.SetFontsSources(FontSourceBase[], Stream)
+        //ExFor:FileFontSource.CacheKey
+        //ExFor:MemoryFontSource.CacheKey
+        //ExFor:StreamFontSource.CacheKey
+        //ExSummary:Shows how to speed up the font cache initialization process (SearchCacheStream).
         /// <summary>
         /// Load the font data only when required instead of storing it in the memory
         /// for the entire lifetime of the "FontSettings" object.

@@ -313,14 +313,14 @@ namespace ApiExamples
         [TestCase(SaveFormat.Dotm, "dotm")]
         [TestCase(SaveFormat.Dotx, "dotx")]
         [TestCase(SaveFormat.FlatOpc, "flatopc")]
-        //ExStart
-        //ExFor:SaveOptions.ProgressCallback
-        //ExFor:IDocumentSavingCallback
-        //ExFor:IDocumentSavingCallback.Notify(DocumentSavingArgs)
-        //ExFor:DocumentSavingArgs.EstimatedProgress
-        //ExSummary:Shows how to manage a document while saving to docx.
         public void ProgressCallback(SaveFormat saveFormat, string ext)
         {
+            //ExStart
+            //ExFor:SaveOptions.ProgressCallback
+            //ExFor:IDocumentSavingCallback
+            //ExFor:IDocumentSavingCallback.Notify(DocumentSavingArgs)
+            //ExFor:DocumentSavingArgs.EstimatedProgress
+            //ExSummary:Shows how to manage a document while saving to docx.
             Document doc = new Document(MyDir + "Big document.docx");
 
             // Following formats are supported: Docx, FlatOpc, Docm, Dotm, Dotx.
@@ -332,8 +332,15 @@ namespace ApiExamples
             var exception = Assert.Throws<OperationCanceledException>(() =>
                 doc.Save(ArtifactsDir + $"OoxmlSaveOptions.ProgressCallback.{ext}", saveOptions));
             Assert.That(exception?.Message.Contains("EstimatedProgress"), Is.True);
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:SaveOptions.ProgressCallback
+        //ExFor:IDocumentSavingCallback
+        //ExFor:IDocumentSavingCallback.Notify(DocumentSavingArgs)
+        //ExFor:DocumentSavingArgs.EstimatedProgress
+        //ExSummary:Shows how to manage a document while saving to docx (SavingProgressCallback).
         /// <summary>
         /// Saving progress callback. Cancel a document saving after the "MaxDuration" seconds.
         /// </summary>

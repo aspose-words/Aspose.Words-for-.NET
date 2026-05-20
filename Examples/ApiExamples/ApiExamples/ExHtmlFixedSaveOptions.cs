@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -406,17 +406,17 @@ namespace ApiExamples
             //ExEnd
         }
 
-        //ExStart
-        //ExFor:IResourceSavingCallback
-        //ExFor:IResourceSavingCallback.ResourceSaving(ResourceSavingArgs)
-        //ExFor:ResourceSavingArgs
-        //ExFor:ResourceSavingArgs.Document
-        //ExFor:ResourceSavingArgs.ResourceFileName
-        //ExFor:ResourceSavingArgs.ResourceFileUri
-        //ExSummary:Shows how to use a callback to track external resources created while converting a document to HTML.
-        [Test] //ExSkip
+        [Test]
         public void ResourceSavingCallback()
         {
+            //ExStart
+            //ExFor:IResourceSavingCallback
+            //ExFor:IResourceSavingCallback.ResourceSaving(ResourceSavingArgs)
+            //ExFor:ResourceSavingArgs
+            //ExFor:ResourceSavingArgs.Document
+            //ExFor:ResourceSavingArgs.ResourceFileName
+            //ExFor:ResourceSavingArgs.ResourceFileUri
+            //ExSummary:Shows how to use a callback to track external resources created while converting a document to HTML.
             Document doc = new Document(MyDir + "Bullet points with alternative font.docx");
 
             FontSavingCallback callback = new FontSavingCallback();
@@ -430,8 +430,17 @@ namespace ApiExamples
 
             Console.WriteLine(callback.GetText());
             TestResourceSavingCallback(callback); //ExSkip
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:IResourceSavingCallback
+        //ExFor:IResourceSavingCallback.ResourceSaving(ResourceSavingArgs)
+        //ExFor:ResourceSavingArgs
+        //ExFor:ResourceSavingArgs.Document
+        //ExFor:ResourceSavingArgs.ResourceFileName
+        //ExFor:ResourceSavingArgs.ResourceFileUri
+        //ExSummary:Shows how to use a callback to track external resources created while converting a document to HTML (FontSavingCallback).
         private class FontSavingCallback : IResourceSavingCallback
         {
             /// <summary>
@@ -459,21 +468,21 @@ namespace ApiExamples
             Assert.That(callback.GetText().Contains("styles.css"), Is.True);
         }
 
-        //ExStart
-        //ExFor:HtmlFixedSaveOptions
-        //ExFor:HtmlFixedSaveOptions.ResourceSavingCallback
-        //ExFor:HtmlFixedSaveOptions.ResourcesFolder
-        //ExFor:HtmlFixedSaveOptions.ResourcesFolderAlias
-        //ExFor:HtmlFixedSaveOptions.SaveFormat
-        //ExFor:HtmlFixedSaveOptions.ShowPageBorder
-        //ExFor:IResourceSavingCallback
-        //ExFor:IResourceSavingCallback.ResourceSaving(ResourceSavingArgs)
-        //ExFor:ResourceSavingArgs.KeepResourceStreamOpen
-        //ExFor:ResourceSavingArgs.ResourceStream
-        //ExSummary:Shows how to use a callback to print the URIs of external resources created while converting a document to HTML.
-        [Test] //ExSkip
+        [Test]
         public void HtmlFixedResourceFolder()
         {
+            //ExStart
+            //ExFor:HtmlFixedSaveOptions
+            //ExFor:HtmlFixedSaveOptions.ResourceSavingCallback
+            //ExFor:HtmlFixedSaveOptions.ResourcesFolder
+            //ExFor:HtmlFixedSaveOptions.ResourcesFolderAlias
+            //ExFor:HtmlFixedSaveOptions.SaveFormat
+            //ExFor:HtmlFixedSaveOptions.ShowPageBorder
+            //ExFor:IResourceSavingCallback
+            //ExFor:IResourceSavingCallback.ResourceSaving(ResourceSavingArgs)
+            //ExFor:ResourceSavingArgs.KeepResourceStreamOpen
+            //ExFor:ResourceSavingArgs.ResourceStream
+            //ExSummary:Shows how to use a callback to print the URIs of external resources created while converting a document to HTML.
             Document doc = new Document(MyDir + "Rendering.docx");
 
             ResourceUriPrinter callback = new ResourceUriPrinter();
@@ -501,8 +510,21 @@ namespace ApiExamples
             Assert.That(Directory.Exists(ArtifactsDir + "HtmlFixedResourceFolder"), Is.False);
             Assert.That(resourceFiles.Count(f => f.EndsWith(".jpeg") || f.EndsWith(".png") || f.EndsWith(".css")), Is.EqualTo(6));
             TestHtmlFixedResourceFolder(callback); //ExSkip
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:HtmlFixedSaveOptions
+        //ExFor:HtmlFixedSaveOptions.ResourceSavingCallback
+        //ExFor:HtmlFixedSaveOptions.ResourcesFolder
+        //ExFor:HtmlFixedSaveOptions.ResourcesFolderAlias
+        //ExFor:HtmlFixedSaveOptions.SaveFormat
+        //ExFor:HtmlFixedSaveOptions.ShowPageBorder
+        //ExFor:IResourceSavingCallback
+        //ExFor:IResourceSavingCallback.ResourceSaving(ResourceSavingArgs)
+        //ExFor:ResourceSavingArgs.KeepResourceStreamOpen
+        //ExFor:ResourceSavingArgs.ResourceStream
+        //ExSummary:Shows how to use a callback to print the URIs of external resources created while converting a document to HTML (ResourceUriPrinter).
         /// <summary>
         /// Counts and prints URIs of resources contained by as they are converted to fixed HTML.
         /// </summary>

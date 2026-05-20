@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -626,12 +626,12 @@ namespace ApiExamples
             Assert.That(paras.Count(n => ((Paragraph)n).ListFormat.ListLevelNumber == 1), Is.EqualTo(3));
         }
 
-        //ExStart
-        //ExFor:ListTemplate
-        //ExSummary:Shows how to create a document that contains all outline headings list templates.
-        [Test] //ExSkip
+        [Test]
         public void OutlineHeadingTemplates()
         {
+            //ExStart
+            //ExFor:ListTemplate
+            //ExSummary:Shows how to create a document that contains all outline headings list templates.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -651,8 +651,12 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Lists.OutlineHeadingTemplates.docx");
             TestOutlineHeadingTemplates(new Document(ArtifactsDir + "Lists.OutlineHeadingTemplates.docx")); //ExSkip
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:ListTemplate
+        //ExSummary:Shows how to create a document that contains all outline headings list templates (AddOutlineHeadingParagraphs).
         private static void AddOutlineHeadingParagraphs(DocumentBuilder builder, List docList, string title)
         {
             builder.ParagraphFormat.ClearFormatting();
@@ -723,13 +727,13 @@ namespace ApiExamples
             TestUtil.VerifyListLevel("", 0.0d, NumberStyle.None, docList.ListLevels[8]);
         }
 
-        //ExStart
-        //ExFor:ListCollection
-        //ExFor:ListCollection.AddCopy(List)
-        //ExSummary:Shows how to create a document with a sample of all the lists from another document.
-        [Test] //ExSkip
+        [Test]
         public void PrintOutAllLists()
         {
+            //ExStart
+            //ExFor:ListCollection
+            //ExFor:ListCollection.AddCopy(List)
+            //ExSummary:Shows how to create a document with a sample of all the lists from another document.
             Document srcDoc = new Document(MyDir + "Rendering.docx");
 
             Document dstDoc = new Document();
@@ -743,8 +747,13 @@ namespace ApiExamples
 
             dstDoc.Save(ArtifactsDir + "Lists.PrintOutAllLists.docx");
             TestPrintOutAllLists(srcDoc, new Document(ArtifactsDir + "Lists.PrintOutAllLists.docx")); //ExSkip
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:ListCollection
+        //ExFor:ListCollection.AddCopy(List)
+        //ExSummary:Shows how to create a document with a sample of all the lists from another document (AddListSample).
         private static void AddListSample(DocumentBuilder builder, List docList)
         {
             builder.Writeln("Sample formatting of list with ListId:" + docList.ListId);

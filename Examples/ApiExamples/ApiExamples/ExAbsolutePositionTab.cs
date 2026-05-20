@@ -14,18 +14,18 @@ namespace ApiExamples
     [TestFixture]
     public class ExAbsolutePositionTab : ApiExampleBase
     {
-        //ExStart
-        //ExFor:AbsolutePositionTab
-        //ExFor:AbsolutePositionTab.Accept(DocumentVisitor)
-        //ExFor:DocumentVisitor.VisitAbsolutePositionTab
-        //ExFor:Body.Accept(DocumentVisitor)
-        //ExFor:Body.AcceptStart(DocumentVisitor)
-        //ExFor:Body.AcceptEnd(DocumentVisitor)
-        //ExFor:VisitorAction
-        //ExSummary:Shows how to process absolute position tab characters with a document visitor.
-        [Test] //ExSkip
+        [Test]
         public void DocumentToTxt()
         {
+            //ExStart
+            //ExFor:AbsolutePositionTab
+            //ExFor:AbsolutePositionTab.Accept(DocumentVisitor)
+            //ExFor:DocumentVisitor.VisitAbsolutePositionTab
+            //ExFor:Body.Accept(DocumentVisitor)
+            //ExFor:Body.AcceptStart(DocumentVisitor)
+            //ExFor:Body.AcceptEnd(DocumentVisitor)
+            //ExFor:VisitorAction
+            //ExSummary:Shows how to process absolute position tab characters with a document visitor.
             Document doc = new Document(MyDir + "Absolute position tab.docx");
 
             // Extract the text contents of our document by accepting this custom document visitor.
@@ -47,8 +47,18 @@ namespace ApiExamples
             absPositionTab.Accept(myDocTextExtractor);
 
             Assert.That(myDocTextExtractor.GetText(), Is.EqualTo("\t"));
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:AbsolutePositionTab
+        //ExFor:AbsolutePositionTab.Accept(DocumentVisitor)
+        //ExFor:DocumentVisitor.VisitAbsolutePositionTab
+        //ExFor:Body.Accept(DocumentVisitor)
+        //ExFor:Body.AcceptStart(DocumentVisitor)
+        //ExFor:Body.AcceptEnd(DocumentVisitor)
+        //ExFor:VisitorAction
+        //ExSummary:Shows how to process absolute position tab characters with a document visitor (DocTextExtractor).
         /// <summary>
         /// Collects the text contents of all runs in the visited document. Replaces all absolute tab characters with ordinary tabs.
         /// </summary>

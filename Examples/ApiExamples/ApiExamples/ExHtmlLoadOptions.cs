@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -58,12 +58,12 @@ namespace ApiExamples
                 TestUtil.VerifyImageInShape(400, 400, ImageType.Png, imageShape);
         }
 
-        //ExStart
-        //ExFor:HtmlLoadOptions.WebRequestTimeout
-        //ExSummary:Shows how to set a time limit for web requests when loading a document with external resources linked by URLs.
-        [Test] //ExSkip
+        [Test]
         public void WebRequestTimeout()
         {
+            //ExStart
+            //ExFor:HtmlLoadOptions.WebRequestTimeout
+            //ExSummary:Shows how to set a time limit for web requests when loading a document with external resources linked by URLs.
             // Create a new HtmlLoadOptions object and verify its timeout threshold for a web request.
             HtmlLoadOptions options = new HtmlLoadOptions();
 
@@ -103,8 +103,12 @@ namespace ApiExamples
             Assert.That(warningCallback.Warnings()[1].Description, Is.EqualTo("Image has been replaced with a placeholder."));
 
             doc.Save(ArtifactsDir + "HtmlLoadOptions.WebRequestTimeout.docx");
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:HtmlLoadOptions.WebRequestTimeout
+        //ExSummary:Shows how to set a time limit for web requests when loading a document with external resources linked by URLs (ListDocumentWarnings).
         /// <summary>
         /// Stores all warnings that occur during a document loading operation in a List.
         /// </summary>

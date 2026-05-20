@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -102,21 +102,21 @@ namespace ApiExamples
             }
         }
 
-        //ExStart
-        //ExFor:VbaReference
-        //ExFor:VbaReference.Type
-        //ExFor:VbaReference.LibId
-        //ExFor:VbaReferenceCollection
-        //ExFor:VbaReferenceCollection.Item(Int32)
-        //ExFor:VbaReferenceCollection.Count
-        //ExFor:VbaReferenceCollection.RemoveAt(int)
-        //ExFor:VbaReferenceCollection.Remove(VbaReference)
-        //ExFor:VbaReferenceType
-        //ExFor:VbaProject.References
-        //ExSummary:Shows how to get/remove an element from the VBA reference collection.
-        [Test]//ExSkip
+        [Test]
         public void RemoveVbaReference()
         {
+            //ExStart
+            //ExFor:VbaReference
+            //ExFor:VbaReference.Type
+            //ExFor:VbaReference.LibId
+            //ExFor:VbaReferenceCollection
+            //ExFor:VbaReferenceCollection.Item(Int32)
+            //ExFor:VbaReferenceCollection.Count
+            //ExFor:VbaReferenceCollection.RemoveAt(int)
+            //ExFor:VbaReferenceCollection.Remove(VbaReference)
+            //ExFor:VbaReferenceType
+            //ExFor:VbaProject.References
+            //ExSummary:Shows how to get/remove an element from the VBA reference collection.
             const string brokenPath = @"X:\broken.dll";
             Document doc = new Document(MyDir + "VBA project.docm");
             
@@ -137,8 +137,21 @@ namespace ApiExamples
             Assert.That(references.Count, Is.EqualTo(3 ));
 
             doc.Save(ArtifactsDir + "VbaProject.RemoveVbaReference.docm"); 
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:VbaReference
+        //ExFor:VbaReference.Type
+        //ExFor:VbaReference.LibId
+        //ExFor:VbaReferenceCollection
+        //ExFor:VbaReferenceCollection.Item(Int32)
+        //ExFor:VbaReferenceCollection.Count
+        //ExFor:VbaReferenceCollection.RemoveAt(int)
+        //ExFor:VbaReferenceCollection.Remove(VbaReference)
+        //ExFor:VbaReferenceType
+        //ExFor:VbaProject.References
+        //ExSummary:Shows how to get/remove an element from the VBA reference collection (GetLibIdPath).
         /// <summary>
         /// Returns string representing LibId path of a specified reference. 
         /// </summary>
