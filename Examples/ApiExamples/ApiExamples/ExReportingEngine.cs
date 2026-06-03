@@ -497,7 +497,7 @@ namespace ApiExamples
             Document template =
                 DocumentHelper.CreateTemplateDocumentWithDrawObjects("<<image [src.ImageString]>>", ShapeType.TextBox);
             ImageTestClass imageUri = new ImageTestBuilder()
-                .WithImageString(new Uri(ImageDir + "Transparent background logo.png").ToString())
+                .WithImageString(ImageUrl)
                 .Build();
 
             BuildReport(template, imageUri, "src", ReportBuildOptions.None);

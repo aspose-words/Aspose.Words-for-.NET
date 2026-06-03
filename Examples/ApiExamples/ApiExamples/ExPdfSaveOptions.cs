@@ -1,21 +1,28 @@
-// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Globalization;
-using System.IO;
+using Aspose.Pdf;
+using Aspose.Pdf.Annotations;
+using Aspose.Pdf.Facades;
+using Aspose.Pdf.Forms;
+using Aspose.Pdf.Operators;
+using Aspose.Pdf.Text;
 using Aspose.Words;
 using Aspose.Words.DigitalSignatures;
 using Aspose.Words.Fonts;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
+using Microsoft.Extensions.Options;
 using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
 using ColorMode = Aspose.Words.Saving.ColorMode;
 using Document = Aspose.Words.Document;
 using IWarningCallback = Aspose.Words.IWarningCallback;
@@ -24,12 +31,6 @@ using SaveFormat = Aspose.Words.SaveFormat;
 using SaveOptions = Aspose.Words.Saving.SaveOptions;
 using WarningInfo = Aspose.Words.WarningInfo;
 using WarningType = Aspose.Words.WarningType;
-using Aspose.Pdf;
-using Aspose.Pdf.Annotations;
-using Aspose.Pdf.Facades;
-using Aspose.Pdf.Forms;
-using Aspose.Pdf.Operators;
-using Aspose.Pdf.Text;
 
 namespace ApiExamples
 {
@@ -2678,6 +2679,26 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.ExportFloatingShapesAsInlineTag.pdf", saveOptions);
             //ExEnd:ExportFloatingShapesAsInlineTag
+        }
+
+        [TestCase("DateTime field.docx")]
+        [TestCase("DateTime sdt.docx")]
+        public void GenerateFormFieldScriptsDatetime(string inputFile)
+        {
+            //ExStart:GenerateFormFieldScriptsDatetime
+            //GistId:4f0f7d328594293c40062359b8eb9a08
+            //ExFor:PdfSaveOptions.GenerateFormFieldScripts
+            //ExSummary:Shows how to enable generation of JavaScript form field scripts for datetime fields when exporting to PDF.
+            Document doc = new Document(MyDir + inputFile);
+
+            // Create save options and enable form field scripts.
+            // Please note that JavaScript actions are prohibited by PDF/A-1, PDF/A-2 and PDF/A-3 compliance.
+            PdfSaveOptions saveOptions = new PdfSaveOptions();
+            saveOptions.PreserveFormFields = true;
+            saveOptions.GenerateFormFieldScripts = true;
+
+            doc.Save(ArtifactsDir + "PdfSaveOptions.GenerateFormFieldScriptsDatetime.pdf", saveOptions);
+            //ExEnd:GenerateFormFieldScriptsDatetime
         }
     }
 }
