@@ -1,4 +1,4 @@
-// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -2743,8 +2743,24 @@ namespace ApiExamples
             // Set to false (default) to exclude non-image shapes from the output.
             saveOptions.RenderNonImageShapes = true;
 
-            doc.Save(ArtifactsDir + "DoclingSaveOptions.DoclingJson.json", saveOptions);
+            doc.Save(ArtifactsDir + "Document.DoclingJson.json", saveOptions);
             //ExEnd:DoclingJson
+        }
+
+        [Test]
+        public void RemoveCustomizations()
+        {
+            //ExStart:RemoveCustomizations
+            //GistId:4f0f7d328594293c40062359b8eb9a08
+            //ExFor:Document.RemoveCustomizations
+            //ExSummary:Shows how to remove toolbar and keyboard command customizations from the document.
+            Document doc = new Document(MyDir + "Customized menu.docx");
+
+            // Remove all custom document UI customizations, including custom context menu entries.
+            doc.RemoveCustomizations();
+
+            doc.Save(ArtifactsDir + "Document.RemoveCustomizations.docx");
+            //ExEnd:RemoveCustomizations
         }
     }
 }

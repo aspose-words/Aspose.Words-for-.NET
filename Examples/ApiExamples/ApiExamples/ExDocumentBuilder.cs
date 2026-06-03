@@ -1797,7 +1797,7 @@ namespace ApiExamples
 
             image = (Shape)doc.GetChild(NodeType.Shape, 1, true);
 
-            TestUtil.VerifyImageInShape(100, 100, ImageType.Png, image);
+            TestUtil.VerifyImageInShape(400, 300, ImageType.Png, image);
             Assert.That(image.Left, Is.EqualTo(100.0d));
             Assert.That(image.Top, Is.EqualTo(250.0d));
             Assert.That(image.Width, Is.EqualTo(200.0d));

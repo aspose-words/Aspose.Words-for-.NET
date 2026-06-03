@@ -64,6 +64,8 @@ namespace ApiExamples
             //ExStart
             //ExFor:HtmlLoadOptions.WebRequestTimeout
             //ExSummary:Shows how to set a time limit for web requests when loading a document with external resources linked by URLs.
+            string imageUri = "https://samplelib.com/png/sample-alpha-circle-400x300.png";
+
             // Create a new HtmlLoadOptions object and verify its timeout threshold for a web request.
             HtmlLoadOptions options = new HtmlLoadOptions();
 
@@ -79,7 +81,7 @@ namespace ApiExamples
             // This linked image will require a web request to load, which will have to complete within our time limit.
             string html = $@"
                 <html>
-                    <img src=""{ImageUrl}"" alt=""Aspose logo"" style=""width:400px;height:400px;"">
+                    <img src=""{imageUri}"" alt=""Aspose logo"" style=""width:400px;height:400px;"">
                 </html>
             ";
 
@@ -96,7 +98,7 @@ namespace ApiExamples
             // We can also configure a custom callback to pick up any warnings from timed out web requests.
             Assert.That(warningCallback.Warnings()[0].Source, Is.EqualTo(WarningSource.Html));
             Assert.That(warningCallback.Warnings()[0].WarningType, Is.EqualTo(WarningType.DataLoss));
-            Assert.That(warningCallback.Warnings()[0].Description, Is.EqualTo($"Couldn't load a resource from \'{ImageUrl}\'."));
+            Assert.That(warningCallback.Warnings()[0].Description, Is.EqualTo($"Couldn't load a resource from \'{imageUri}\'."));
 
             Assert.That(warningCallback.Warnings()[1].Source, Is.EqualTo(WarningSource.Html));
             Assert.That(warningCallback.Warnings()[1].WarningType, Is.EqualTo(WarningType.DataLoss));
