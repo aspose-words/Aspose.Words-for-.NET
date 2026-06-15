@@ -402,9 +402,8 @@ namespace ApiExamples
                     }
                 }
             }
-
-            builder.Document.Save(ArtifactsDir + "OoxmlSaveOptions.Zip64ModeOption.docx", 
-                new OoxmlSaveOptions { Zip64Mode = Zip64Mode.Always });
+            OoxmlSaveOptions saveOptions =  new OoxmlSaveOptions { Zip64Mode = Zip64Mode.Always };
+            builder.Document.Save(ArtifactsDir + "OoxmlSaveOptions.Zip64ModeOption.docx", saveOptions);
             //ExEnd:Zip64ModeOption
         }
 
@@ -422,9 +421,9 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Document.docx");
 
             CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
+            SignOptions signOptions = new SignOptions() { Comments = "Some comments", SignTime = DateTime.Now };
             DigitalSignatureDetails digitalSignatureDetails = new DigitalSignatureDetails(
-                certificateHolder,
-                new SignOptions() { Comments = "Some comments", SignTime = DateTime.Now });
+                certificateHolder, signOptions);
 
             OoxmlSaveOptions saveOptions = new OoxmlSaveOptions();
             saveOptions.DigitalSignatureDetails = digitalSignatureDetails;

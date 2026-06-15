@@ -279,12 +279,9 @@ namespace ApiExamples
 
                     // Create and draw a rectangle.
                     SKRect rect = new SKRect(0f, 0f, 3f, 3f);
-                    canvas.DrawRect(rect, new SKPaint
-                    {
-                        Color = SKColors.Black,
-                        Style = SKPaintStyle.Stroke,
-                        StrokeWidth = 3f / 72f
-                    });
+                    SKPaint skPaint = new SKPaint {Color = SKColors.Black, Style = SKPaintStyle.Stroke};
+                    skPaint.StrokeWidth = 3f / 72f;
+                    canvas.DrawRect(rect, skPaint);
 
                     // Render the first page of the document to the same size as the above rectangle.
                     // The rectangle will frame this page.
@@ -300,12 +297,8 @@ namespace ApiExamples
                     // Create another rectangle.
                     rect = new SKRect(0, 0, 50, 100);
                     rect.Offset(90, 10);
-                    canvas.DrawRect(rect, new SKPaint
-                    {
-                        Color = SKColors.Black,
-                        Style = SKPaintStyle.Stroke,
-                        StrokeWidth = 1
-                    });
+                    skPaint.StrokeWidth = 1;
+                    canvas.DrawRect(rect,skPaint);
 
                     // Render the first page within the newly created rectangle once again.
                     doc.RenderToSize(0, canvas, 90, 10, 50, 100);
@@ -364,11 +357,8 @@ namespace ApiExamples
                         // Render a page as a thumbnail, and then frame it in a rectangle of the same size.
                         SKRect rect = new SKRect(0, 0, size.Width, size.Height);
                         rect.Offset(thumbLeft, thumbTop);
-                        canvas.DrawRect(rect, new SKPaint
-                        {
-                            Color = SKColors.Black,
-                            Style = SKPaintStyle.Stroke
-                        });
+                        SKPaint skPaint = new SKPaint {Color = SKColors.Black, Style = SKPaintStyle.Stroke};
+                        canvas.DrawRect(rect, skPaint);
                     }
 
                     using (SKFileWStream fs = new SKFileWStream(ArtifactsDir + "Rendering.CreateThumbnailsNetStandard2.png"))

@@ -80,8 +80,10 @@ namespace ApiExamples
             //There is a several ways to merge documents:
             string inputDoc1 = MyDir + "Big document.docx";
             string inputDoc2 = MyDir + "Tables.docx";
+            
+            MergerContext context = new MergerContext() { MergeFormatMode = MergeFormatMode.KeepSourceFormatting };
 
-            Merger.Create(new MergerContext() { MergeFormatMode = MergeFormatMode.KeepSourceFormatting })
+            Merger.Create(context)
                 .From(inputDoc1)
                 .From(inputDoc2)
                 .To(ArtifactsDir + "LowCode.MergeContextDocuments.1.docx")
@@ -89,14 +91,16 @@ namespace ApiExamples
 
             LoadOptions firstLoadOptions = new LoadOptions() { IgnoreOleData = true };
             LoadOptions secondLoadOptions = new LoadOptions() { IgnoreOleData = false };
-            Merger.Create(new MergerContext() { MergeFormatMode = MergeFormatMode.KeepSourceFormatting })
+            MergerContext contextLoadOptions = new MergerContext() { MergeFormatMode = MergeFormatMode.KeepSourceFormatting };
+            Merger.Create(contextLoadOptions)
                 .From(inputDoc1, firstLoadOptions)
                 .From(inputDoc2, secondLoadOptions)
                 .To(ArtifactsDir + "LowCode.MergeContextDocuments.2.docx", SaveFormat.Docx)
                 .Execute();
 
             OoxmlSaveOptions saveOptions = new OoxmlSaveOptions { Password = "Aspose.Words" };
-            Merger.Create(new MergerContext() { MergeFormatMode = MergeFormatMode.KeepSourceFormatting })
+            MergerContext contextSaveOptions = new MergerContext() { MergeFormatMode = MergeFormatMode.KeepSourceFormatting };
+            Merger.Create(contextSaveOptions)
                 .From(inputDoc1)
                 .From(inputDoc2)
                 .To(ArtifactsDir + "LowCode.MergeContextDocuments.3.docx", saveOptions)
@@ -164,20 +168,18 @@ namespace ApiExamples
                 {
                     OoxmlSaveOptions saveOptions = new OoxmlSaveOptions { Password = "Aspose.Words" };
                     using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.MergeStreamContextDocuments.1.docx", FileMode.Create, FileAccess.ReadWrite))
-                        Merger.Create(new MergerContext() { MergeFormatMode = MergeFormatMode.KeepSourceFormatting })
-                        .From(firstStreamIn)
-                        .From(secondStreamIn)
-                        .To(streamOut, saveOptions)
-                        .Execute();
-
+                    {
+                        MergerContext context = new MergerContext() {MergeFormatMode = MergeFormatMode.KeepSourceFormatting};
+                        Merger.Create(context).From(firstStreamIn).From(secondStreamIn).To(streamOut, saveOptions).Execute();
+                    }
+                    
                     LoadOptions firstLoadOptions = new LoadOptions() { IgnoreOleData = true };
                     LoadOptions secondLoadOptions = new LoadOptions() { IgnoreOleData = false };
                     using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.MergeStreamContextDocuments.2.docx", FileMode.Create, FileAccess.ReadWrite))
-                        Merger.Create(new MergerContext() { MergeFormatMode = MergeFormatMode.KeepSourceFormatting })
-                        .From(firstStreamIn, firstLoadOptions)
-                        .From(secondStreamIn, secondLoadOptions)
-                        .To(streamOut, SaveFormat.Docx)
-                        .Execute();
+                    {
+                        MergerContext context = new MergerContext() {MergeFormatMode = MergeFormatMode.KeepSourceFormatting};
+                        Merger.Create(context).From(firstStreamIn, firstLoadOptions).From(secondStreamIn, secondLoadOptions).To(streamOut, SaveFormat.Docx).Execute();
+                    }
                 }
             }
             //ExEnd:MergeStreamContextDocuments
@@ -863,7 +865,8 @@ namespace ApiExamples
 
             MailMerger.Execute(doc, ArtifactsDir + "LowCode.MailMergeDataRow.1.docx", dataRow);
             MailMerger.Execute(doc, ArtifactsDir + "LowCode.MailMergeDataRow.2.docx", SaveFormat.Docx, dataRow);
-            MailMerger.Execute(doc, ArtifactsDir + "LowCode.MailMergeDataRow.3.docx", SaveFormat.Docx, dataRow, new MailMergeOptions() { TrimWhitespaces = true });
+            MailMergeOptions mailMergeOptions = new MailMergeOptions() {TrimWhitespaces = true};
+            MailMerger.Execute(doc, ArtifactsDir + "LowCode.MailMergeDataRow.3.docx", SaveFormat.Docx, dataRow, mailMergeOptions);
             //ExEnd:MailMergeDataRow
         }
 
@@ -915,7 +918,8 @@ namespace ApiExamples
             DataRow dataRow = dataTable.Rows.Add(new string[] { "James Bond", "London", "Classified" });
 
             Stream[] images = MailMerger.ExecuteToImages(doc, new ImageSaveOptions(SaveFormat.Png), dataRow);
-            images = MailMerger.ExecuteToImages(doc, new ImageSaveOptions(SaveFormat.Png), dataRow, new MailMergeOptions() { TrimWhitespaces = true });
+            MailMergeOptions mailMergeOptions = new MailMergeOptions() {TrimWhitespaces = true};
+            images = MailMerger.ExecuteToImages(doc, new ImageSaveOptions(SaveFormat.Png), dataRow, mailMergeOptions);
             //ExEnd:MailMergeToImagesDataRow
         }
 
@@ -940,7 +944,10 @@ namespace ApiExamples
                     MailMerger.Execute(streamIn, streamOut, SaveFormat.Docx, dataRow);
 
                 using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.MailMergeStreamDataRow.2.docx", FileMode.Create, FileAccess.ReadWrite))
-                    MailMerger.Execute(streamIn, streamOut, SaveFormat.Docx, dataRow, new MailMergeOptions() { TrimWhitespaces = true });
+                {
+                    MailMergeOptions mailMergeOptions = new MailMergeOptions() {TrimWhitespaces = true};
+                    MailMerger.Execute(streamIn, streamOut, SaveFormat.Docx, dataRow, mailMergeOptions);
+                }
             }
             //ExEnd:MailMergeStreamDataRow
         }
@@ -995,7 +1002,9 @@ namespace ApiExamples
             using (FileStream streamIn = new FileStream(MyDir + "Mail merge.doc", FileMode.Open, FileAccess.Read))
             {
                 Stream[] images = MailMerger.ExecuteToImages(streamIn, new ImageSaveOptions(SaveFormat.Png), dataRow);
-                images = MailMerger.ExecuteToImages(streamIn, new ImageSaveOptions(SaveFormat.Png), dataRow, new MailMergeOptions() { TrimWhitespaces = true });
+
+                MailMergeOptions mailMergeOptions = new MailMergeOptions() {TrimWhitespaces = true};
+                images = MailMerger.ExecuteToImages(streamIn, new ImageSaveOptions(SaveFormat.Png), dataRow, mailMergeOptions);
             }
             //ExEnd:MailMergeStreamToImagesDataRow
         }
@@ -1020,7 +1029,8 @@ namespace ApiExamples
 
             MailMerger.Execute(doc, ArtifactsDir + "LowCode.MailMergeDataTable.1.docx", dataTable);
             MailMerger.Execute(doc, ArtifactsDir + "LowCode.MailMergeDataTable.2.docx", SaveFormat.Docx, dataTable);
-            MailMerger.Execute(doc, ArtifactsDir + "LowCode.MailMergeDataTable.3.docx", SaveFormat.Docx, dataTable, new MailMergeOptions() { TrimWhitespaces = true });
+            MailMergeOptions mailMergeOptions = new MailMergeOptions() {TrimWhitespaces = true};
+            MailMerger.Execute(doc, ArtifactsDir + "LowCode.MailMergeDataTable.3.docx", SaveFormat.Docx, dataTable, mailMergeOptions);
             //ExEnd:MailMergeDataTable
         }
 
@@ -1072,7 +1082,8 @@ namespace ApiExamples
             DataRow dataRow = dataTable.Rows.Add(new string[] { "James Bond", "London", "Classified" });
 
             Stream[] images = MailMerger.ExecuteToImages(doc, new ImageSaveOptions(SaveFormat.Png), dataTable);
-            images = MailMerger.ExecuteToImages(doc, new ImageSaveOptions(SaveFormat.Png), dataTable, new MailMergeOptions() { TrimWhitespaces = true });
+            MailMergeOptions mailMergeOptions = new MailMergeOptions() {TrimWhitespaces = true};
+            images = MailMerger.ExecuteToImages(doc, new ImageSaveOptions(SaveFormat.Png), dataTable, mailMergeOptions);
             //ExEnd:MailMergeToImagesDataTable
         }
 
@@ -1097,7 +1108,10 @@ namespace ApiExamples
                     MailMerger.Execute(streamIn, streamOut, SaveFormat.Docx, dataTable);
 
                 using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.MailMergeDataTable.2.docx", FileMode.Create, FileAccess.ReadWrite))
-                    MailMerger.Execute(streamIn, streamOut, SaveFormat.Docx, dataTable, new MailMergeOptions() { TrimWhitespaces = true });
+                {
+                    MailMergeOptions mailMergeOptions = new MailMergeOptions() {TrimWhitespaces = true};
+                    MailMerger.Execute(streamIn, streamOut, SaveFormat.Docx, dataTable, mailMergeOptions);
+                }
             }
             //ExEnd:MailMergeStreamDataTable
         }
@@ -1153,7 +1167,8 @@ namespace ApiExamples
             using (FileStream streamIn = new FileStream(MyDir + "Mail merge.doc", FileMode.Open, FileAccess.Read))
             {
                 Stream[] images = MailMerger.ExecuteToImages(streamIn, new ImageSaveOptions(SaveFormat.Png), dataTable);
-                images = MailMerger.ExecuteToImages(streamIn, new ImageSaveOptions(SaveFormat.Png), dataTable, new MailMergeOptions() { TrimWhitespaces = true });
+                MailMergeOptions mailMergeOptions = new MailMergeOptions() {TrimWhitespaces = true};
+                images = MailMerger.ExecuteToImages(streamIn, new ImageSaveOptions(SaveFormat.Png), dataTable, mailMergeOptions);
             }
             //ExEnd:MailMergeStreamToImagesDataTable
         }
@@ -1178,7 +1193,8 @@ namespace ApiExamples
 
             MailMerger.ExecuteWithRegions(doc, ArtifactsDir + "LowCode.MailMergeWithRegionsDataTable.1.docx", dataTable);
             MailMerger.ExecuteWithRegions(doc, ArtifactsDir + "LowCode.MailMergeWithRegionsDataTable.2.docx", SaveFormat.Docx, dataTable);
-            MailMerger.ExecuteWithRegions(doc, ArtifactsDir + "LowCode.MailMergeWithRegionsDataTable.3.docx", SaveFormat.Docx, dataTable, new MailMergeOptions() { TrimWhitespaces = true });
+            MailMergeOptions mailMergeOptions = new MailMergeOptions() {TrimWhitespaces = true};
+            MailMerger.ExecuteWithRegions(doc, ArtifactsDir + "LowCode.MailMergeWithRegionsDataTable.3.docx", SaveFormat.Docx, dataTable, mailMergeOptions);
             //ExEnd:MailMergeWithRegionsDataTable
         }
 
@@ -1230,7 +1246,8 @@ namespace ApiExamples
             dataTable.Rows.Add(new object[] { "Jane", "Doe" });
 
             Stream[] images = MailMerger.ExecuteWithRegionsToImages(doc, new ImageSaveOptions(SaveFormat.Png), dataTable);
-            images = MailMerger.ExecuteWithRegionsToImages(doc, new ImageSaveOptions(SaveFormat.Png), dataTable, new MailMergeOptions() { TrimWhitespaces = true });
+            MailMergeOptions mailMergeOptions = new MailMergeOptions() {TrimWhitespaces = true};
+            images = MailMerger.ExecuteWithRegionsToImages(doc, new ImageSaveOptions(SaveFormat.Png), dataTable, mailMergeOptions);
             //ExEnd:MailMergeWithRegionsToImagesDataTable
         }
 
@@ -1255,7 +1272,10 @@ namespace ApiExamples
                     MailMerger.ExecuteWithRegions(streamIn, streamOut, SaveFormat.Docx, dataTable);
 
                 using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.MailMergeStreamWithRegionsDataTable.2.docx", FileMode.Create, FileAccess.ReadWrite))
-                    MailMerger.ExecuteWithRegions(streamIn, streamOut, SaveFormat.Docx, dataTable, new MailMergeOptions() { TrimWhitespaces = true });
+                {
+                    MailMergeOptions mailMergeOptions = new MailMergeOptions() {TrimWhitespaces = true};
+                    MailMerger.ExecuteWithRegions(streamIn, streamOut, SaveFormat.Docx, dataTable, mailMergeOptions);
+                }
             }
             //ExEnd:MailMergeStreamWithRegionsDataTable
         }
@@ -1310,7 +1330,8 @@ namespace ApiExamples
             using (FileStream streamIn = new FileStream(MyDir + "Mail merge.doc", FileMode.Open, FileAccess.Read))
             {
                 Stream[] images = MailMerger.ExecuteWithRegionsToImages(streamIn, new ImageSaveOptions(SaveFormat.Png), dataTable);
-                images = MailMerger.ExecuteWithRegionsToImages(streamIn, new ImageSaveOptions(SaveFormat.Png), dataTable, new MailMergeOptions() { TrimWhitespaces = true });
+                MailMergeOptions mailMergeOptions = new MailMergeOptions() {TrimWhitespaces = true};
+                images = MailMerger.ExecuteWithRegionsToImages(streamIn, new ImageSaveOptions(SaveFormat.Png), dataTable, mailMergeOptions);
             }
             //ExEnd:MailMergeStreamWithRegionsToImagesDataTable
         }
@@ -1347,7 +1368,8 @@ namespace ApiExamples
 
             MailMerger.ExecuteWithRegions(doc, ArtifactsDir + "LowCode.MailMergeWithRegionsDataSet.1.docx", dataSet);
             MailMerger.ExecuteWithRegions(doc, ArtifactsDir + "LowCode.MailMergeWithRegionsDataSet.2.docx", SaveFormat.Docx, dataSet);
-            MailMerger.ExecuteWithRegions(doc, ArtifactsDir + "LowCode.MailMergeWithRegionsDataSet.3.docx", SaveFormat.Docx, dataSet, new MailMergeOptions() { TrimWhitespaces = true });
+            MailMergeOptions mailMergeOptions = new MailMergeOptions() {TrimWhitespaces = true};
+            MailMerger.ExecuteWithRegions(doc, ArtifactsDir + "LowCode.MailMergeWithRegionsDataSet.3.docx", SaveFormat.Docx, dataSet, mailMergeOptions);
             //ExEnd:MailMergeWithRegionsDataSet
         }
 
@@ -1423,7 +1445,8 @@ namespace ApiExamples
             dataSet.Relations.Add(tableCustomers.Columns["CustomerID"], tableOrders.Columns["CustomerID"]);
 
             Stream[] images = MailMerger.ExecuteWithRegionsToImages(doc, new ImageSaveOptions(SaveFormat.Png), dataSet);
-            images = MailMerger.ExecuteWithRegionsToImages(doc, new ImageSaveOptions(SaveFormat.Png), dataSet, new MailMergeOptions() { TrimWhitespaces = true });
+            MailMergeOptions mailMergeOptions = new MailMergeOptions() {TrimWhitespaces = true};
+            images = MailMerger.ExecuteWithRegionsToImages(doc, new ImageSaveOptions(SaveFormat.Png), dataSet, mailMergeOptions);
             //ExEnd:MailMergeWithRegionsToImagesDataSet
         }
 
@@ -1460,7 +1483,10 @@ namespace ApiExamples
                     MailMerger.ExecuteWithRegions(streamIn, streamOut, SaveFormat.Docx, dataSet);
 
                 using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.MailMergeStreamWithRegionsDataTable.2.docx", FileMode.Create, FileAccess.ReadWrite))
-                    MailMerger.ExecuteWithRegions(streamIn, streamOut, SaveFormat.Docx, dataSet, new MailMergeOptions() { TrimWhitespaces = true });
+                {
+                    MailMergeOptions mailMergeOptions = new MailMergeOptions() {TrimWhitespaces = true};
+                    MailMerger.ExecuteWithRegions(streamIn, streamOut, SaveFormat.Docx, dataSet, mailMergeOptions);
+                }
             }
             //ExEnd:MailMergeStreamWithRegionsDataSet
         }
@@ -1539,7 +1565,8 @@ namespace ApiExamples
             using (FileStream streamIn = new FileStream(MyDir + "Mail merge.doc", FileMode.Open, FileAccess.Read))
             {
                 Stream[] images = MailMerger.ExecuteWithRegionsToImages(streamIn, new ImageSaveOptions(SaveFormat.Png), dataSet);
-                images = MailMerger.ExecuteWithRegionsToImages(streamIn, new ImageSaveOptions(SaveFormat.Png), dataSet, new MailMergeOptions() { TrimWhitespaces = true });
+                MailMergeOptions mailMergeOptions = new MailMergeOptions() {TrimWhitespaces = true};
+                images = MailMerger.ExecuteWithRegionsToImages(streamIn, new ImageSaveOptions(SaveFormat.Png), dataSet, mailMergeOptions);
             }
             //ExEnd:MailMergeStreamWithRegionsToImagesDataSet
         }
@@ -1703,7 +1730,8 @@ namespace ApiExamples
 
             Replacer.Replace(doc, ArtifactsDir + "LowCode.ReplaceRegex.1.docx", pattern, replacement);
             Replacer.Replace(doc, ArtifactsDir + "LowCode.ReplaceRegex.2.docx", SaveFormat.Docx, pattern, replacement);
-            Replacer.Replace(doc, ArtifactsDir + "LowCode.ReplaceRegex.3.docx", SaveFormat.Docx, pattern, replacement, new FindReplaceOptions() { FindWholeWordsOnly = false });
+            FindReplaceOptions findReplaceOptions = new FindReplaceOptions() {FindWholeWordsOnly = false};
+            Replacer.Replace(doc, ArtifactsDir + "LowCode.ReplaceRegex.3.docx", SaveFormat.Docx, pattern, replacement, findReplaceOptions);
             //ExEnd:ReplaceRegex
         }
 
@@ -1746,7 +1774,8 @@ namespace ApiExamples
             string replacement = "lavender";
 
             Stream[] images = Replacer.ReplaceToImages(doc, new ImageSaveOptions(SaveFormat.Png), pattern, replacement);
-            images = Replacer.ReplaceToImages(doc, new ImageSaveOptions(SaveFormat.Png), pattern, replacement, new FindReplaceOptions() { FindWholeWordsOnly = false });
+            FindReplaceOptions findReplaceOptions = new FindReplaceOptions() {FindWholeWordsOnly = false};
+            images = Replacer.ReplaceToImages(doc, new ImageSaveOptions(SaveFormat.Png), pattern, replacement, findReplaceOptions);
             //ExEnd:ReplaceToImagesRegex
         }
 
@@ -1767,7 +1796,10 @@ namespace ApiExamples
                     Replacer.Replace(streamIn, streamOut, SaveFormat.Docx, pattern, replacement);
 
                 using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.ReplaceStreamRegex.2.docx", FileMode.Create, FileAccess.ReadWrite))
-                    Replacer.Replace(streamIn, streamOut, SaveFormat.Docx, pattern, replacement, new FindReplaceOptions() { FindWholeWordsOnly = false });
+                {
+                    FindReplaceOptions findReplaceOptions = new FindReplaceOptions() {FindWholeWordsOnly = false};
+                    Replacer.Replace(streamIn, streamOut, SaveFormat.Docx, pattern, replacement, findReplaceOptions);
+                }
             }
             //ExEnd:ReplaceStreamRegex
         }
@@ -1815,7 +1847,8 @@ namespace ApiExamples
             using (FileStream streamIn = new FileStream(MyDir + "Replace regex.docx", FileMode.Open, FileAccess.Read))
             {
                 Stream[] images = Replacer.ReplaceToImages(streamIn, new ImageSaveOptions(SaveFormat.Png), pattern, replacement);
-                images = Replacer.ReplaceToImages(streamIn, new ImageSaveOptions(SaveFormat.Png), pattern, replacement, new FindReplaceOptions() { FindWholeWordsOnly = false });
+                FindReplaceOptions findReplaceOptions = new FindReplaceOptions() {FindWholeWordsOnly = false};
+                images = Replacer.ReplaceToImages(streamIn, new ImageSaveOptions(SaveFormat.Png), pattern, replacement, findReplaceOptions);
             }
             //ExEnd:ReplaceToImagesStreamRegex
         }
@@ -1835,10 +1868,11 @@ namespace ApiExamples
 
             AsposeData obj = new AsposeData { List = new List<string> { "abc" } };
 
+            ReportBuilderOptions reportBuilderOptions = new ReportBuilderOptions() {Options = ReportBuildOptions.AllowMissingMembers};
             ReportBuilder.BuildReport(doc, ArtifactsDir + "LowCode.BuildReportWithObject.1.docx", obj);
-            ReportBuilder.BuildReport(doc, ArtifactsDir + "LowCode.BuildReportWithObject.2.docx", obj, new ReportBuilderOptions() { Options = ReportBuildOptions.AllowMissingMembers });
+            ReportBuilder.BuildReport(doc, ArtifactsDir + "LowCode.BuildReportWithObject.2.docx", obj, reportBuilderOptions);
             ReportBuilder.BuildReport(doc, ArtifactsDir + "LowCode.BuildReportWithObject.3.docx", SaveFormat.Docx, obj);
-            ReportBuilder.BuildReport(doc, ArtifactsDir + "LowCode.BuildReportWithObject.4.docx", SaveFormat.Docx, obj, new ReportBuilderOptions() { Options = ReportBuildOptions.AllowMissingMembers });
+            ReportBuilder.BuildReport(doc, ArtifactsDir + "LowCode.BuildReportWithObject.4.docx", SaveFormat.Docx, obj, reportBuilderOptions);
         }
 
         public class AsposeData
@@ -1864,11 +1898,17 @@ namespace ApiExamples
                     ReportBuilder.BuildReport(streamIn, streamOut, SaveFormat.Docx, obj);
 
                 using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.BuildReportDataStream.2.docx", FileMode.Create, FileAccess.ReadWrite))
-                    ReportBuilder.BuildReport(streamIn, streamOut, SaveFormat.Docx, obj, new ReportBuilderOptions() { Options = ReportBuildOptions.AllowMissingMembers });
+                {
+                    ReportBuilderOptions reportBuilderOptions = new ReportBuilderOptions() {Options = ReportBuildOptions.AllowMissingMembers};
+                    ReportBuilder.BuildReport(streamIn, streamOut, SaveFormat.Docx, obj, reportBuilderOptions);
+                }
 
                 MessageTestClass sender = new MessageTestClass("LINQ Reporting Engine", "Hello World");
                 using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.BuildReportDataStream.3.docx", FileMode.Create, FileAccess.ReadWrite))
-                    ReportBuilder.BuildReport(streamIn, streamOut, SaveFormat.Docx, new object[] { sender }, new[] { "s" }, new ReportBuilderOptions() { Options = ReportBuildOptions.AllowMissingMembers });
+                {
+                    ReportBuilderOptions reportBuilderOptions = new ReportBuilderOptions() {Options = ReportBuildOptions.AllowMissingMembers};
+                    ReportBuilder.BuildReport(streamIn, streamOut, SaveFormat.Docx, new object[] {sender}, new[] {"s"}, reportBuilderOptions);
+                }
             }
             //ExEnd:BuildReportDataStream
         }
@@ -1892,17 +1932,18 @@ namespace ApiExamples
             string doc = MyDir + "Report building.docx";
 
             MessageTestClass sender = new MessageTestClass("LINQ Reporting Engine", "Hello World");
+            ReportBuilderOptions reportBuilderOptions = new ReportBuilderOptions() {Options = ReportBuildOptions.AllowMissingMembers};
 
             ReportBuilder.BuildReport(doc, ArtifactsDir + "LowCode.BuildReportDataSource.1.docx", sender, "s");
             ReportBuilder.BuildReport(doc, ArtifactsDir + "LowCode.BuildReportDataSource.2.docx", new object[] { sender }, new[] { "s" });
-            ReportBuilder.BuildReport(doc, ArtifactsDir + "LowCode.BuildReportDataSource.3.docx", sender, "s", new ReportBuilderOptions() { Options = ReportBuildOptions.AllowMissingMembers });
+            ReportBuilder.BuildReport(doc, ArtifactsDir + "LowCode.BuildReportDataSource.3.docx", sender, "s", reportBuilderOptions);
             ReportBuilder.BuildReport(doc, ArtifactsDir + "LowCode.BuildReportDataSource.4.docx", SaveFormat.Docx, sender, "s");
             ReportBuilder.BuildReport(doc, ArtifactsDir + "LowCode.BuildReportDataSource.5.docx", SaveFormat.Docx, new object[] { sender }, new[] { "s" });
-            ReportBuilder.BuildReport(doc, ArtifactsDir + "LowCode.BuildReportDataSource.6.docx", SaveFormat.Docx, sender, "s", new ReportBuilderOptions() { Options = ReportBuildOptions.AllowMissingMembers });
-            ReportBuilder.BuildReport(doc, ArtifactsDir + "LowCode.BuildReportDataSource.7.docx", SaveFormat.Docx, new object[] { sender }, new[] { "s" }, new ReportBuilderOptions() { Options = ReportBuildOptions.AllowMissingMembers });
-            ReportBuilder.BuildReport(doc, ArtifactsDir + "LowCode.BuildReportDataSource.8.docx", new object[] { sender }, new[] { "s" }, new ReportBuilderOptions() { Options = ReportBuildOptions.AllowMissingMembers });
+            ReportBuilder.BuildReport(doc, ArtifactsDir + "LowCode.BuildReportDataSource.6.docx", SaveFormat.Docx, sender, "s", reportBuilderOptions);
+            ReportBuilder.BuildReport(doc, ArtifactsDir + "LowCode.BuildReportDataSource.7.docx", SaveFormat.Docx, new object[] { sender }, new[] { "s" }, reportBuilderOptions);
+            ReportBuilder.BuildReport(doc, ArtifactsDir + "LowCode.BuildReportDataSource.8.docx", new object[] { sender }, new[] { "s" }, reportBuilderOptions);
 
-            Stream[] images = ReportBuilder.BuildReportToImages(doc, new ImageSaveOptions(SaveFormat.Png), new object[] { sender }, new[] { "s" }, new ReportBuilderOptions() { Options = ReportBuildOptions.AllowMissingMembers });
+            Stream[] images = ReportBuilder.BuildReportToImages(doc, new ImageSaveOptions(SaveFormat.Png), new object[] { sender }, new[] { "s" }, reportBuilderOptions);
 
             ReportBuilderContext reportBuilderContext = new ReportBuilderContext();
             reportBuilderContext.ReportBuilderOptions.MissingMemberMessage = "Missed members";
@@ -1950,10 +1991,12 @@ namespace ApiExamples
                 using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.BuildReportDataSourceStream.2.docx", FileMode.Create, FileAccess.ReadWrite))
                     ReportBuilder.BuildReport(streamIn, streamOut, SaveFormat.Docx, sender, "s");
 
-                using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.BuildReportDataSourceStream.3.docx", FileMode.Create, FileAccess.ReadWrite))
-                    ReportBuilder.BuildReport(streamIn, streamOut, SaveFormat.Docx, sender, "s", new ReportBuilderOptions() { Options = ReportBuildOptions.AllowMissingMembers });
+                ReportBuilderOptions reportBuilderOptions = new ReportBuilderOptions() {Options = ReportBuildOptions.AllowMissingMembers};
 
-                Stream[] images = ReportBuilder.BuildReportToImages(streamIn, new ImageSaveOptions(SaveFormat.Png), new object[] { sender }, new[] { "s" }, new ReportBuilderOptions() { Options = ReportBuildOptions.AllowMissingMembers });
+                using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.BuildReportDataSourceStream.3.docx", FileMode.Create, FileAccess.ReadWrite))
+                    ReportBuilder.BuildReport(streamIn, streamOut, SaveFormat.Docx, sender, "s", reportBuilderOptions);
+
+                Stream[] images = ReportBuilder.BuildReportToImages(streamIn, new ImageSaveOptions(SaveFormat.Png), new object[] { sender }, new[] { "s" }, reportBuilderOptions);
 
                 ReportBuilderContext reportBuilderContext = new ReportBuilderContext();
                 reportBuilderContext.ReportBuilderOptions.MissingMemberMessage = "Missed members";
@@ -2271,7 +2314,10 @@ namespace ApiExamples
 
 #if NETFRAMEWORK || JAVA //ExSkip
                 using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.SetWatermarkText.2.docx", FileMode.Create, FileAccess.ReadWrite))
-                    Watermarker.SetImage(streamIn, streamOut, SaveFormat.Docx, System.Drawing.Image.FromFile(ImageDir + "Logo.jpg"), new ImageWatermarkOptions() { Scale = 50 });
+                {
+                    ImageWatermarkOptions imageWatermarkOptions = new ImageWatermarkOptions() {Scale = 50};
+                    Watermarker.SetImage(streamIn, streamOut, SaveFormat.Docx, System.Drawing.Image.FromFile(ImageDir + "Logo.jpg"), imageWatermarkOptions);
+                }
 #endif //ExSkip
             }
             //ExEnd:WatermarkImageStream
@@ -2375,7 +2421,8 @@ namespace ApiExamples
                 using (FileStream imageStream = new FileStream(watermarkImage, FileMode.Open, FileAccess.Read))
                 {
                     Watermarker.SetWatermarkToImages(streamIn, new ImageSaveOptions(SaveFormat.Png), imageStream);
-                    Watermarker.SetWatermarkToImages(streamIn, new ImageSaveOptions(SaveFormat.Png), imageStream, new ImageWatermarkOptions() { Scale = 50 });
+                    ImageWatermarkOptions imageWatermarkOptions = new ImageWatermarkOptions() {Scale = 50};
+                    Watermarker.SetWatermarkToImages(streamIn, new ImageSaveOptions(SaveFormat.Png), imageStream, imageWatermarkOptions);
                 }
             }
             //ExEnd:WatermarkImageToImagesStream
