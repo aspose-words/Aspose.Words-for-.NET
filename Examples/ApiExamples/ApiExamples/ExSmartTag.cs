@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -17,24 +17,24 @@ namespace ApiExamples
     [TestFixture]
     class ExSmartTag : ApiExampleBase
     {
-        //ExStart
-        //ExFor:CompositeNode.RemoveSmartTags
-        //ExFor:CustomXmlProperty
-        //ExFor:CustomXmlProperty.#ctor(String,String,String)
-        //ExFor:CustomXmlProperty.Name
-        //ExFor:CustomXmlProperty.Value
-        //ExFor:SmartTag
-        //ExFor:SmartTag.#ctor(DocumentBase)
-        //ExFor:SmartTag.Accept(DocumentVisitor)
-        //ExFor:SmartTag.AcceptStart(DocumentVisitor)
-        //ExFor:SmartTag.AcceptEnd(DocumentVisitor)
-        //ExFor:SmartTag.Element
-        //ExFor:SmartTag.Properties
-        //ExFor:SmartTag.Uri
-        //ExSummary:Shows how to create smart tags.
-        [Test] //ExSkip
+        [Test]
         public void Create()
         {
+            //ExStart
+            //ExFor:CompositeNode.RemoveSmartTags
+            //ExFor:CustomXmlProperty
+            //ExFor:CustomXmlProperty.#ctor(String,String,String)
+            //ExFor:CustomXmlProperty.Name
+            //ExFor:CustomXmlProperty.Value
+            //ExFor:SmartTag
+            //ExFor:SmartTag.#ctor(DocumentBase)
+            //ExFor:SmartTag.Accept(DocumentVisitor)
+            //ExFor:SmartTag.AcceptStart(DocumentVisitor)
+            //ExFor:SmartTag.AcceptEnd(DocumentVisitor)
+            //ExFor:SmartTag.Element
+            //ExFor:SmartTag.Properties
+            //ExFor:SmartTag.Uri
+            //ExSummary:Shows how to create smart tags.
             Document doc = new Document();
 
             // A smart tag appears in a document with Microsoft Word recognizes a part of its text as some form of data,
@@ -83,8 +83,24 @@ namespace ApiExamples
 
             Assert.That(doc.GetChildNodes(NodeType.SmartTag, true).Count, Is.EqualTo(0));
             TestCreate(new Document(ArtifactsDir + "SmartTag.Create.doc")); //ExSkip
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:CompositeNode.RemoveSmartTags
+        //ExFor:CustomXmlProperty
+        //ExFor:CustomXmlProperty.#ctor(String,String,String)
+        //ExFor:CustomXmlProperty.Name
+        //ExFor:CustomXmlProperty.Value
+        //ExFor:SmartTag
+        //ExFor:SmartTag.#ctor(DocumentBase)
+        //ExFor:SmartTag.Accept(DocumentVisitor)
+        //ExFor:SmartTag.AcceptStart(DocumentVisitor)
+        //ExFor:SmartTag.AcceptEnd(DocumentVisitor)
+        //ExFor:SmartTag.Element
+        //ExFor:SmartTag.Properties
+        //ExFor:SmartTag.Uri
+        //ExSummary:Shows how to create smart tags (SmartTagPrinter).
         /// <summary>
         /// Prints visited smart tags and their contents.
         /// </summary>

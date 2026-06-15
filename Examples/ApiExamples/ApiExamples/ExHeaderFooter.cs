@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -251,15 +251,15 @@ namespace ApiExamples
             Assert.That(doc.Range.Text.Contains($"Copyright (C) {currentYear} by Aspose Pty Ltd."), Is.True);
         }
 
-        //ExStart
-        //ExFor:IReplacingCallback
-        //ExFor:PageSetup.DifferentFirstPageHeaderFooter
-        //ExFor:FindReplaceOptions.#ctor(IReplacingCallback)
-        //ExSummary:Shows how to track the order in which a text replacement operation traverses nodes.
-        [TestCase(false)] //ExSkip
-        [TestCase(true)] //ExSkip
+        [TestCase(false)]
+        [TestCase(true)]
         public void Order(bool differentFirstPageHeaderFooter)
         {
+            //ExStart
+            //ExFor:IReplacingCallback
+            //ExFor:PageSetup.DifferentFirstPageHeaderFooter
+            //ExFor:FindReplaceOptions.#ctor(IReplacingCallback)
+            //ExSummary:Shows how to track the order in which a text replacement operation traverses nodes.
             Document doc = new Document(MyDir + "Header and footer types.docx");
 
             Section firstPageSection = doc.FirstSection;
@@ -275,8 +275,14 @@ namespace ApiExamples
                 Assert.That(logger.Text.Replace("\r", ""), Is.EqualTo("First header\nFirst footer\nSecond header\nSecond footer\nThird header\nThird footer\n"));
             else
                 Assert.That(logger.Text.Replace("\r", ""), Is.EqualTo("Third header\nFirst header\nThird footer\nFirst footer\nSecond header\nSecond footer\n"));
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:IReplacingCallback
+        //ExFor:PageSetup.DifferentFirstPageHeaderFooter
+        //ExFor:FindReplaceOptions.#ctor(IReplacingCallback)
+        //ExSummary:Shows how to track the order in which a text replacement operation traverses nodes (ReplaceLog).
         /// <summary>
         /// During a find-and-replace operation, records the contents of every node that has text that the operation 'finds',
         /// in the state it is in before the replacement takes place.

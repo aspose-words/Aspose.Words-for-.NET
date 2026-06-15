@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -213,21 +213,21 @@ namespace ApiExamples
             Assert.That(properties.Version, Is.EqualTo(786432));
         }
 
-        //ExStart
-        //ExFor:BuiltInDocumentProperties.Bytes
-        //ExFor:BuiltInDocumentProperties.Characters
-        //ExFor:BuiltInDocumentProperties.CharactersWithSpaces
-        //ExFor:BuiltInDocumentProperties.ContentStatus
-        //ExFor:BuiltInDocumentProperties.ContentType
-        //ExFor:BuiltInDocumentProperties.Lines
-        //ExFor:BuiltInDocumentProperties.LinksUpToDate
-        //ExFor:BuiltInDocumentProperties.Pages
-        //ExFor:BuiltInDocumentProperties.Paragraphs
-        //ExFor:BuiltInDocumentProperties.Words
-        //ExSummary:Shows how to work with document properties in the "Content" category.
-        [Test] //ExSkip
+        [Test]
         public void Content()
         {
+            //ExStart
+            //ExFor:BuiltInDocumentProperties.Bytes
+            //ExFor:BuiltInDocumentProperties.Characters
+            //ExFor:BuiltInDocumentProperties.CharactersWithSpaces
+            //ExFor:BuiltInDocumentProperties.ContentStatus
+            //ExFor:BuiltInDocumentProperties.ContentType
+            //ExFor:BuiltInDocumentProperties.Lines
+            //ExFor:BuiltInDocumentProperties.LinksUpToDate
+            //ExFor:BuiltInDocumentProperties.Pages
+            //ExFor:BuiltInDocumentProperties.Paragraphs
+            //ExFor:BuiltInDocumentProperties.Words
+            //ExSummary:Shows how to work with document properties in the "Content" category.
             Document doc = new Document(MyDir + "Paragraphs.docx");
             BuiltInDocumentProperties properties = doc.BuiltInDocumentProperties;
 
@@ -283,8 +283,21 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "DocumentProperties.Content.docx");
             TestContent(new Document(ArtifactsDir + "DocumentProperties.Content.docx")); //ExSkip
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:BuiltInDocumentProperties.Bytes
+        //ExFor:BuiltInDocumentProperties.Characters
+        //ExFor:BuiltInDocumentProperties.CharactersWithSpaces
+        //ExFor:BuiltInDocumentProperties.ContentStatus
+        //ExFor:BuiltInDocumentProperties.ContentType
+        //ExFor:BuiltInDocumentProperties.Lines
+        //ExFor:BuiltInDocumentProperties.LinksUpToDate
+        //ExFor:BuiltInDocumentProperties.Pages
+        //ExFor:BuiltInDocumentProperties.Paragraphs
+        //ExFor:BuiltInDocumentProperties.Words
+        //ExSummary:Shows how to work with document properties in the "Content" category (LineCounter).
         /// <summary>
         /// Counts the lines in a document.
         /// Traverses the document's layout entities tree upon construction,

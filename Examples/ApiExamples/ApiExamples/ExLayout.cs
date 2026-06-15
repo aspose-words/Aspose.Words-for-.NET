@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -83,29 +83,29 @@ namespace ApiExamples
             //ExEnd
         }
 
-        //ExStart
-        //ExFor:LayoutEntityType
-        //ExFor:LayoutEnumerator
-        //ExFor:LayoutEnumerator.#ctor(Document)
-        //ExFor:LayoutEnumerator.Document
-        //ExFor:LayoutEnumerator.Kind
-        //ExFor:LayoutEnumerator.MoveFirstChild
-        //ExFor:LayoutEnumerator.MoveLastChild
-        //ExFor:LayoutEnumerator.MoveNext
-        //ExFor:LayoutEnumerator.MoveNextLogical
-        //ExFor:LayoutEnumerator.MoveParent
-        //ExFor:LayoutEnumerator.MoveParent(LayoutEntityType)
-        //ExFor:LayoutEnumerator.MovePrevious
-        //ExFor:LayoutEnumerator.MovePreviousLogical
-        //ExFor:LayoutEnumerator.PageIndex
-        //ExFor:LayoutEnumerator.Rectangle
-        //ExFor:LayoutEnumerator.Reset
-        //ExFor:LayoutEnumerator.Text
-        //ExFor:LayoutEnumerator.Type
-        //ExSummary:Shows ways of traversing a document's layout entities.
-        [Test] //ExSkip
+        [Test]
         public void LayoutEnumerator()
         {
+            //ExStart
+            //ExFor:LayoutEntityType
+            //ExFor:LayoutEnumerator
+            //ExFor:LayoutEnumerator.#ctor(Document)
+            //ExFor:LayoutEnumerator.Document
+            //ExFor:LayoutEnumerator.Kind
+            //ExFor:LayoutEnumerator.MoveFirstChild
+            //ExFor:LayoutEnumerator.MoveLastChild
+            //ExFor:LayoutEnumerator.MoveNext
+            //ExFor:LayoutEnumerator.MoveNextLogical
+            //ExFor:LayoutEnumerator.MoveParent
+            //ExFor:LayoutEnumerator.MoveParent(LayoutEntityType)
+            //ExFor:LayoutEnumerator.MovePrevious
+            //ExFor:LayoutEnumerator.MovePreviousLogical
+            //ExFor:LayoutEnumerator.PageIndex
+            //ExFor:LayoutEnumerator.Rectangle
+            //ExFor:LayoutEnumerator.Reset
+            //ExFor:LayoutEnumerator.Text
+            //ExFor:LayoutEnumerator.Type
+            //ExSummary:Shows ways of traversing a document's layout entities.
             // Open a document that contains a variety of layout entities.
             // Layout entities are pages, cells, rows, lines, and other objects included in the LayoutEntityType enum.
             // Each layout entity has a rectangular space that it occupies in the document body.
@@ -144,8 +144,29 @@ namespace ApiExamples
 
             Console.WriteLine("Traversing from last to first, elements between pages mixed:");
             TraverseLayoutBackwardLogical(layoutEnumerator, 1);
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:LayoutEntityType
+        //ExFor:LayoutEnumerator
+        //ExFor:LayoutEnumerator.#ctor(Document)
+        //ExFor:LayoutEnumerator.Document
+        //ExFor:LayoutEnumerator.Kind
+        //ExFor:LayoutEnumerator.MoveFirstChild
+        //ExFor:LayoutEnumerator.MoveLastChild
+        //ExFor:LayoutEnumerator.MoveNext
+        //ExFor:LayoutEnumerator.MoveNextLogical
+        //ExFor:LayoutEnumerator.MoveParent
+        //ExFor:LayoutEnumerator.MoveParent(LayoutEntityType)
+        //ExFor:LayoutEnumerator.MovePrevious
+        //ExFor:LayoutEnumerator.MovePreviousLogical
+        //ExFor:LayoutEnumerator.PageIndex
+        //ExFor:LayoutEnumerator.Rectangle
+        //ExFor:LayoutEnumerator.Reset
+        //ExFor:LayoutEnumerator.Text
+        //ExFor:LayoutEnumerator.Type
+        //ExSummary:Shows ways of traversing a document's layout entities (TraverseLayoutForward).
         /// <summary>
         /// Enumerate through layoutEnumerator's layout entity collection front-to-back,
         /// in a depth-first manner, and in the "Visual" order.
@@ -241,19 +262,19 @@ namespace ApiExamples
         }
         //ExEnd
 
-        //ExStart
-        //ExFor:IPageLayoutCallback
-        //ExFor:IPageLayoutCallback.Notify(PageLayoutCallbackArgs)
-        //ExFor:PageLayoutCallbackArgs
-        //ExFor:PageLayoutCallbackArgs.Event
-        //ExFor:PageLayoutCallbackArgs.Document
-        //ExFor:PageLayoutCallbackArgs.PageIndex
-        //ExFor:PageLayoutEvent
-        //ExFor:LayoutOptions.Callback
-        //ExSummary:Shows how to track layout changes with a layout callback.
-        [Test]//ExSkip
+        [Test]
         public void PageLayoutCallback()
         {
+            //ExStart
+            //ExFor:IPageLayoutCallback
+            //ExFor:IPageLayoutCallback.Notify(PageLayoutCallbackArgs)
+            //ExFor:PageLayoutCallbackArgs
+            //ExFor:PageLayoutCallbackArgs.Event
+            //ExFor:PageLayoutCallbackArgs.Document
+            //ExFor:PageLayoutCallbackArgs.PageIndex
+            //ExFor:PageLayoutEvent
+            //ExFor:LayoutOptions.Callback
+            //ExSummary:Shows how to track layout changes with a layout callback.
             Document doc = new Document();
             doc.BuiltInDocumentProperties.Title = "My Document";
 
@@ -264,8 +285,19 @@ namespace ApiExamples
             doc.UpdatePageLayout();
 
             doc.Save(ArtifactsDir + "Layout.PageLayoutCallback.pdf");
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:IPageLayoutCallback
+        //ExFor:IPageLayoutCallback.Notify(PageLayoutCallbackArgs)
+        //ExFor:PageLayoutCallbackArgs
+        //ExFor:PageLayoutCallbackArgs.Event
+        //ExFor:PageLayoutCallbackArgs.Document
+        //ExFor:PageLayoutCallbackArgs.PageIndex
+        //ExFor:PageLayoutEvent
+        //ExFor:LayoutOptions.Callback
+        //ExSummary:Shows how to track layout changes with a layout callback (RenderPageLayoutCallback).
         /// <summary>
         /// Notifies us when we save the document to a fixed page format
         /// and renders a page that we perform a page reflow on to an image in the local file system.

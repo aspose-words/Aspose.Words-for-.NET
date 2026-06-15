@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -348,17 +348,17 @@ namespace ApiExamples
             //ExEnd
         }
 
-        //ExStart
-        //ExFor:FindReplaceOptions.ReplacingCallback
-        //ExFor:Range.Replace(Regex, String, FindReplaceOptions)
-        //ExFor:ReplacingArgs.Replacement
-        //ExFor:IReplacingCallback
-        //ExFor:IReplacingCallback.Replacing
-        //ExFor:ReplacingArgs
-        //ExSummary:Shows how to replace all occurrences of a regular expression pattern with another string, while tracking all such replacements.
-        [Test] //ExSkip
+        [Test]
         public void ReplaceWithCallback()
         {
+            //ExStart
+            //ExFor:FindReplaceOptions.ReplacingCallback
+            //ExFor:Range.Replace(Regex, String, FindReplaceOptions)
+            //ExFor:ReplacingArgs.Replacement
+            //ExFor:IReplacingCallback
+            //ExFor:IReplacingCallback.Replacing
+            //ExFor:ReplacingArgs
+            //ExSummary:Shows how to replace all occurrences of a regular expression pattern with another string, while tracking all such replacements.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -379,8 +379,17 @@ namespace ApiExamples
 
             Assert.That(logger.GetLog().Trim(), Is.EqualTo("\"New York City\" converted to \"Washington\" 20 characters into a Run node.\r\n" +
                             "\"NYC\" converted to \"Washington\" 42 characters into a Run node."));
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:FindReplaceOptions.ReplacingCallback
+        //ExFor:Range.Replace(Regex, String, FindReplaceOptions)
+        //ExFor:ReplacingArgs.Replacement
+        //ExFor:IReplacingCallback
+        //ExFor:IReplacingCallback.Replacing
+        //ExFor:ReplacingArgs
+        //ExSummary:Shows how to replace all occurrences of a regular expression pattern with another string, while tracking all such replacements (TextFindAndReplacementLogger).
         /// <summary>
         /// Maintains a log of every text replacement done by a find-and-replace operation
         /// and notes the original matched text's value.
@@ -405,17 +414,17 @@ namespace ApiExamples
         }
         //ExEnd
 
-        //ExStart
-        //ExFor:FindReplaceOptions.ApplyFont
-        //ExFor:FindReplaceOptions.ReplacingCallback
-        //ExFor:ReplacingArgs.GroupIndex
-        //ExFor:ReplacingArgs.GroupName
-        //ExFor:ReplacingArgs.Match
-        //ExFor:ReplacingArgs.MatchOffset
-        //ExSummary:Shows how to apply a different font to new content via FindReplaceOptions.
-        [Test] //ExSkip
+        [Test]
         public void ConvertNumbersToHexadecimal()
         {
+            //ExStart
+            //ExFor:FindReplaceOptions.ApplyFont
+            //ExFor:FindReplaceOptions.ReplacingCallback
+            //ExFor:ReplacingArgs.GroupIndex
+            //ExFor:ReplacingArgs.GroupName
+            //ExFor:ReplacingArgs.Match
+            //ExFor:ReplacingArgs.MatchOffset
+            //ExSummary:Shows how to apply a different font to new content via FindReplaceOptions.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -441,8 +450,17 @@ namespace ApiExamples
                             "0x7B, 0x1C8, 0x315 and 0x43E3."));
             Assert.That(doc.GetChildNodes(NodeType.Run, true).OfType<Run>()
                     .Count(r => r.Font.HighlightColor.ToArgb() == Color.LightGray.ToArgb()), Is.EqualTo(4));
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:FindReplaceOptions.ApplyFont
+        //ExFor:FindReplaceOptions.ReplacingCallback
+        //ExFor:ReplacingArgs.GroupIndex
+        //ExFor:ReplacingArgs.GroupName
+        //ExFor:ReplacingArgs.Match
+        //ExFor:ReplacingArgs.MatchOffset
+        //ExSummary:Shows how to apply a different font to new content via FindReplaceOptions (NumberHexer).
         /// <summary>
         /// Replaces numeric find-and-replacement matches with their hexadecimal equivalents.
         /// Maintains a log of every replacement.
@@ -561,13 +579,13 @@ namespace ApiExamples
             //ExEnd
         }
 
-        //ExStart
-        //ExFor:FindReplaceOptions.UseLegacyOrder
-        //ExSummary:Shows how to change the searching order of nodes when performing a find-and-replace text operation.
-        [TestCase(true)] //ExSkip
-        [TestCase(false)] //ExSkip
+        [TestCase(true)]
+        [TestCase(false)]
         public void UseLegacyOrder(bool useLegacyOrder)
         {
+            //ExStart
+            //ExFor:FindReplaceOptions.UseLegacyOrder
+            //ExSummary:Shows how to change the searching order of nodes when performing a find-and-replace text operation.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -602,8 +620,12 @@ namespace ApiExamples
                 expected = new List<string> { "[tag 1]", "[tag 2]", "[tag 3]" };
             Assert.That(callback.Matches, Is.EqualTo(expected));
 
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:FindReplaceOptions.UseLegacyOrder
+        //ExSummary:Shows how to change the searching order of nodes when performing a find-and-replace text operation (TextReplacementTracker).
         /// <summary>
         /// Records the order of all matches that occur during a find-and-replace operation.
         /// </summary>
@@ -649,17 +671,17 @@ namespace ApiExamples
             //ExEnd
         }
 
-        //ExStart
-        //ExFor:Range.Replace(Regex, String, FindReplaceOptions)
-        //ExFor:IReplacingCallback
-        //ExFor:ReplaceAction
-        //ExFor:IReplacingCallback.Replacing
-        //ExFor:ReplacingArgs
-        //ExFor:ReplacingArgs.MatchNode
-        //ExSummary:Shows how to insert an entire document's contents as a replacement of a match in a find-and-replace operation.
-        [Test] //ExSkip
+        [Test]
         public void InsertDocumentAtReplace()
         {
+            //ExStart
+            //ExFor:Range.Replace(Regex, String, FindReplaceOptions)
+            //ExFor:IReplacingCallback
+            //ExFor:ReplaceAction
+            //ExFor:IReplacingCallback.Replacing
+            //ExFor:ReplacingArgs
+            //ExFor:ReplacingArgs.MatchNode
+            //ExSummary:Shows how to insert an entire document's contents as a replacement of a match in a find-and-replace operation.
             Document mainDoc = new Document(MyDir + "Document insertion destination.docx");
 
             // We can use a "FindReplaceOptions" object to modify the find-and-replace process.
@@ -670,8 +692,17 @@ namespace ApiExamples
             mainDoc.Save(ArtifactsDir + "InsertDocument.InsertDocumentAtReplace.docx");
 
             TestInsertDocumentAtReplace(new Document(ArtifactsDir + "InsertDocument.InsertDocumentAtReplace.docx")); //ExSkip
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:Range.Replace(Regex, String, FindReplaceOptions)
+        //ExFor:IReplacingCallback
+        //ExFor:ReplaceAction
+        //ExFor:IReplacingCallback.Replacing
+        //ExFor:ReplacingArgs
+        //ExFor:ReplacingArgs.MatchNode
+        //ExSummary:Shows how to insert an entire document's contents as a replacement of a match in a find-and-replace operation (InsertDocumentAtReplaceHandler).
         private class InsertDocumentAtReplaceHandler : IReplacingCallback
         {
             ReplaceAction IReplacingCallback.Replacing(ReplacingArgs args)
@@ -732,14 +763,14 @@ namespace ApiExamples
                             "3) At a bookmark:"));
         }
 
-        //ExStart
-        //ExFor:FindReplaceOptions.Direction
-        //ExFor:FindReplaceDirection
-        //ExSummary:Shows how to determine which direction a find-and-replace operation traverses the document in.
-        [TestCase(FindReplaceDirection.Backward)] //ExSkip
-        [TestCase(FindReplaceDirection.Forward)] //ExSkip
+        [TestCase(FindReplaceDirection.Backward)]
+        [TestCase(FindReplaceDirection.Forward)]
         public void Direction(FindReplaceDirection findReplaceDirection)
         {
+            //ExStart
+            //ExFor:FindReplaceOptions.Direction
+            //ExFor:FindReplaceDirection
+            //ExSummary:Shows how to determine which direction a find-and-replace operation traverses the document in.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -779,8 +810,13 @@ namespace ApiExamples
                     Assert.That(callback.Matches, Is.EqualTo(new[] { "Match 4", "Match 3", "Match 2", "Match 1" }));
                     break;
             }
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:FindReplaceOptions.Direction
+        //ExFor:FindReplaceDirection
+        //ExSummary:Shows how to determine which direction a find-and-replace operation traverses the document in (TextReplacementRecorder).
         /// <summary>
         /// Records all matches that occur during a find-and-replace operation in the order that they take place.
         /// </summary>

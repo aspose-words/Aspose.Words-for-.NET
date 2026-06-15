@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -80,18 +80,18 @@ namespace ApiExamples
                                                    $"gekommen achtzehn blaulich."), Is.True);
         }
 
-        //ExStart
-        //ExFor:Hyphenation
-        //ExFor:Hyphenation.Callback
-        //ExFor:Hyphenation.RegisterDictionary(String, Stream)
-        //ExFor:Hyphenation.RegisterDictionary(String, String)
-        //ExFor:Hyphenation.WarningCallback
-        //ExFor:IHyphenationCallback
-        //ExFor:IHyphenationCallback.RequestDictionary(String)
-        //ExSummary:Shows how to open and register a dictionary from a file.
-        [Test] //ExSkip
+        [Test]
         public void RegisterDictionary()
         {
+            //ExStart
+            //ExFor:Hyphenation
+            //ExFor:Hyphenation.Callback
+            //ExFor:Hyphenation.RegisterDictionary(String, Stream)
+            //ExFor:Hyphenation.RegisterDictionary(String, String)
+            //ExFor:Hyphenation.WarningCallback
+            //ExFor:IHyphenationCallback
+            //ExFor:IHyphenationCallback.RequestDictionary(String)
+            //ExSummary:Shows how to open and register a dictionary from a file.
             // Set up a callback that tracks warnings that occur during hyphenation dictionary registration.
             WarningInfoCollection warningInfoCollection = new WarningInfoCollection();
             Hyphenation.WarningCallback = warningInfoCollection;
@@ -122,8 +122,18 @@ namespace ApiExamples
             Hyphenation.WarningCallback = null; //ExSkip
             Hyphenation.UnregisterDictionary("en-US"); //ExSkip
             Hyphenation.Callback = null; //ExSkip
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:Hyphenation
+        //ExFor:Hyphenation.Callback
+        //ExFor:Hyphenation.RegisterDictionary(String, Stream)
+        //ExFor:Hyphenation.RegisterDictionary(String, String)
+        //ExFor:Hyphenation.WarningCallback
+        //ExFor:IHyphenationCallback
+        //ExFor:IHyphenationCallback.RequestDictionary(String)
+        //ExSummary:Shows how to open and register a dictionary from a file (CustomHyphenationDictionaryRegister).
         /// <summary>
         /// Associates ISO language codes with local system filenames for hyphenation dictionary files.
         /// </summary>

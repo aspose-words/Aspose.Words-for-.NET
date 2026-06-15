@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -147,20 +147,19 @@ namespace ApiExamples
             TestUtil.VerifyEditableRange(1, string.Empty, EditorType.Contributors, editableRange);
         }
 
-        //ExStart
-
-        //ExFor:EditableRange
-        //ExFor:EditableRange.EditorGroup
-        //ExFor:EditableRange.SingleUser
-        //ExFor:EditableRangeEnd
-        //ExFor:EditableRangeEnd.Accept(DocumentVisitor)
-        //ExFor:EditableRangeStart
-        //ExFor:EditableRangeStart.Accept(DocumentVisitor)
-        //ExFor:EditorType
-        //ExSummary:Shows how to limit the editing rights of editable ranges to a specific group/user.
-        [Test] //ExSkip
+        [Test]
         public void Visitor()
         {
+            //ExStart
+            //ExFor:EditableRange
+            //ExFor:EditableRange.EditorGroup
+            //ExFor:EditableRange.SingleUser
+            //ExFor:EditableRangeEnd
+            //ExFor:EditableRangeEnd.Accept(DocumentVisitor)
+            //ExFor:EditableRangeStart
+            //ExFor:EditableRangeStart.Accept(DocumentVisitor)
+            //ExFor:EditorType
+            //ExSummary:Shows how to limit the editing rights of editable ranges to a specific group/user.
             Document doc = new Document();
             doc.Protect(ProtectionType.ReadOnly, "MyPassword");
 
@@ -194,8 +193,19 @@ namespace ApiExamples
             doc.Accept(editableRangePrinter);
 
             Console.WriteLine(editableRangePrinter.ToText());
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:EditableRange
+        //ExFor:EditableRange.EditorGroup
+        //ExFor:EditableRange.SingleUser
+        //ExFor:EditableRangeEnd
+        //ExFor:EditableRangeEnd.Accept(DocumentVisitor)
+        //ExFor:EditableRangeStart
+        //ExFor:EditableRangeStart.Accept(DocumentVisitor)
+        //ExFor:EditorType
+        //ExSummary:Shows how to limit the editing rights of editable ranges to a specific group/user (EditableRangePrinter).
         /// <summary>
         /// Collects properties and contents of visited editable ranges in a string.
         /// </summary>

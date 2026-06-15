@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -26,15 +26,15 @@ namespace ApiExamples
     public class ExRendering : ApiExampleBase
     {
 #if NET461_OR_GREATER || JAVA
-        //ExStart
-        //ExFor:NodeRendererBase.RenderToScale(Graphics, Single, Single, Single)
-        //ExFor:NodeRendererBase.RenderToSize(Graphics, Single, Single, Single, Single)
-        //ExFor:ShapeRenderer
-        //ExFor:ShapeRenderer.#ctor(ShapeBase)
-        //ExSummary:Shows how to render a shape with a Graphics object and display it using a Windows Form.
-        [Test, Category("IgnoreOnJenkins"), Category("SkipMono")] //ExSkip
+        [Test, Category("IgnoreOnJenkins"), Category("SkipMono")]
         public void RenderShapesOnForm()
         {
+            //ExStart
+            //ExFor:NodeRendererBase.RenderToScale(Graphics, Single, Single, Single)
+            //ExFor:NodeRendererBase.RenderToSize(Graphics, Single, Single, Single, Single)
+            //ExFor:ShapeRenderer
+            //ExFor:ShapeRenderer.#ctor(ShapeBase)
+            //ExSummary:Shows how to render a shape with a Graphics object and display it using a Windows Form.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -79,8 +79,15 @@ namespace ApiExamples
             shapeForm.AddShapeToRenderToSize(groupShape, 880, 680, 100, 100);
 
             shapeForm.ShowDialog();
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:NodeRendererBase.RenderToScale(Graphics, Single, Single, Single)
+        //ExFor:NodeRendererBase.RenderToSize(Graphics, Single, Single, Single, Single)
+        //ExFor:ShapeRenderer
+        //ExFor:ShapeRenderer.#ctor(ShapeBase)
+        //ExSummary:Shows how to render a shape with a Graphics object and display it using a Windows Form (ShapeForm).
         /// <summary>
         /// Renders and displays a list of shapes.
         /// </summary>
@@ -272,12 +279,9 @@ namespace ApiExamples
 
                     // Create and draw a rectangle.
                     SKRect rect = new SKRect(0f, 0f, 3f, 3f);
-                    canvas.DrawRect(rect, new SKPaint
-                    {
-                        Color = SKColors.Black,
-                        Style = SKPaintStyle.Stroke,
-                        StrokeWidth = 3f / 72f
-                    });
+                    SKPaint skPaint = new SKPaint {Color = SKColors.Black, Style = SKPaintStyle.Stroke};
+                    skPaint.StrokeWidth = 3f / 72f;
+                    canvas.DrawRect(rect, skPaint);
 
                     // Render the first page of the document to the same size as the above rectangle.
                     // The rectangle will frame this page.
@@ -293,12 +297,8 @@ namespace ApiExamples
                     // Create another rectangle.
                     rect = new SKRect(0, 0, 50, 100);
                     rect.Offset(90, 10);
-                    canvas.DrawRect(rect, new SKPaint
-                    {
-                        Color = SKColors.Black,
-                        Style = SKPaintStyle.Stroke,
-                        StrokeWidth = 1
-                    });
+                    skPaint.StrokeWidth = 1;
+                    canvas.DrawRect(rect,skPaint);
 
                     // Render the first page within the newly created rectangle once again.
                     doc.RenderToSize(0, canvas, 90, 10, 50, 100);
@@ -357,11 +357,8 @@ namespace ApiExamples
                         // Render a page as a thumbnail, and then frame it in a rectangle of the same size.
                         SKRect rect = new SKRect(0, 0, size.Width, size.Height);
                         rect.Offset(thumbLeft, thumbTop);
-                        canvas.DrawRect(rect, new SKPaint
-                        {
-                            Color = SKColors.Black,
-                            Style = SKPaintStyle.Stroke
-                        });
+                        SKPaint skPaint = new SKPaint {Color = SKColors.Black, Style = SKPaintStyle.Stroke};
+                        canvas.DrawRect(rect, skPaint);
                     }
 
                     using (SKFileWStream fs = new SKFileWStream(ArtifactsDir + "Rendering.CreateThumbnailsNetStandard2.png"))

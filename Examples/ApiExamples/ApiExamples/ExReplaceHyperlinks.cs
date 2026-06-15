@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -22,7 +22,7 @@ namespace ApiExamples
     [TestFixture] //ExSkip
     public class ExReplaceHyperlinks : ApiExampleBase
     {
-        [Test] //ExSkip
+        [Test]
         public void Fields()
         {
             Document doc = new Document(MyDir + "Hyperlinks.docx");

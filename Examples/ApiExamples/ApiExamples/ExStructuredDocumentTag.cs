@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -1100,15 +1100,15 @@ namespace ApiExamples
             //ExEnd
         }
 
-        //ExStart
-        //ExFor:StructuredDocumentTagRangeStart.#ctor(DocumentBase, SdtType)
-        //ExFor:StructuredDocumentTagRangeEnd.#ctor(DocumentBase, int)
-        //ExFor:StructuredDocumentTagRangeStart.RemoveSelfOnly
-        //ExFor:StructuredDocumentTagRangeStart.RemoveAllChildren
-        //ExSummary:Shows how to create/remove structured document tag and its content.
-        [Test] //ExSkip
+        [Test]
         public void SdtRangeExtendedMethods()
         {
+            //ExStart
+            //ExFor:StructuredDocumentTagRangeStart.#ctor(DocumentBase, SdtType)
+            //ExFor:StructuredDocumentTagRangeEnd.#ctor(DocumentBase, int)
+            //ExFor:StructuredDocumentTagRangeStart.RemoveSelfOnly
+            //ExFor:StructuredDocumentTagRangeStart.RemoveAllChildren
+            //ExSummary:Shows how to create/remove structured document tag and its content.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -1139,8 +1139,15 @@ namespace ApiExamples
 
             paragraphNode = rangeStart.LastOrDefault();
             Assert.That(paragraphNode?.GetText(), Is.EqualTo(null));
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:StructuredDocumentTagRangeStart.#ctor(DocumentBase, SdtType)
+        //ExFor:StructuredDocumentTagRangeEnd.#ctor(DocumentBase, int)
+        //ExFor:StructuredDocumentTagRangeStart.RemoveSelfOnly
+        //ExFor:StructuredDocumentTagRangeStart.RemoveAllChildren
+        //ExSummary:Shows how to create/remove structured document tag and its content (InsertStructuredDocumentTagRanges).
         public StructuredDocumentTagRangeStart InsertStructuredDocumentTagRanges(Document doc)
         {
             StructuredDocumentTagRangeStart rangeStart = new StructuredDocumentTagRangeStart(doc, SdtType.PlainText);

@@ -219,9 +219,10 @@ namespace ApiExamples
             {
                 byte[] buf = Encoding.ASCII.GetBytes(inputText);
                 stream.Write(buf, 0, buf.Length);
+                TxtLoadOptions loadOptions = new TxtLoadOptions() {DetectHyperlinks = true};
 
                 // Load document with hyperlinks.
-                Document doc = new Document(stream, new TxtLoadOptions() { DetectHyperlinks = true });
+                Document doc = new Document(stream, loadOptions);
 
                 // Print hyperlinks text.
                 foreach (Field field in doc.Range.Fields)

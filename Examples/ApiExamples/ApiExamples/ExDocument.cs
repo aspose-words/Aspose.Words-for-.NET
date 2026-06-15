@@ -362,7 +362,8 @@ namespace ApiExamples
             //ExFor:WarningInfoCollection.Item(Int32)
             //ExSummary:Shows how to get warnings about unsupported formats.
             WarningInfoCollection warnings = new WarningInfoCollection();
-            Document doc = new Document(MyDir + "FB2 document.fb2", new LoadOptions { WarningCallback = warnings });
+            LoadOptions loadOptions = new LoadOptions { WarningCallback = warnings };
+            Document doc = new Document(MyDir + "FB2 document.fb2", loadOptions);
 
             Assert.That(warnings[0].Description, Is.EqualTo("The original file load format is FB2, which is not supported by Aspose.Words. The file is loaded as an XML document."));
             Assert.That(warnings.Count, Is.EqualTo(1));
@@ -438,20 +439,20 @@ namespace ApiExamples
             //ExEnd
         }
 
-        //ExStart
-        //ExFor:Range.Fields
-        //ExFor:INodeChangingCallback
-        //ExFor:INodeChangingCallback.NodeInserting
-        //ExFor:INodeChangingCallback.NodeInserted
-        //ExFor:INodeChangingCallback.NodeRemoving
-        //ExFor:INodeChangingCallback.NodeRemoved
-        //ExFor:NodeChangingArgs
-        //ExFor:NodeChangingArgs.Node
-        //ExFor:DocumentBase.NodeChangingCallback
-        //ExSummary:Shows how customize node changing with a callback.
-        [Test] //ExSkip
+        [Test]
         public void FontChangeViaCallback()
         {
+            //ExStart
+            //ExFor:Range.Fields
+            //ExFor:INodeChangingCallback
+            //ExFor:INodeChangingCallback.NodeInserting
+            //ExFor:INodeChangingCallback.NodeInserted
+            //ExFor:INodeChangingCallback.NodeRemoving
+            //ExFor:INodeChangingCallback.NodeRemoved
+            //ExFor:NodeChangingArgs
+            //ExFor:NodeChangingArgs.Node
+            //ExFor:DocumentBase.NodeChangingCallback
+            //ExSummary:Shows how customize node changing with a callback.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -469,8 +470,20 @@ namespace ApiExamples
 
             Console.WriteLine(callback.GetLog());
             TestFontChangeViaCallback(callback.GetLog()); //ExSkip
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:Range.Fields
+        //ExFor:INodeChangingCallback
+        //ExFor:INodeChangingCallback.NodeInserting
+        //ExFor:INodeChangingCallback.NodeInserted
+        //ExFor:INodeChangingCallback.NodeRemoving
+        //ExFor:INodeChangingCallback.NodeRemoved
+        //ExFor:NodeChangingArgs
+        //ExFor:NodeChangingArgs.Node
+        //ExFor:DocumentBase.NodeChangingCallback
+        //ExSummary:Shows how customize node changing with a callback (HandleNodeChangingFontChanger).
         /// <summary>
         /// Logs the date and time of each node insertion and removal.
         /// Sets a custom font name/size for the text contents of Run nodes.
@@ -2731,8 +2744,24 @@ namespace ApiExamples
             // Set to false (default) to exclude non-image shapes from the output.
             saveOptions.RenderNonImageShapes = true;
 
-            doc.Save(ArtifactsDir + "DoclingSaveOptions.DoclingJson.json", saveOptions);
+            doc.Save(ArtifactsDir + "Document.DoclingJson.json", saveOptions);
             //ExEnd:DoclingJson
+        }
+
+        [Test]
+        public void RemoveCustomizations()
+        {
+            //ExStart:RemoveCustomizations
+            //GistId:4f0f7d328594293c40062359b8eb9a08
+            //ExFor:Document.RemoveCustomizations
+            //ExSummary:Shows how to remove toolbar and keyboard command customizations from the document.
+            Document doc = new Document(MyDir + "Customized menu.docx");
+
+            // Remove all custom document UI customizations, including custom context menu entries.
+            doc.RemoveCustomizations();
+
+            doc.Save(ArtifactsDir + "Document.RemoveCustomizations.docx");
+            //ExEnd:RemoveCustomizations
         }
     }
 }

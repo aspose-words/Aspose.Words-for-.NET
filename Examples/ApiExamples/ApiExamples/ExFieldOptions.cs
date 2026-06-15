@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -310,14 +310,14 @@ namespace ApiExamples
             TestUtil.VerifyField(FieldType.FieldFormula, " = 1234567,89 \\# $#,###,###.##", "$1.234.567,89", doc.Range.Fields[0]);
         }
 
-        //ExStart
-        //ExFor:FieldOptions.FieldUpdateCultureProvider
-        //ExFor:IFieldUpdateCultureProvider
-        //ExFor:IFieldUpdateCultureProvider.GetCulture(string, Field)
-        //ExSummary:Shows how to specify a culture which parses date/time formatting for each field.
-        [Test]//ExSkip
+        [Test]
         public void DefineDateTimeFormatting()
         {
+            //ExStart
+            //ExFor:FieldOptions.FieldUpdateCultureProvider
+            //ExFor:IFieldUpdateCultureProvider
+            //ExFor:IFieldUpdateCultureProvider.GetCulture(string, Field)
+            //ExSummary:Shows how to specify a culture which parses date/time formatting for each field.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -333,8 +333,14 @@ namespace ApiExamples
                 fieldDate.LocaleId = (int)EditingLanguage.Russian;
 
             doc.Save(ArtifactsDir + "FieldOptions.UpdateDateTimeFormatting.pdf");
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:FieldOptions.FieldUpdateCultureProvider
+        //ExFor:IFieldUpdateCultureProvider
+        //ExFor:IFieldUpdateCultureProvider.GetCulture(string, Field)
+        //ExSummary:Shows how to specify a culture which parses date/time formatting for each field (FieldUpdateCultureProvider).
         /// <summary>
         /// Provides a CultureInfo object that should be used during the update of a field.
         /// </summary>

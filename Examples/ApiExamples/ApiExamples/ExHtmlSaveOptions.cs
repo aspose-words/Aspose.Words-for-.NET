@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -684,27 +684,27 @@ namespace ApiExamples
             //ExEnd
         }
 
-        //ExStart
-        //ExFor:HtmlSaveOptions.ExportFontResources
-        //ExFor:HtmlSaveOptions.FontSavingCallback
-        //ExFor:IFontSavingCallback
-        //ExFor:IFontSavingCallback.FontSaving
-        //ExFor:FontSavingArgs
-        //ExFor:FontSavingArgs.Bold
-        //ExFor:FontSavingArgs.Document
-        //ExFor:FontSavingArgs.FontFamilyName
-        //ExFor:FontSavingArgs.FontFileName
-        //ExFor:FontSavingArgs.FontStream
-        //ExFor:FontSavingArgs.IsExportNeeded
-        //ExFor:FontSavingArgs.IsSubsettingNeeded
-        //ExFor:FontSavingArgs.Italic
-        //ExFor:FontSavingArgs.KeepFontStreamOpen
-        //ExFor:FontSavingArgs.OriginalFileName
-        //ExFor:FontSavingArgs.OriginalFileSize
-        //ExSummary:Shows how to define custom logic for exporting fonts when saving to HTML.
-        [Test] //ExSkip
+        [Test]
         public void SaveExportedFonts()
         {
+            //ExStart
+            //ExFor:HtmlSaveOptions.ExportFontResources
+            //ExFor:HtmlSaveOptions.FontSavingCallback
+            //ExFor:IFontSavingCallback
+            //ExFor:IFontSavingCallback.FontSaving
+            //ExFor:FontSavingArgs
+            //ExFor:FontSavingArgs.Bold
+            //ExFor:FontSavingArgs.Document
+            //ExFor:FontSavingArgs.FontFamilyName
+            //ExFor:FontSavingArgs.FontFileName
+            //ExFor:FontSavingArgs.FontStream
+            //ExFor:FontSavingArgs.IsExportNeeded
+            //ExFor:FontSavingArgs.IsSubsettingNeeded
+            //ExFor:FontSavingArgs.Italic
+            //ExFor:FontSavingArgs.KeepFontStreamOpen
+            //ExFor:FontSavingArgs.OriginalFileName
+            //ExFor:FontSavingArgs.OriginalFileSize
+            //ExSummary:Shows how to define custom logic for exporting fonts when saving to HTML.
             Document doc = new Document(MyDir + "Rendering.docx");
 
             // Configure a SaveOptions object to export fonts to separate files.
@@ -722,8 +722,27 @@ namespace ApiExamples
                 Console.WriteLine(fontFilename);
 
             Assert.That(Array.FindAll(Directory.GetFiles(ArtifactsDir), s => s.EndsWith(".ttf")).Length, Is.EqualTo(10)); //ExSkip
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:HtmlSaveOptions.ExportFontResources
+        //ExFor:HtmlSaveOptions.FontSavingCallback
+        //ExFor:IFontSavingCallback
+        //ExFor:IFontSavingCallback.FontSaving
+        //ExFor:FontSavingArgs
+        //ExFor:FontSavingArgs.Bold
+        //ExFor:FontSavingArgs.Document
+        //ExFor:FontSavingArgs.FontFamilyName
+        //ExFor:FontSavingArgs.FontFileName
+        //ExFor:FontSavingArgs.FontStream
+        //ExFor:FontSavingArgs.IsExportNeeded
+        //ExFor:FontSavingArgs.IsSubsettingNeeded
+        //ExFor:FontSavingArgs.Italic
+        //ExFor:FontSavingArgs.KeepFontStreamOpen
+        //ExFor:FontSavingArgs.OriginalFileName
+        //ExFor:FontSavingArgs.OriginalFileSize
+        //ExSummary:Shows how to define custom logic for exporting fonts when saving to HTML (HandleFontSaving).
         /// <summary>
         /// Prints information about exported fonts and saves them in the same local system folder as their output .html.
         /// </summary>
@@ -1786,16 +1805,16 @@ namespace ApiExamples
             Directory.Delete(imagesDir, true);
         }
 
-        //ExStart
-        //ExFor:ImageSavingArgs.CurrentShape
-        //ExFor:ImageSavingArgs.Document
-        //ExFor:ImageSavingArgs.ImageStream
-        //ExFor:ImageSavingArgs.IsImageAvailable
-        //ExFor:ImageSavingArgs.KeepImageStreamOpen
-        //ExSummary:Shows how to involve an image saving callback in an HTML conversion process.
-        [Test] //ExSkip
+        [Test]
         public void ImageSavingCallback()
         {
+            //ExStart
+            //ExFor:ImageSavingArgs.CurrentShape
+            //ExFor:ImageSavingArgs.Document
+            //ExFor:ImageSavingArgs.ImageStream
+            //ExFor:ImageSavingArgs.IsImageAvailable
+            //ExFor:ImageSavingArgs.KeepImageStreamOpen
+            //ExSummary:Shows how to involve an image saving callback in an HTML conversion process.
             Document doc = new Document(MyDir + "Rendering.docx");
 
             // When we save the document to HTML, we can pass a SaveOptions object to designate a callback
@@ -1804,8 +1823,16 @@ namespace ApiExamples
             options.ImageSavingCallback = new ImageShapePrinter();
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.ImageSavingCallback.html", options);
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:ImageSavingArgs.CurrentShape
+        //ExFor:ImageSavingArgs.Document
+        //ExFor:ImageSavingArgs.ImageStream
+        //ExFor:ImageSavingArgs.IsImageAvailable
+        //ExFor:ImageSavingArgs.KeepImageStreamOpen
+        //ExSummary:Shows how to involve an image saving callback in an HTML conversion process (ImageShapePrinter).
         /// <summary>
         /// Prints the properties of each image as the saving process saves it to an image file in the local file system
         /// during the exporting of a document to HTML.
@@ -1883,15 +1910,15 @@ namespace ApiExamples
         [TestCase(SaveFormat.Html, "html")]
         [TestCase(SaveFormat.Mhtml, "mhtml")]
         [TestCase(SaveFormat.Epub, "epub")]
-        //ExStart
-        //ExFor:SaveOptions.ProgressCallback
-        //ExFor:IDocumentSavingCallback
-        //ExFor:IDocumentSavingCallback.Notify(DocumentSavingArgs)
-        //ExFor:DocumentSavingArgs.EstimatedProgress
-        //ExFor:DocumentSavingArgs
-        //ExSummary:Shows how to manage a document while saving to html.
         public void ProgressCallback(SaveFormat saveFormat, string ext)
         {
+            //ExStart
+            //ExFor:SaveOptions.ProgressCallback
+            //ExFor:IDocumentSavingCallback
+            //ExFor:IDocumentSavingCallback.Notify(DocumentSavingArgs)
+            //ExFor:DocumentSavingArgs.EstimatedProgress
+            //ExFor:DocumentSavingArgs
+            //ExSummary:Shows how to manage a document while saving to html.
             Document doc = new Document(MyDir + "Big document.docx");
 
             // Following formats are supported: Html, Mhtml, Epub.
@@ -1903,8 +1930,16 @@ namespace ApiExamples
             var exception = Assert.Throws<OperationCanceledException>(() =>
                 doc.Save(ArtifactsDir + $"HtmlSaveOptions.ProgressCallback.{ext}", saveOptions));
             Assert.That(exception?.Message.Contains("EstimatedProgress"), Is.True);
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:SaveOptions.ProgressCallback
+        //ExFor:IDocumentSavingCallback
+        //ExFor:IDocumentSavingCallback.Notify(DocumentSavingArgs)
+        //ExFor:DocumentSavingArgs.EstimatedProgress
+        //ExFor:DocumentSavingArgs
+        //ExSummary:Shows how to manage a document while saving to html (SavingProgressCallback).
         /// <summary>
         /// Saving progress callback. Cancel a document saving after the "MaxDuration" seconds.
         /// </summary>

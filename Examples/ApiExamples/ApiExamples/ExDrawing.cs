@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -336,22 +336,22 @@ namespace ApiExamples
             TestUtil.VerifyImage(8, 8, ArtifactsDir + "Drawing.StrokePattern.png");
         }
 
-        //ExStart
-        //ExFor:DocumentVisitor.VisitShapeEnd(Shape)
-        //ExFor:DocumentVisitor.VisitShapeStart(Shape)
-        //ExFor:DocumentVisitor.VisitGroupShapeEnd(GroupShape)
-        //ExFor:DocumentVisitor.VisitGroupShapeStart(GroupShape)
-        //ExFor:GroupShape
-        //ExFor:GroupShape.#ctor(DocumentBase)
-        //ExFor:GroupShape.Accept(DocumentVisitor)
-        //ExFor:GroupShape.AcceptStart(DocumentVisitor)
-        //ExFor:GroupShape.AcceptEnd(DocumentVisitor)
-        //ExFor:ShapeBase.IsGroup
-        //ExFor:ShapeBase.ShapeType
-        //ExSummary:Shows how to create a group of shapes, and print its contents using a document visitor.
-        [Test] //ExSkip
+        [Test]
         public void GroupOfShapes()
         {
+            //ExStart
+            //ExFor:DocumentVisitor.VisitShapeEnd(Shape)
+            //ExFor:DocumentVisitor.VisitShapeStart(Shape)
+            //ExFor:DocumentVisitor.VisitGroupShapeEnd(GroupShape)
+            //ExFor:DocumentVisitor.VisitGroupShapeStart(GroupShape)
+            //ExFor:GroupShape
+            //ExFor:GroupShape.#ctor(DocumentBase)
+            //ExFor:GroupShape.Accept(DocumentVisitor)
+            //ExFor:GroupShape.AcceptStart(DocumentVisitor)
+            //ExFor:GroupShape.AcceptEnd(DocumentVisitor)
+            //ExFor:ShapeBase.IsGroup
+            //ExFor:ShapeBase.ShapeType
+            //ExSummary:Shows how to create a group of shapes, and print its contents using a document visitor.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             
@@ -385,8 +385,22 @@ namespace ApiExamples
 
             Console.WriteLine(printer.GetText());
             TestGroupShapes(doc); //ExSkip
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:DocumentVisitor.VisitShapeEnd(Shape)
+        //ExFor:DocumentVisitor.VisitShapeStart(Shape)
+        //ExFor:DocumentVisitor.VisitGroupShapeEnd(GroupShape)
+        //ExFor:DocumentVisitor.VisitGroupShapeStart(GroupShape)
+        //ExFor:GroupShape
+        //ExFor:GroupShape.#ctor(DocumentBase)
+        //ExFor:GroupShape.Accept(DocumentVisitor)
+        //ExFor:GroupShape.AcceptStart(DocumentVisitor)
+        //ExFor:GroupShape.AcceptEnd(DocumentVisitor)
+        //ExFor:ShapeBase.IsGroup
+        //ExFor:ShapeBase.ShapeType
+        //ExSummary:Shows how to create a group of shapes, and print its contents using a document visitor (ShapeGroupPrinter).
         /// <summary>
         /// Prints the contents of a visited shape group to the console.
         /// </summary>

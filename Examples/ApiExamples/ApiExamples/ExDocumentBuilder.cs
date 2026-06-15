@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -1797,7 +1797,7 @@ namespace ApiExamples
 
             image = (Shape)doc.GetChild(NodeType.Shape, 1, true);
 
-            TestUtil.VerifyImageInShape(272, 92, ImageType.Png, image);
+            TestUtil.VerifyImageInShape(400, 300, ImageType.Png, image);
             Assert.That(image.Left, Is.EqualTo(100.0d));
             Assert.That(image.Top, Is.EqualTo(250.0d));
             Assert.That(image.Width, Is.EqualTo(200.0d));
@@ -2614,18 +2614,18 @@ namespace ApiExamples
             TestUtil.VerifyField(FieldType.FieldPage, " PAGE ", "1", doc.Range.Fields[1]);
         }
 
-        //ExStart
-        //ExFor:IFieldResultFormatter
-        //ExFor:IFieldResultFormatter.Format(Double, GeneralFormat)
-        //ExFor:IFieldResultFormatter.Format(String, GeneralFormat)
-        //ExFor:IFieldResultFormatter.FormatDateTime(DateTime, String, CalendarType)
-        //ExFor:IFieldResultFormatter.FormatNumeric(Double, String)
-        //ExFor:FieldOptions.ResultFormatter
-        //ExFor:CalendarType
-        //ExSummary:Shows how to automatically apply a custom format to field results as the fields are updated.
-        [Test] //ExSkip
+        [Test]
         public void FieldResultFormatting()
         {
+            //ExStart
+            //ExFor:IFieldResultFormatter
+            //ExFor:IFieldResultFormatter.Format(Double, GeneralFormat)
+            //ExFor:IFieldResultFormatter.Format(String, GeneralFormat)
+            //ExFor:IFieldResultFormatter.FormatDateTime(DateTime, String, CalendarType)
+            //ExFor:IFieldResultFormatter.FormatNumeric(Double, String)
+            //ExFor:FieldOptions.ResultFormatter
+            //ExFor:CalendarType
+            //ExSummary:Shows how to automatically apply a custom format to field results as the fields are updated.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             FieldResultFormatter formatter = new FieldResultFormatter("${0}", "Date: {0}", "Item # {0}:");
@@ -2653,8 +2653,18 @@ namespace ApiExamples
             Assert.That(formatter.CountFormatInvocations(FieldResultFormatter.FormatInvocationType.General), Is.EqualTo(1));
 
             formatter.PrintFormatInvocations();
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:IFieldResultFormatter
+        //ExFor:IFieldResultFormatter.Format(Double, GeneralFormat)
+        //ExFor:IFieldResultFormatter.Format(String, GeneralFormat)
+        //ExFor:IFieldResultFormatter.FormatDateTime(DateTime, String, CalendarType)
+        //ExFor:IFieldResultFormatter.FormatNumeric(Double, String)
+        //ExFor:FieldOptions.ResultFormatter
+        //ExFor:CalendarType
+        //ExSummary:Shows how to automatically apply a custom format to field results as the fields are updated (FieldResultFormatter).
         /// <summary>
         /// When fields with formatting are updated, this formatter will override their formatting
         /// with a custom format, while tracking every invocation.

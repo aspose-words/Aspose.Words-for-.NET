@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -1024,13 +1024,13 @@ namespace ApiExamples
             Assert.That(pageSetup.TextOrientation, Is.EqualTo(TextOrientation.Upward));
         }
 
-        //ExStart
-        //ExFor:PageSetup.SuppressEndnotes
-        //ExFor:Body.ParentSection
-        //ExSummary:Shows how to store endnotes at the end of each section, and modify their positions.
-        [Test] //ExSkip
+        [Test]
         public void SuppressEndnotes()
         {
+            //ExStart
+            //ExFor:PageSetup.SuppressEndnotes
+            //ExFor:Body.ParentSection
+            //ExSummary:Shows how to store endnotes at the end of each section, and modify their positions.
             Document doc = new Document();
             doc.RemoveAllChildren();
 
@@ -1053,8 +1053,13 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "PageSetup.SuppressEndnotes.docx");
             TestSuppressEndnotes(new Document(ArtifactsDir + "PageSetup.SuppressEndnotes.docx")); //ExSkip
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:PageSetup.SuppressEndnotes
+        //ExFor:Body.ParentSection
+        //ExSummary:Shows how to store endnotes at the end of each section, and modify their positions (InsertSectionWithEndnote).
         /// <summary>
         /// Append a section with text and an endnote to a document.
         /// </summary>

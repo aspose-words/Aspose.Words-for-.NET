@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -17,17 +17,17 @@ namespace ApiExamples
     [TestFixture]
     public class ExMailMergeCustom : ApiExampleBase
     {
-        //ExStart
-        //ExFor:IMailMergeDataSource
-        //ExFor:IMailMergeDataSource.TableName
-        //ExFor:IMailMergeDataSource.MoveNext
-        //ExFor:IMailMergeDataSource.GetValue
-        //ExFor:IMailMergeDataSource.GetChildDataSource
-        //ExFor:MailMerge.Execute(IMailMergeDataSource)
-        //ExSummary:Shows how to execute a mail merge with a data source in the form of a custom object.
-        [Test] //ExSkip
+        [Test]
         public void CustomDataSource()
         {
+            //ExStart
+            //ExFor:IMailMergeDataSource
+            //ExFor:IMailMergeDataSource.TableName
+            //ExFor:IMailMergeDataSource.MoveNext
+            //ExFor:IMailMergeDataSource.GetValue
+            //ExFor:IMailMergeDataSource.GetChildDataSource
+            //ExFor:MailMerge.Execute(IMailMergeDataSource)
+            //ExSummary:Shows how to execute a mail merge with a data source in the form of a custom object.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.InsertField(" MERGEFIELD FullName ");
@@ -47,8 +47,17 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "MailMergeCustom.CustomDataSource.docx");
             TestCustomDataSource(customers, new Document(ArtifactsDir + "MailMergeCustom.CustomDataSource.docx")); //ExSkip
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:IMailMergeDataSource
+        //ExFor:IMailMergeDataSource.TableName
+        //ExFor:IMailMergeDataSource.MoveNext
+        //ExFor:IMailMergeDataSource.GetValue
+        //ExFor:IMailMergeDataSource.GetChildDataSource
+        //ExFor:MailMerge.Execute(IMailMergeDataSource)
+        //ExSummary:Shows how to execute a mail merge with a data source in the form of a custom object (Customer).
         /// <summary>
         /// An example of a "data entity" class in your application.
         /// </summary>
@@ -143,14 +152,14 @@ namespace ApiExamples
             TestUtil.MailMergeMatchesArray(mergeData, doc, true);
         }
 
-        //ExStart
-        //ExFor:IMailMergeDataSourceRoot
-        //ExFor:IMailMergeDataSourceRoot.GetDataSource(String)
-        //ExFor:MailMerge.ExecuteWithRegions(IMailMergeDataSourceRoot)
-        //ExSummary:Performs mail merge from a custom data source with master-detail data.
-        [Test] //ExSkip
+        [Test]
         public void CustomDataSourceRoot()
         {
+            //ExStart
+            //ExFor:IMailMergeDataSourceRoot
+            //ExFor:IMailMergeDataSourceRoot.GetDataSource(String)
+            //ExFor:MailMerge.ExecuteWithRegions(IMailMergeDataSourceRoot)
+            //ExSummary:Performs mail merge from a custom data source with master-detail data.
             // Create a document with two mail merge regions named "Washington" and "Seattle".
             string[] mailMergeRegions = { "Vancouver", "Seattle" };
             Document doc = CreateSourceDocumentWithMailMergeRegions(mailMergeRegions);
@@ -178,8 +187,14 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "MailMergeCustom.CustomDataSourceRoot.docx");
             TestCustomDataSourceRoot(mailMergeRegions, sourceRoot, new Document(ArtifactsDir + "MailMergeCustom.CustomDataSourceRoot.docx")); //ExSkip
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:IMailMergeDataSourceRoot
+        //ExFor:IMailMergeDataSourceRoot.GetDataSource(String)
+        //ExFor:MailMerge.ExecuteWithRegions(IMailMergeDataSourceRoot)
+        //ExSummary:Performs mail merge from a custom data source with master-detail data (CreateSourceDocumentWithMailMergeRegions).
         /// <summary>
         /// Create a document that contains consecutive mail merge regions, with names designated by the input array,
         /// for a data table of employees.

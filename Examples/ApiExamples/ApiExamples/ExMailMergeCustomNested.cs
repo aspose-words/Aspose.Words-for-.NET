@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -16,12 +16,12 @@ namespace ApiExamples
     [TestFixture]
     public class ExMailMergeCustomNested : ApiExampleBase
     {
-        //ExStart
-        //ExFor:MailMerge.ExecuteWithRegions(IMailMergeDataSource)
-        //ExSummary:Shows how to use mail merge regions to execute a nested mail merge.
-        [Test] //ExSkip
+        [Test]
         public void CustomDataSource()
         {
+            //ExStart
+            //ExFor:MailMerge.ExecuteWithRegions(IMailMergeDataSource)
+            //ExSummary:Shows how to use mail merge regions to execute a nested mail merge.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -67,8 +67,12 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "NestedMailMergeCustom.CustomDataSource.docx");
             TestCustomDataSource(customers, new Document(ArtifactsDir + "NestedMailMergeCustom.CustomDataSource.docx")); //ExSkip
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:MailMerge.ExecuteWithRegions(IMailMergeDataSource)
+        //ExSummary:Shows how to use mail merge regions to execute a nested mail merge (Customer).
         /// <summary>
         /// An example of a "data entity" class in your application.
         /// </summary>

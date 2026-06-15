@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -213,17 +213,17 @@ namespace ApiExamples
             //ExEnd
         }
 
-        //ExStart
-        //ExFor:Node.GetAncestor(NodeType)
-        //ExFor:Node.GetAncestor(Type)
-        //ExFor:Table.NodeType
-        //ExFor:Cell.Tables
-        //ExFor:TableCollection
-        //ExFor:NodeCollection.Count
-        //ExSummary:Shows how to find out if a tables are nested.
-        [Test] //ExSkip
+        [Test]
         public void CalculateDepthOfNestedTables()
         {
+            //ExStart
+            //ExFor:Node.GetAncestor(NodeType)
+            //ExFor:Node.GetAncestor(Type)
+            //ExFor:Table.NodeType
+            //ExFor:Cell.Tables
+            //ExFor:TableCollection
+            //ExFor:NodeCollection.Count
+            //ExSummary:Shows how to find out if a tables are nested.
             Document doc = new Document(MyDir + "Nested tables.docx");
             NodeCollection tables = doc.GetChildNodes(NodeType.Table, true);
             Assert.That(tables.Count, Is.EqualTo(5)); //ExSkip
@@ -245,8 +245,17 @@ namespace ApiExamples
                 else
                     Console.WriteLine("Table #{0} is a non nested table (is not a child of another table)", i);
             }
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:Node.GetAncestor(NodeType)
+        //ExFor:Node.GetAncestor(Type)
+        //ExFor:Table.NodeType
+        //ExFor:Cell.Tables
+        //ExFor:TableCollection
+        //ExFor:NodeCollection.Count
+        //ExSummary:Shows how to find out if a tables are nested (GetNestedDepthOfTable).
         /// <summary>
         /// Calculates what level a table is nested inside other tables.
         /// </summary>
@@ -907,20 +916,20 @@ namespace ApiExamples
                 ArtifactsDir + "Table.AllowCellSpacing.html");
         }
 
-        //ExStart
-        //ExFor:Table
-        //ExFor:Row
-        //ExFor:Cell
-        //ExFor:Table.#ctor(DocumentBase)
-        //ExFor:Table.Title
-        //ExFor:Table.Description
-        //ExFor:Row.#ctor(DocumentBase)
-        //ExFor:Cell.#ctor(DocumentBase)
-        //ExFor:Cell.FirstParagraph
-        //ExSummary:Shows how to build a nested table without using a document builder.
-        [Test] //ExSkip
+        [Test]
         public void CreateNestedTable()
         {
+            //ExStart
+            //ExFor:Table
+            //ExFor:Row
+            //ExFor:Cell
+            //ExFor:Table.#ctor(DocumentBase)
+            //ExFor:Table.Title
+            //ExFor:Table.Description
+            //ExFor:Row.#ctor(DocumentBase)
+            //ExFor:Cell.#ctor(DocumentBase)
+            //ExFor:Cell.FirstParagraph
+            //ExSummary:Shows how to build a nested table without using a document builder.
             Document doc = new Document();
 
             // Create the outer table with three rows and four columns, and then add it to the document.
@@ -933,8 +942,20 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Table.CreateNestedTable.docx");
             TestCreateNestedTable(new Document(ArtifactsDir + "Table.CreateNestedTable.docx")); //ExSkip
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:Table
+        //ExFor:Row
+        //ExFor:Cell
+        //ExFor:Table.#ctor(DocumentBase)
+        //ExFor:Table.Title
+        //ExFor:Table.Description
+        //ExFor:Row.#ctor(DocumentBase)
+        //ExFor:Cell.#ctor(DocumentBase)
+        //ExFor:Cell.FirstParagraph
+        //ExSummary:Shows how to build a nested table without using a document builder (CreateTable).
         /// <summary>
         /// Creates a new table in the document with the given dimensions and text in each cell.
         /// </summary>
@@ -981,14 +1002,14 @@ namespace ApiExamples
             Assert.That(innerTable.Description, Is.EqualTo("Aspose table description"));
         }
 
-        //ExStart
-        //ExFor:CellFormat.HorizontalMerge
-        //ExFor:CellFormat.VerticalMerge
-        //ExFor:CellMerge
-        //ExSummary:Prints the horizontal and vertical merge type of a cell.
-        [Test] //ExSkip
+        [Test]
         public void CheckCellsMerged()
         {
+            //ExStart
+            //ExFor:CellFormat.HorizontalMerge
+            //ExFor:CellFormat.VerticalMerge
+            //ExFor:CellMerge
+            //ExSummary:Prints the horizontal and vertical merge type of a cell.
             Document doc = new Document(MyDir + "Table with merged cells.docx");
             Table table = doc.FirstSection.Body.Tables[0];
 
@@ -996,8 +1017,14 @@ namespace ApiExamples
                 foreach (Cell cell in row.Cells)
                     Console.WriteLine(PrintCellMergeType(cell));
             Assert.That(PrintCellMergeType(table.FirstRow.FirstCell), Is.EqualTo("The cell at R1, C1 is vertically merged")); //ExSkip
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:CellFormat.HorizontalMerge
+        //ExFor:CellFormat.VerticalMerge
+        //ExFor:CellMerge
+        //ExSummary:Prints the horizontal and vertical merge type of a cell (PrintCellMergeType).
         public string PrintCellMergeType(Cell cell)
         {
             bool isHorizontallyMerged = cell.CellFormat.HorizontalMerge != CellMerge.None;

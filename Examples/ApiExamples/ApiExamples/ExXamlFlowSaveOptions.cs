@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -17,18 +17,18 @@ namespace ApiExamples
     [TestFixture]
     public class ExXamlFlowSaveOptions : ApiExampleBase
     {
-        //ExStart
-        //ExFor:XamlFlowSaveOptions
-        //ExFor:XamlFlowSaveOptions.#ctor
-        //ExFor:XamlFlowSaveOptions.#ctor(SaveFormat)
-        //ExFor:XamlFlowSaveOptions.ImageSavingCallback
-        //ExFor:XamlFlowSaveOptions.ImagesFolder
-        //ExFor:XamlFlowSaveOptions.ImagesFolderAlias
-        //ExFor:XamlFlowSaveOptions.SaveFormat
-        //ExSummary:Shows how to print the filenames of linked images created while converting a document to flow-form .xaml.
-        [Test] //ExSkip
+        [Test]
         public void ImageFolder()
         {
+            //ExStart
+            //ExFor:XamlFlowSaveOptions
+            //ExFor:XamlFlowSaveOptions.#ctor
+            //ExFor:XamlFlowSaveOptions.#ctor(SaveFormat)
+            //ExFor:XamlFlowSaveOptions.ImageSavingCallback
+            //ExFor:XamlFlowSaveOptions.ImagesFolder
+            //ExFor:XamlFlowSaveOptions.ImagesFolderAlias
+            //ExFor:XamlFlowSaveOptions.SaveFormat
+            //ExSummary:Shows how to print the filenames of linked images created while converting a document to flow-form .xaml.
             Document doc = new Document(MyDir + "Rendering.docx");
 
             ImageUriPrinter callback = new ImageUriPrinter(ArtifactsDir + "XamlFlowImageFolderAlias");
@@ -58,8 +58,18 @@ namespace ApiExamples
             foreach (string resource in callback.Resources)
                 Console.WriteLine($"{callback.ImagesFolderAlias}/{resource}");
             TestImageFolder(callback); //ExSkip
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:XamlFlowSaveOptions
+        //ExFor:XamlFlowSaveOptions.#ctor
+        //ExFor:XamlFlowSaveOptions.#ctor(SaveFormat)
+        //ExFor:XamlFlowSaveOptions.ImageSavingCallback
+        //ExFor:XamlFlowSaveOptions.ImagesFolder
+        //ExFor:XamlFlowSaveOptions.ImagesFolderAlias
+        //ExFor:XamlFlowSaveOptions.SaveFormat
+        //ExSummary:Shows how to print the filenames of linked images created while converting a document to flow-form .xaml (ImageUriPrinter).
         /// <summary>
         /// Counts and prints filenames of images while their parent document is converted to flow-form .xaml.
         /// </summary>
@@ -95,14 +105,14 @@ namespace ApiExamples
 
         [TestCase(SaveFormat.XamlFlow, "xamlflow")]
         [TestCase(SaveFormat.XamlFlowPack, "xamlflowpack")]
-        //ExStart
-        //ExFor:SaveOptions.ProgressCallback
-        //ExFor:IDocumentSavingCallback
-        //ExFor:IDocumentSavingCallback.Notify(DocumentSavingArgs)
-        //ExFor:DocumentSavingArgs.EstimatedProgress
-        //ExSummary:Shows how to manage a document while saving to xamlflow.
         public void ProgressCallback(SaveFormat saveFormat, string ext)
         {
+            //ExStart
+            //ExFor:SaveOptions.ProgressCallback
+            //ExFor:IDocumentSavingCallback
+            //ExFor:IDocumentSavingCallback.Notify(DocumentSavingArgs)
+            //ExFor:DocumentSavingArgs.EstimatedProgress
+            //ExSummary:Shows how to manage a document while saving to xamlflow.
             Document doc = new Document(MyDir + "Big document.docx");
 
             // Following formats are supported: XamlFlow, XamlFlowPack.
@@ -114,8 +124,15 @@ namespace ApiExamples
             var exception = Assert.Throws<OperationCanceledException>(() =>
                 doc.Save(ArtifactsDir + $"XamlFlowSaveOptions.ProgressCallback.{ext}", saveOptions));
             Assert.That(exception?.Message.Contains("EstimatedProgress"), Is.True);
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:SaveOptions.ProgressCallback
+        //ExFor:IDocumentSavingCallback
+        //ExFor:IDocumentSavingCallback.Notify(DocumentSavingArgs)
+        //ExFor:DocumentSavingArgs.EstimatedProgress
+        //ExSummary:Shows how to manage a document while saving to xamlflow (SavingProgressCallback).
         /// <summary>
         /// Saving progress callback. Cancel a document saving after the "MaxDuration" seconds.
         /// </summary>

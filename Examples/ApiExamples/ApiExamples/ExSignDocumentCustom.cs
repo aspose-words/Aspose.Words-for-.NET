@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -22,19 +22,19 @@ namespace ApiExamples
     [TestFixture]
     public class ExSignDocumentCustom : ApiExampleBase
     {
-        //ExStart
-        //ExFor:CertificateHolder
-        //ExFor:SignatureLineOptions.Signer
-        //ExFor:SignatureLineOptions.SignerTitle
-        //ExFor:SignatureLine.Id
-        //ExFor:SignOptions.SignatureLineId
-        //ExFor:SignOptions.SignatureLineImage
-        //ExFor:DigitalSignatureUtil.Sign(String, String, CertificateHolder, SignOptions)
-        //ExSummary:Shows how to add a signature line to a document, and then sign it using a digital certificate.
-        [Test] //ExSkip
+        [Test]
         [Description("WORDSNET-16868")]
         public static void Sign()
         {
+            //ExStart
+            //ExFor:CertificateHolder
+            //ExFor:SignatureLineOptions.Signer
+            //ExFor:SignatureLineOptions.SignerTitle
+            //ExFor:SignatureLine.Id
+            //ExFor:SignOptions.SignatureLineId
+            //ExFor:SignOptions.SignatureLineImage
+            //ExFor:DigitalSignatureUtil.Sign(String, String, CertificateHolder, SignOptions)
+            //ExSummary:Shows how to add a signature line to a document, and then sign it using a digital certificate.
             string signeeName = "Ron Williams";
             string srcDocumentPath = MyDir + "Document.docx";
             string dstDocumentPath = ArtifactsDir + "SignDocumentCustom.Sign.docx";
@@ -49,8 +49,18 @@ namespace ApiExamples
                 SignDocument(srcDocumentPath, dstDocumentPath, signeeInfo, certificatePath, certificatePassword);
             else
                 Assert.Fail("Signee does not exist.");
+            //ExEnd
         }
 
+        //ExStart
+        //ExFor:CertificateHolder
+        //ExFor:SignatureLineOptions.Signer
+        //ExFor:SignatureLineOptions.SignerTitle
+        //ExFor:SignatureLine.Id
+        //ExFor:SignOptions.SignatureLineId
+        //ExFor:SignOptions.SignatureLineImage
+        //ExFor:DigitalSignatureUtil.Sign(String, String, CertificateHolder, SignOptions)
+        //ExSummary:Shows how to add a signature line to a document, and then sign it using a digital certificate (SignDocument).
         /// <summary>
         /// Creates a copy of a source document signed using provided signee information and X509 certificate.
         /// </summary>
