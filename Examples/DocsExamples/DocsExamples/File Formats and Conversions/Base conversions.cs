@@ -309,7 +309,7 @@ namespace DocsExamples.File_Formats_and_Conversions
                 }
             }
 
-            doc.Save(outputFileName);            
+            doc.Save(outputFileName);
         }
         //ExEnd:ConvertImageToPdf
 #endif

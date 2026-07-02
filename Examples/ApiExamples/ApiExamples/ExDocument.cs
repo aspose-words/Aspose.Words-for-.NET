@@ -2763,5 +2763,28 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Document.RemoveCustomizations.docx");
             //ExEnd:RemoveCustomizations
         }
+
+        [Test]
+        public void ReadabilityStatisticsFleschScores()
+        {
+            //ExStart:ReadabilityStatisticsFleschScores
+            //GistId:1e92948c24f1db379b293ab9f71558ab
+            //ExFor:ReadabilityStatistics
+            //ExFor:Document.ReadabilityStatistics
+            //ExSummary:Shows how to calculate and display the Flesch reading scores for a document.
+            Document doc = new Document();
+
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Writeln("The implementation of artificial intelligence algorithms requires a comprehensive understanding of machine learning methodologies and statistical analysis techniques.");
+            builder.Writeln("Furthermore, the integration of neural networks into existing software architectures presents significant challenges for developers.");
+            builder.Writeln("This document serves as an illustrative example for calculating readability metrics using the Flesch reading ease formula.");
+
+            // Calculate readability statistics.
+            ReadabilityStatistics stats = doc.ReadabilityStatistics;
+            // Verify that the scores are within expected valid ranges.
+            Assert.That(stats.FleschReadingEasy, Is.GreaterThanOrEqualTo(0).And.LessThanOrEqualTo(190));
+            Assert.That(stats.FleschKincaidGradeLevel, Is.LessThanOrEqualTo(0));
+            //ExEnd:ReadabilityStatisticsFleschScores
+        }
     }
 }

@@ -123,7 +123,7 @@ namespace DocsExamples.Programming_with_Documents
             double width = 360;
             double height = 270;
 
-            Shape shape = builder.InsertOnlineVideo(url, width, height);
+            builder.InsertOnlineVideo(url, width, height);
 
             doc.Save(ArtifactsDir + "WorkingWithOleObjectsAndActiveX.InsertOnlineVideo.docx");
             //ExEnd:InsertOnlineVideo

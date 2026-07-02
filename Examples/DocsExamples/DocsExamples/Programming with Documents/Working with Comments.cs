@@ -12,12 +12,10 @@ namespace DocsExamples.Programming_with_Documents
         {
             //ExStart:AddComments
             //GistId:70902b20df8b1f6b0459f676e21623bb
-            //ExStart:CreateSimpleDocumentUsingDocumentBuilder
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.Write("Some text is added.");
-            //ExEnd:CreateSimpleDocumentUsingDocumentBuilder
             
             Comment comment = new Comment(doc, "Awais Hafeez", "AH", DateTime.Today);
             comment.SetText("Comment text.");
