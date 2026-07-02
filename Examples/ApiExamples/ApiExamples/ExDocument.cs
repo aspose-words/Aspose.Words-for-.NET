@@ -2768,7 +2768,7 @@ namespace ApiExamples
         public void ReadabilityStatisticsFleschScores()
         {
             //ExStart:ReadabilityStatisticsFleschScores
-            //ReleaseVersion:26.7
+            //GistId:1e92948c24f1db379b293ab9f71558ab
             //ExFor:ReadabilityStatistics
             //ExFor:Document.ReadabilityStatistics
             //ExSummary:Shows how to calculate and display the Flesch reading scores for a document.

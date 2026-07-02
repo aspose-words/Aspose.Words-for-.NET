@@ -1,4 +1,4 @@
-// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -1078,7 +1078,7 @@ namespace ApiExamples
         public void RemoveTabStopFromListLevel()
         {
             //ExStart:RemoveTabStopFromListLevel
-            //ReleaseVersion:26.7
+            //GistId:1e92948c24f1db379b293ab9f71558ab
             //ExFor:ListLevel.RemoveTabStop()
             //ExSummary:Shows how to clear the list level tab stop.
             Document doc = new Document();
