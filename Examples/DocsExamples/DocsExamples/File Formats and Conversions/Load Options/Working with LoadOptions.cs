@@ -45,8 +45,8 @@ namespace DocsExamples.File_Formats_and_Conversions.Load_Options
             //GistId:af95c7a408187bb25cf9137465fe5ce6
             // We will not be able to open this document with Microsoft Word or
             // Aspose.Words without providing the correct password.
-            Assert.Throws<IncorrectPasswordException>(() =>
-                new Document(MyDir + "Encrypted.docx"));
+            Assert.That((Action)(() => { new Document(MyDir + "Encrypted.docx"); }),
+                Throws.TypeOf<IncorrectPasswordException>());
             //ExEnd:LoadEncryptedDocumentWithoutPassword
         }
 
