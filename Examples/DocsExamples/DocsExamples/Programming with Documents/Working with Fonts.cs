@@ -16,7 +16,7 @@ namespace DocsExamples.Programming_with_Documents
         [Test]
         public void FontFormatting()
         {
-            //ExStart:WriteAndFont
+            //ExStart:FontFormatting
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -30,7 +30,7 @@ namespace DocsExamples.Programming_with_Documents
             builder.Write("Sample text.");
             
             doc.Save(ArtifactsDir + "WorkingWithFonts.FontFormatting.docx");
-            //ExEnd:WriteAndFont
+            //ExEnd:FontFormatting
         }
 
         [Test]

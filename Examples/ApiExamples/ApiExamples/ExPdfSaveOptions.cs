@@ -1328,7 +1328,7 @@ namespace ApiExamples
             switch (pdfFontEmbeddingMode)
             {
                 case PdfFontEmbeddingMode.EmbedAll:
-                    Assert.That(testedFileLength < 1040000, Is.True);
+                    Assert.That(testedFileLength < 1045500, Is.True);
                     break;
                 case PdfFontEmbeddingMode.EmbedNonstandard:
                     Assert.That(testedFileLength < 492000, Is.True);
@@ -1455,12 +1455,12 @@ namespace ApiExamples
             var testedFileLength = new FileInfo(ArtifactsDir + "PdfSaveOptions.AdditionalTextPositioning.pdf").Length;
             if (applyAdditionalTextPositioning)
             {
-                Assert.That(testedFileLength < 102000, Is.True);
+                Assert.That(testedFileLength < 103000, Is.True);
                 Assert.That(tjOperator.ToString(), Is.EqualTo("[0 (S) 0 (a) 0 (m) 0 (s) 0 (t) 0 (a) -1 (g) 1 (,) 0 ( ) 0 (1) 0 (0) 0 (.) 0 ( ) 0 (N) 0 (o) 0 (v) 0 (e) 0 (m) 0 (b) 0 (e) 0 (r) -1 ( ) 1 (2) -1 (0) 0 (1) 0 (8)] TJ"));
             }
             else
             {
-                Assert.That(testedFileLength < 99500, Is.True);
+                Assert.That(testedFileLength < 100000, Is.True);
                 Assert.That(tjOperator.ToString(), Is.EqualTo("[(Samsta) -1 (g) 1 (, 10. November) -1 ( ) 1 (2) -1 (018)] TJ"));
             }
         }

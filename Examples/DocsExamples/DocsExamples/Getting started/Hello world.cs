@@ -10,7 +10,7 @@ namespace DocsExamples.Getting_started
         {
             //ExStart:HelloWorld
             //GistId:542a463e1857480986d18ec296ed43d5
-            Document docA = new Document();            
+            Document docA = new Document();
             DocumentBuilder builder = new DocumentBuilder(docA);
 
             // Insert text to the document start.

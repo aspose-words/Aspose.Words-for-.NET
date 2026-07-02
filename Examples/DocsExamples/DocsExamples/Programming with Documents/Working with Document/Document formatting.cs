@@ -159,7 +159,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         [Test]
         public void SnapToGrid()
         {
-            //ExStart:SetSnapToGrid
+            //ExStart:SnapToGrid
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -173,7 +173,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             par.Runs[0].Font.SnapToGrid = true;
 
             doc.Save(ArtifactsDir + "DocumentFormatting.SnapToGrid.docx");
-            //ExEnd:SetSnapToGrid
+            //ExEnd:SnapToGrid
         }
 
         [Test]
