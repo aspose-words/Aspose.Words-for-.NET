@@ -255,6 +255,75 @@ namespace ApiExamples.LinqTemp
         }
 
         [Test]
+        public void FormattingNumbers()
+        {
+            //ExStart:FormattingNumbers
+            //GistId:92769e3332e3f110bd2cc6e0d379b5c3
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Numbers Formatting Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Numbers Formatting Data.json");
+
+            // Build a report.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource);
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Numbers Formatting Report.docx");
+            //ExEnd:FormattingNumbers
+
+            // Test the report.
+            CompareDocs("Numbers Formatting Report.docx", "Numbers Formatting Report Gold.docx");
+        }
+
+        [Test]
+        public void FormattingDateAndTime()
+        {
+            //ExStart:FormattingDateAndTime
+            //GistId:90b620be281bb433e2fe90d92d2368fb
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Date and Time Formatting Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Date and Time Formatting Data.json");
+
+            // Build a report.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource);
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Date and Time Formatting Report.docx");
+            //ExEnd:FormattingDateAndTime
+
+            // Test the report.
+            CompareDocs("Date and Time Formatting Report.docx", "Date and Time Formatting Report Gold.docx");
+        }
+
+        [Test]
+        public void FormattingStrings()
+        {
+            //ExStart:FormattingStrings
+            //GistId:26a14ab1f3e2d3ff91d9f1ce4397a2b0
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Strings Formatting Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Strings Formatting Data.json");
+
+            // Build a report.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource);
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Strings Formatting Report.docx");
+            //ExEnd:FormattingStrings
+
+            // Test the report.
+            CompareDocs("Strings Formatting Report.docx", "Strings Formatting Report Gold.docx");
+        }
+
+        [Test]
         public void BuildingBulletedList()
         {
             //ExStart:BuildingBulletedList
