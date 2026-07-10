@@ -1,0 +1,6 @@
+{
+  "kpiName": "Quarterly Revenue Variance",
+  "actualRevenue": 550000,
+  "targetRevenue": 500000,
+  "variancePct": 10.0
+}

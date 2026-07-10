@@ -324,6 +324,98 @@ namespace ApiExamples.LinqTemp
         }
 
         [Test]
+        public void FormattingOutputText()
+        {
+            //ExStart:FormattingOutputText
+            //GistId:5040f3ac1771dc3d0ffc1251c6f6023d
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Output Text Formatting Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Output Text Formatting Data.json");
+
+            // Build a report.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource);
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Output Text Formatting Report.docx");
+            //ExEnd:FormattingOutputText
+
+            // Test the report.
+            CompareDocs("Output Text Formatting Report.docx", "Output Text Formatting Report Gold.docx");
+        }
+
+        [Test]
+        public void OverridingTextFormat()
+        {
+            //ExStart:OverridingTextFormat
+            //GistId:ab271894904559b5c4dd351d662d04a1
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Text Format Overriding Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Text Format Overriding Data.json");
+
+            // Build a report.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource);
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Text Format Overriding Report.docx");
+            //ExEnd:OverridingTextFormat
+
+            // Test the report.
+            CompareDocs("Text Format Overriding Report.docx", "Text Format Overriding Report Gold.docx");
+        }
+
+        [Test]
+        public void OverridingTextColor()
+        {
+            //ExStart:OverridingTextColor
+            //GistId:f8b950bfdf9a6341c86ddb5f8e8a7817
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Text Color Overriding Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Text Color Overriding Data.json");
+
+            // Build a report.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource);
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Text Color Overriding Report.docx");
+            //ExEnd:OverridingTextColor
+
+            // Test the report.
+            CompareDocs("Text Color Overriding Report.docx", "Text Color Overriding Report Gold.docx");
+        }
+
+        [Test]
+        public void OverridingBackgroundColor()
+        {
+            //ExStart:OverridingBackgroundColor
+            //GistId:158fadaa825c9ab35a8d5f929f41ef26
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Background Color Overriding Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Background Color Overriding Data.json");
+
+            // Build a report.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource);
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Background Color Overriding Report.docx");
+            //ExEnd:OverridingBackgroundColor
+
+            // Test the report.
+            CompareDocs("Background Color Overriding Report.docx", "Background Color Overriding Report Gold.docx");
+        }
+
+        [Test]
         public void BuildingBulletedList()
         {
             //ExStart:BuildingBulletedList
