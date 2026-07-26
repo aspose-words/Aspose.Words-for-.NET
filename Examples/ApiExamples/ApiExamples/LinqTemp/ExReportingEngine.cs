@@ -416,6 +416,197 @@ namespace ApiExamples.LinqTemp
         }
 
         [Test]
+        public void RepeatingTemplateBlock()
+        {
+            //ExStart:RepeatingTemplateBlock
+            //GistId:e70be26e4fe5bd75b41246169be155e1
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Template Block Repeating Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Template Block Repeating Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Template Block Repeating Report.docx");
+            //ExEnd:RepeatingTemplateBlock
+
+            // Test the report.
+            CompareDocs("Template Block Repeating Report.docx", "Template Block Repeating Report Gold.docx");
+        }
+
+        [Test]
+        public void RepeatingMasterDetailTemplateBlocks()
+        {
+            //ExStart:RepeatingMasterDetailTemplateBlocks
+            //GistId:f39276b10a7343ba52a481410655ef91
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Master-Detail Template Blocks Repeating Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Master-Detail Template Blocks Repeating Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Master-Detail Template Blocks Repeating Report.docx");
+            //ExEnd:RepeatingMasterDetailTemplateBlocks
+
+            // Test the report.
+            CompareDocs("Master-Detail Template Blocks Repeating Report.docx",
+                "Master-Detail Template Blocks Repeating Report Gold.docx");
+        }
+
+        [Test]
+        public void ShowingTemplateBlockBasedOnCondition1()
+        {
+            //ExStart:ShowingTemplateBlockBasedOnCondition
+            //GistId:671001083e98b6cc575f9134dce49a12
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Template Block Shown Based on Condition Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Template Block Shown Based on Condition Data 1.json");
+
+            // Build a report.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource);
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Template Block Shown Based on Condition Report 1.docx");
+            //ExEnd:ShowingTemplateBlockBasedOnCondition
+
+            // Test the report.
+            CompareDocs("Template Block Shown Based on Condition Report 1.docx",
+                "Template Block Shown Based on Condition Report 1 Gold.docx");
+        }
+
+        [Test]
+        public void ShowingTemplateBlockBasedOnCondition2()
+        {
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Template Block Shown Based on Condition Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Template Block Shown Based on Condition Data 2.json");
+
+            // Build a report.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource);
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Template Block Shown Based on Condition Report 2.docx");
+            
+            // Test the report.
+            CompareDocs("Template Block Shown Based on Condition Report 2.docx",
+                "Template Block Shown Based on Condition Report 2 Gold.docx");
+        }
+
+        [Test]
+        public void ApplyingConditionalFormattingToTemplateBlock1()
+        {
+            //ExStart:ApplyingConditionalFormattingToTemplateBlock
+            //GistId:3aacd8154ae2ec003ec1f35ce6de56bf
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Template Block with Conditional Formatting Applied Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(
+                MyLinqDir + "Template Block with Conditional Formatting Applied Data 1.json");
+
+            // Build a report.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource);
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Template Block with Conditional Formatting Applied Report 1.docx");
+            //ExEnd:ApplyingConditionalFormattingToTemplateBlock
+
+            // Test the report.
+            CompareDocs("Template Block with Conditional Formatting Applied Report 1.docx",
+                "Template Block with Conditional Formatting Applied Report 1 Gold.docx");
+        }
+
+        [Test]
+        public void ApplyingConditionalFormattingToTemplateBlock2()
+        {
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Template Block with Conditional Formatting Applied Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(
+                MyLinqDir + "Template Block with Conditional Formatting Applied Data 2.json");
+
+            // Build a report.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource);
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Template Block with Conditional Formatting Applied Report 2.docx");
+            
+            // Test the report.
+            CompareDocs("Template Block with Conditional Formatting Applied Report 2.docx",
+                "Template Block with Conditional Formatting Applied Report 2 Gold.docx");
+        }
+
+        [Test]
+        public void ApplyingTextColorToTemplateBlock()
+        {
+            //ExStart:ApplyingTextColorToTemplateBlock
+            //GistId:e7f9f35764a7843a1ec2e027a3c34a47
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Template Block with Text Color Applied Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Template Block with Text Color Applied Data.json");
+
+            // Build a report.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource);
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Template Block with Text Color Applied Report.docx");
+            //ExEnd:ApplyingTextColorToTemplateBlock
+
+            // Test the report.
+            CompareDocs("Template Block with Text Color Applied Report.docx",
+                "Template Block with Text Color Applied Report Gold.docx");
+        }
+
+        [Test]
+        public void ApplyingBackgroundColorToTemplateBlock()
+        {
+            //ExStart:ApplyingBackgroundColorToTemplateBlock
+            //GistId:e2d292ecf0fbdf599f5039c35069ee7b
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Template Block with Background Color Applied Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Template Block with Background Color Applied Data.json");
+
+            // Build a report.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource);
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Template Block with Background Color Applied Report.docx");
+            //ExEnd:ApplyingBackgroundColorToTemplateBlock
+
+            // Test the report.
+            CompareDocs("Template Block with Background Color Applied Report.docx",
+                "Template Block with Background Color Applied Report Gold.docx");
+        }
+
+        [Test]
         public void BuildingBulletedList()
         {
             //ExStart:BuildingBulletedList

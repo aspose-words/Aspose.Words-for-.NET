@@ -1,0 +1,26 @@
+[
+  {
+    "department": "Human Resources",
+    "milestones": [
+      { "result": "Quarterly hiring targets met" },
+      { "result": "New onboarding portal live" },
+      { "result": "Annual review cycle finalized" }
+    ]
+  },
+  {
+    "department": "Information Technology",
+    "milestones": [
+      { "result": "Server migration completed" },
+      { "result": "Helpdesk response times improved" },
+      { "result": "Security patch rolled out" }
+    ]
+  },
+  {
+    "department": "Customer Success",
+    "milestones": [
+      { "result": "Retention rate increased" },
+      { "result": "Satisfaction survey launched" },
+      { "result": "Support backlog cleared" }
+    ]
+  }
+]

@@ -1,0 +1,6 @@
+{
+  "pricingStrategy": "Recurring",
+  "strategyLabel": "Subscription Model",
+  "productLineCode": "Asset Class Alpha",
+  "contractCycle": "Annual Renewal"
+}
