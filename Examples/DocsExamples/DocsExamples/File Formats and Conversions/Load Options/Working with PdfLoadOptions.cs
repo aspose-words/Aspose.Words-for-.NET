@@ -10,7 +10,7 @@ namespace DocsExamples.File_Formats_and_Conversions.Load_Options
         [Test]
         public void LoadEncryptedPdf()
         {
-            //ExStart:LoadEncryptedPdf  
+            //ExStart:LoadEncryptedPdf
             Document doc = new Document(MyDir + "Pdf Document.pdf");
 
             PdfSaveOptions saveOptions = new PdfSaveOptions
@@ -29,7 +29,7 @@ namespace DocsExamples.File_Formats_and_Conversions.Load_Options
         [Test]
         public void LoadPageRangeOfPdf()
         {
-            //ExStart:LoadPageRangeOfPdf  
+            //ExStart:LoadPageRangeOfPdf
             PdfLoadOptions loadOptions = new PdfLoadOptions { PageIndex = 0, PageCount = 1 };
 
             //ExStart:LoadPDF

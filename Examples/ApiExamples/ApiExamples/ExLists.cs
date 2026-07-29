@@ -1,4 +1,4 @@
-// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -1072,6 +1072,34 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Lists.AddSingleLevelList.docx");
             //ExEnd:AddSingleLevelList
+        }
+
+        [Test]
+        public void RemoveTabStopFromListLevel()
+        {
+            //ExStart:RemoveTabStopFromListLevel
+            //GistId:1e92948c24f1db379b293ab9f71558ab
+            //ExFor:ListLevel.RemoveTabStop()
+            //ExSummary:Shows how to clear the list level tab stop.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Create a list with default formatting.
+            builder.ListFormat.ApplyNumberDefault();
+            builder.Writeln("Numbered list item 1");
+            builder.Writeln("Numbered list item 2");
+
+            // Get the list level and remove its tab stop.
+            ListLevel listLevel = builder.ListFormat.ListLevel;
+            listLevel.RemoveTabStop();
+
+            doc.Save(ArtifactsDir + "Paragraph.RemoveTabStopFromListLevel.docx");
+            //ExEnd:RemoveTabStopFromListLevel
+
+            // Verify the tab stop was removed.
+            doc = new Document(ArtifactsDir + "Paragraph.RemoveTabStopFromListLevel.docx");
+            ListLevel effectiveListLevel = doc.FirstSection.Body.FirstParagraph.ListFormat.ListLevel;
+            Assert.That(effectiveListLevel, Is.Not.Null);
         }
     }
 }

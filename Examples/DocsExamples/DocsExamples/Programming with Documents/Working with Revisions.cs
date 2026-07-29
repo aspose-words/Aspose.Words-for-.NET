@@ -92,14 +92,14 @@ namespace DocsExamples.Programming_with_Documents
         [Test]
         public void RemoveCommentsInPdf()
         {
-            //ExStart:RemoveCommentsInPDF
+            //ExStart:RemoveCommentsInPdf
             Document doc = new Document(MyDir + "Revisions.docx");
 
             // Do not render the comments in PDF.
             doc.LayoutOptions.CommentDisplayMode = CommentDisplayMode.Hide;
 
             doc.Save(ArtifactsDir + "WorkingWithRevisions.RemoveCommentsInPdf.pdf");
-            //ExEnd:RemoveCommentsInPDF
+            //ExEnd:RemoveCommentsInPdf
         }
 
         [Test]
