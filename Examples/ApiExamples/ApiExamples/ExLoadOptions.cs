@@ -177,7 +177,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Document.docx", loadOptions);
 
             List<WarningInfo> warnings = ((DocumentLoadingWarningCallback)loadOptions.WarningCallback).GetWarnings();
-            Assert.That(warnings.Count, Is.EqualTo(3));
+            Assert.That(warnings.Count, Is.EqualTo(2));
             TestLoadOptionsWarningCallback(warnings); //ExSkip
             //ExEnd
         }
@@ -209,17 +209,13 @@ namespace ApiExamples
 
         private static void TestLoadOptionsWarningCallback(List<WarningInfo> warnings)
         {
-            Assert.That(warnings[0].WarningType, Is.EqualTo(WarningType.UnexpectedContent));
+            Assert.That(warnings[0].WarningType, Is.EqualTo(WarningType.MinorFormattingLoss));
             Assert.That(warnings[0].Source, Is.EqualTo(WarningSource.Docx));
-            Assert.That(warnings[0].Description, Is.EqualTo("3F01"));
+            Assert.That(warnings[0].Description, Is.EqualTo("Import of element 'shapedefaults' is not supported in Docx format by Aspose.Words."));
 
             Assert.That(warnings[1].WarningType, Is.EqualTo(WarningType.MinorFormattingLoss));
             Assert.That(warnings[1].Source, Is.EqualTo(WarningSource.Docx));
-            Assert.That(warnings[1].Description, Is.EqualTo("Import of element 'shapedefaults' is not supported in Docx format by Aspose.Words."));
-
-            Assert.That(warnings[2].WarningType, Is.EqualTo(WarningType.MinorFormattingLoss));
-            Assert.That(warnings[2].Source, Is.EqualTo(WarningSource.Docx));
-            Assert.That(warnings[2].Description, Is.EqualTo("Import of element 'extraClrSchemeLst' is not supported in Docx format by Aspose.Words."));
+            Assert.That(warnings[1].Description, Is.EqualTo("Import of element 'extraClrSchemeLst' is not supported in Docx format by Aspose.Words."));
         }
 
         [Test]

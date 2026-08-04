@@ -4096,9 +4096,9 @@ namespace ApiExamples
             doc.MailMerge.Execute(table);
 
             Assert.That(doc.Range.Fields[0].Type, Is.EqualTo(FieldType.FieldDisplayBarcode));
-            Assert.That(doc.Range.Fields[0].GetFieldCode(), Is.EqualTo("DISPLAYBARCODE \"ABC123\" QR \\q 3 \\s 250 \\h 1000 \\r 0 \\b 0xF8BD69 \\f 0xB5413B"));
+            Assert.That(doc.Range.Fields[0].GetFieldCode(), Is.EqualTo(" DISPLAYBARCODE  ABC123 QR \\b 0xF8BD69 \\f 0xB5413B \\q 3 \\s 250 \\h 1000 \\r 0"));
             Assert.That(doc.Range.Fields[1].Type, Is.EqualTo(FieldType.FieldDisplayBarcode));
-            Assert.That(doc.Range.Fields[1].GetFieldCode(), Is.EqualTo("DISPLAYBARCODE \"DEF456\" QR \\q 3 \\s 250 \\h 1000 \\r 0 \\b 0xF8BD69 \\f 0xB5413B"));
+            Assert.That(doc.Range.Fields[1].GetFieldCode(), Is.EqualTo(" DISPLAYBARCODE  DEF456 QR \\b 0xF8BD69 \\f 0xB5413B \\q 3 \\s 250 \\h 1000 \\r 0"));
 
             doc.Save(ArtifactsDir + "Field.MERGEBARCODE.QR.docx");
             //ExEnd
@@ -4109,15 +4109,15 @@ namespace ApiExamples
 
             FieldDisplayBarcode barcode = (FieldDisplayBarcode)doc.Range.Fields[0];
 
-            TestUtil.VerifyField(FieldType.FieldDisplayBarcode, 
-                "DISPLAYBARCODE \"ABC123\" QR \\q 3 \\s 250 \\h 1000 \\r 0 \\b 0xF8BD69 \\f 0xB5413B", string.Empty, barcode);
+            TestUtil.VerifyField(FieldType.FieldDisplayBarcode,
+                " DISPLAYBARCODE  ABC123 QR \\b 0xF8BD69 \\f 0xB5413B \\q 3 \\s 250 \\h 1000 \\r 0", string.Empty, barcode);
             Assert.That(barcode.BarcodeValue, Is.EqualTo("ABC123"));
             Assert.That(barcode.BarcodeType, Is.EqualTo("QR"));
 
             barcode = (FieldDisplayBarcode)doc.Range.Fields[1];
 
-            TestUtil.VerifyField(FieldType.FieldDisplayBarcode, 
-                "DISPLAYBARCODE \"DEF456\" QR \\q 3 \\s 250 \\h 1000 \\r 0 \\b 0xF8BD69 \\f 0xB5413B", string.Empty, barcode);
+            TestUtil.VerifyField(FieldType.FieldDisplayBarcode,
+                " DISPLAYBARCODE  DEF456 QR \\b 0xF8BD69 \\f 0xB5413B \\q 3 \\s 250 \\h 1000 \\r 0", string.Empty, barcode);
             Assert.That(barcode.BarcodeValue, Is.EqualTo("DEF456"));
             Assert.That(barcode.BarcodeType, Is.EqualTo("QR"));
         }
@@ -4162,9 +4162,9 @@ namespace ApiExamples
             doc.MailMerge.Execute(table);
 
             Assert.That(doc.Range.Fields[0].Type, Is.EqualTo(FieldType.FieldDisplayBarcode));
-            Assert.That(doc.Range.Fields[0].GetFieldCode(), Is.EqualTo("DISPLAYBARCODE \"501234567890\" EAN13 \\t \\p CASE \\x"));
+            Assert.That(doc.Range.Fields[0].GetFieldCode(), Is.EqualTo(" DISPLAYBARCODE  501234567890 EAN13 \\t \\p CASE \\x"));
             Assert.That(doc.Range.Fields[1].Type, Is.EqualTo(FieldType.FieldDisplayBarcode));
-            Assert.That(doc.Range.Fields[1].GetFieldCode(), Is.EqualTo("DISPLAYBARCODE \"123456789012\" EAN13 \\t \\p CASE \\x"));
+            Assert.That(doc.Range.Fields[1].GetFieldCode(), Is.EqualTo(" DISPLAYBARCODE  123456789012 EAN13 \\t \\p CASE \\x"));
 
             doc.Save(ArtifactsDir + "Field.MERGEBARCODE.EAN13.docx");
             //ExEnd
@@ -4175,13 +4175,13 @@ namespace ApiExamples
 
             FieldDisplayBarcode barcode = (FieldDisplayBarcode)doc.Range.Fields[0];
 
-            TestUtil.VerifyField(FieldType.FieldDisplayBarcode, "DISPLAYBARCODE \"501234567890\" EAN13 \\t \\p CASE \\x", string.Empty, barcode);
+            TestUtil.VerifyField(FieldType.FieldDisplayBarcode, " DISPLAYBARCODE  501234567890 EAN13 \\t \\p CASE \\x", string.Empty, barcode);
             Assert.That(barcode.BarcodeValue, Is.EqualTo("501234567890"));
             Assert.That(barcode.BarcodeType, Is.EqualTo("EAN13"));
 
             barcode = (FieldDisplayBarcode)doc.Range.Fields[1];
 
-            TestUtil.VerifyField(FieldType.FieldDisplayBarcode, "DISPLAYBARCODE \"123456789012\" EAN13 \\t \\p CASE \\x", string.Empty, barcode);
+            TestUtil.VerifyField(FieldType.FieldDisplayBarcode, " DISPLAYBARCODE  123456789012 EAN13 \\t \\p CASE \\x", string.Empty, barcode);
             Assert.That(barcode.BarcodeValue, Is.EqualTo("123456789012"));
             Assert.That(barcode.BarcodeType, Is.EqualTo("EAN13"));
         }
@@ -4221,9 +4221,9 @@ namespace ApiExamples
             doc.MailMerge.Execute(table);
 
             Assert.That(doc.Range.Fields[0].Type, Is.EqualTo(FieldType.FieldDisplayBarcode));
-            Assert.That(doc.Range.Fields[0].GetFieldCode(), Is.EqualTo("DISPLAYBARCODE \"12345ABCDE\" CODE39 \\d"));
+            Assert.That(doc.Range.Fields[0].GetFieldCode(), Is.EqualTo(" DISPLAYBARCODE  12345ABCDE CODE39 \\d"));
             Assert.That(doc.Range.Fields[1].Type, Is.EqualTo(FieldType.FieldDisplayBarcode));
-            Assert.That(doc.Range.Fields[1].GetFieldCode(), Is.EqualTo("DISPLAYBARCODE \"67890FGHIJ\" CODE39 \\d"));
+            Assert.That(doc.Range.Fields[1].GetFieldCode(), Is.EqualTo(" DISPLAYBARCODE  67890FGHIJ CODE39 \\d"));
 
             doc.Save(ArtifactsDir + "Field.MERGEBARCODE.CODE39.docx");
             //ExEnd
@@ -4234,13 +4234,13 @@ namespace ApiExamples
 
             FieldDisplayBarcode barcode = (FieldDisplayBarcode)doc.Range.Fields[0];
 
-            TestUtil.VerifyField(FieldType.FieldDisplayBarcode, "DISPLAYBARCODE \"12345ABCDE\" CODE39 \\d", string.Empty, barcode);
+            TestUtil.VerifyField(FieldType.FieldDisplayBarcode, " DISPLAYBARCODE  12345ABCDE CODE39 \\d", string.Empty, barcode);
             Assert.That(barcode.BarcodeValue, Is.EqualTo("12345ABCDE"));
             Assert.That(barcode.BarcodeType, Is.EqualTo("CODE39"));
 
             barcode = (FieldDisplayBarcode)doc.Range.Fields[1];
 
-            TestUtil.VerifyField(FieldType.FieldDisplayBarcode, "DISPLAYBARCODE \"67890FGHIJ\" CODE39 \\d", string.Empty, barcode);
+            TestUtil.VerifyField(FieldType.FieldDisplayBarcode, " DISPLAYBARCODE  67890FGHIJ CODE39 \\d", string.Empty, barcode);
             Assert.That(barcode.BarcodeValue, Is.EqualTo("67890FGHIJ"));
             Assert.That(barcode.BarcodeType, Is.EqualTo("CODE39"));
         }
@@ -4277,9 +4277,9 @@ namespace ApiExamples
             doc.MailMerge.Execute(table);
 
             Assert.That(doc.Range.Fields[0].Type, Is.EqualTo(FieldType.FieldDisplayBarcode));
-            Assert.That(doc.Range.Fields[0].GetFieldCode(), Is.EqualTo("DISPLAYBARCODE \"09312345678907\" ITF14 \\c STD"));
+            Assert.That(doc.Range.Fields[0].GetFieldCode(), Is.EqualTo(" DISPLAYBARCODE  09312345678907 ITF14 \\c STD"));
             Assert.That(doc.Range.Fields[1].Type, Is.EqualTo(FieldType.FieldDisplayBarcode));
-            Assert.That(doc.Range.Fields[1].GetFieldCode(), Is.EqualTo("DISPLAYBARCODE \"1234567891234\" ITF14 \\c STD"));
+            Assert.That(doc.Range.Fields[1].GetFieldCode(), Is.EqualTo(" DISPLAYBARCODE  1234567891234 ITF14 \\c STD"));
 
             doc.Save(ArtifactsDir + "Field.MERGEBARCODE.ITF14.docx");
             //ExEnd
@@ -4290,13 +4290,13 @@ namespace ApiExamples
 
             FieldDisplayBarcode barcode = (FieldDisplayBarcode)doc.Range.Fields[0];
 
-            TestUtil.VerifyField(FieldType.FieldDisplayBarcode, "DISPLAYBARCODE \"09312345678907\" ITF14 \\c STD", string.Empty, barcode);
+            TestUtil.VerifyField(FieldType.FieldDisplayBarcode, " DISPLAYBARCODE  09312345678907 ITF14 \\c STD", string.Empty, barcode);
             Assert.That(barcode.BarcodeValue, Is.EqualTo("09312345678907"));
             Assert.That(barcode.BarcodeType, Is.EqualTo("ITF14"));
 
             barcode = (FieldDisplayBarcode)doc.Range.Fields[1];
 
-            TestUtil.VerifyField(FieldType.FieldDisplayBarcode, "DISPLAYBARCODE \"1234567891234\" ITF14 \\c STD", string.Empty, barcode);
+            TestUtil.VerifyField(FieldType.FieldDisplayBarcode, " DISPLAYBARCODE  1234567891234 ITF14 \\c STD", string.Empty, barcode);
             Assert.That(barcode.BarcodeValue, Is.EqualTo("1234567891234"));
             Assert.That(barcode.BarcodeType, Is.EqualTo("ITF14"));
         }

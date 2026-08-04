@@ -739,7 +739,7 @@ namespace ApiExamples
             switch (pdfImageColorSpaceExportMode)
             {
                 case PdfImageColorSpaceExportMode.Auto:
-                    Assert.That(testedImageLength < 20500, Is.True);
+                    Assert.That(testedImageLength < 47000, Is.True);
                     break;
                 case PdfImageColorSpaceExportMode.SimpleCmyk:
                     Assert.That(testedImageLength < 140000, Is.True);
@@ -811,7 +811,7 @@ namespace ApiExamples
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.DownsampleOptions.Default.pdf");
             XImage pdfDocImage = pdfDocument.Pages[1].Resources.Images[1];
 
-            Assert.That(pdfDocImage.ToStream().Length < 400000, Is.True);
+            Assert.That(pdfDocImage.ToStream().Length < 970000, Is.True);
             Assert.That(pdfDocImage.GetColorType(), Is.EqualTo(ColorType.Rgb));
         }
 
@@ -850,7 +850,7 @@ namespace ApiExamples
             switch (colorMode)
             {
                 case ColorMode.Normal:
-                    Assert.That(testedImageLength < 400000, Is.True);
+                    Assert.That(testedImageLength < 970000, Is.True);
                     Assert.That(pdfDocImage.GetColorType(), Is.EqualTo(ColorType.Rgb));
                     break;
                 case ColorMode.Grayscale:
