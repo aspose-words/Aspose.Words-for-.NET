@@ -5,16 +5,18 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
-using System;
-using System.Collections.Generic;
 using Aspose.Words;
 using Aspose.Words.Comparing;
 using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
 using Aspose.Words.Layout;
+using Aspose.Words.Lists;
 using Aspose.Words.Notes;
 using Aspose.Words.Tables;
 using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace ApiExamples
 {
@@ -770,6 +772,44 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Revision.RevisionCellColor.pdf");
             //ExEnd:RevisionCellColor
+        }
+
+        [TestCase(true)]
+        [TestCase(false)]
+        public void CompareListDefinitions(bool isCompareListDefinitions)
+        {
+            //ExStart:CompareListDefinitions
+            //GistId:a6f77f12161f1577c687e4456007f964
+            //ExFor:AdvancedCompareOptions.CompareListDefinitions
+            //ExSummary:Shows how to control whether list definition content will be compared during document comparison.
+            Document docA = new Document();
+            DocumentBuilder builderA = new DocumentBuilder(docA);
+            builderA.ListFormat.ApplyNumberDefault();
+            builderA.Writeln("Item 1");
+            builderA.Writeln("Item 2");
+            builderA.ListFormat.RemoveNumbers();
+
+            Document docB = new Document();
+            DocumentBuilder builderB = new DocumentBuilder(docB);
+            builderB.ListFormat.ApplyBulletDefault();
+            builderB.Writeln("Item 1");
+            builderB.Writeln("Item 2");
+            builderB.ListFormat.RemoveNumbers();
+
+            // Compare documents with CompareListDefinitions enabled.
+            CompareOptions options = new CompareOptions()
+            {
+                AdvancedOptions = { CompareListDefinitions = isCompareListDefinitions }
+            };
+            docA.Compare(docB, "test", DateTime.Now, options);
+            //ExEnd:CompareListDefinitions
+
+            // Verify that comparison completed without exceptions.
+            // Since the lists are identical, no revisions should be produced.
+            if (isCompareListDefinitions)
+                Assert.That(docA.Revisions.Count, Is.EqualTo(2));
+            else
+                Assert.That(docA.Revisions.Count, Is.EqualTo(0));
         }
     }
 }
