@@ -305,7 +305,7 @@ namespace ApiExamples
             //ExFor:DigitalSignatureTimestampSettings.ServerUrl
             //ExFor:DigitalSignatureTimestampSettings.Timeout
             //ExFor:DigitalSignatureTimestampSettings.UserName
-            //ExFor:XmlDsigLevel.XAdEsT
+            //ExFor:XmlDsigLevel
             //ExSummary:Shows how to sign a document with timestamping using DigitalSignatureUtil.
             SignOptions signOptions = new SignOptions
             {
