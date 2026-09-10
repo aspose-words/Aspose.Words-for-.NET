@@ -340,8 +340,12 @@ namespace ApiExamples
 
             foreach (Table table in tables.OfType<Table>())
             {
-                table.FirstRow?.Remove();
-                table.LastRow?.Remove();
+                Row first = table.FirstRow;
+                if (first!= null)
+                    first.Remove();
+                Row last = table.LastRow;
+                if (last!= null)
+                    last.Remove();
             }
 
             Assert.That(tables[0].Rows.Count, Is.EqualTo(3));
