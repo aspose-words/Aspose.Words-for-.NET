@@ -113,6 +113,15 @@ namespace ApiExamples
             return Type.GetType("Mono.Runtime") != null;
         }
 
+        /// <summary>
+        /// Determine if environment is Linux.
+        /// </summary>
+        /// <returns>True if being executed on Linux, false otherwise.</returns>
+        internal static bool IsRunningOnLinux()
+        {
+            return Environment.OSVersion.Platform == PlatformID.Unix;
+        }
+
         internal static void SetUnlimitedLicense()
         {
             // This is where the test license is on my development machine.

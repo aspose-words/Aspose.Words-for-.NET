@@ -58,10 +58,7 @@ namespace ApiExamples
                         const string newImageFilename = "Logo.jpg";
                         Console.WriteLine($"\tImage will be substituted with: {newImageFilename}");
 
-                        Image newImage = Image.FromFile(ImageDir + newImageFilename);
-
-                        ImageConverter converter = new ImageConverter();
-                        byte[] imageBytes = (byte[])converter.ConvertTo(newImage, typeof(byte[]));
+                        byte[] imageBytes = File.ReadAllBytes(ImageDir + newImageFilename);
                         args.SetData(imageBytes);
 
                         return ResourceLoadingAction.UserProvided;

@@ -1942,17 +1942,15 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.DrawingMLFallback.pdf", options);
             //ExEnd
 
+            // Font resources and object numbers depend on installed fonts, so check only
+            // the transparency graphics states that the fallback shapes add to the page.
             switch (dmlRenderingMode)
             {
                 case DmlRenderingMode.DrawingML:
-                    TestUtil.FileContainsString(
-                        "<</Type/Page/Parent 3 0 R/Contents 6 0 R/MediaBox[0 0 612 792]/Resources<</Font<</FAAAAI 8 0 R/FAAABC 12 0 R>>>>/Group<</Type/Group/S/Transparency/CS/DeviceRGB>>>>",
-                        ArtifactsDir + "PdfSaveOptions.DrawingMLFallback.pdf");
+                    Assert.That(File.ReadAllText(ArtifactsDir + "PdfSaveOptions.DrawingMLFallback.pdf"), Does.Not.Contain("/ExtGState"));
                     break;
                 case DmlRenderingMode.Fallback:
-                    TestUtil.FileContainsString(
-                        "<</Type/Page/Parent 3 0 R/Contents 6 0 R/MediaBox[0 0 612 792]/Resources<</Font<</FAAAAI 8 0 R/FAAABE 14 0 R>>/ExtGState<</GS1 11 0 R/GS2 12 0 R/GS3 17 0 R>>>>/Group<</Type/Group/S/Transparency/CS/DeviceRGB>>>>",
-                        ArtifactsDir + "PdfSaveOptions.DrawingMLFallback.pdf");
+                    TestUtil.FileContainsString("/ExtGState<</GS1 ", ArtifactsDir + "PdfSaveOptions.DrawingMLFallback.pdf");
                     break;
             }
         }

@@ -418,29 +418,28 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Field.BarCodeWord2Pdf.pdf");
 
-            using (BarCodeReader barCodeReader = BarCodeReaderPdf(ArtifactsDir + "Field.BarCodeWord2Pdf.pdf"))
+            using (BarCodeReader barCodeReader = BarCodeReaderPage(doc))
             {
                 Assert.That(barCodeReader.FoundBarCodes[0].CodeTypeName, Is.EqualTo("QR"));
             }
         }
 
-        private BarCodeReader BarCodeReaderPdf(string filename)
+        private BarCodeReader BarCodeReaderPage(Document doc)
         {
             // Set license for Aspose.BarCode.
             Aspose.BarCode.License licenceBarCode = new Aspose.BarCode.License();
             licenceBarCode.SetLicense(LicenseDir + "Aspose.Total.NET.lic");
 
-            Aspose.Pdf.Facades.PdfExtractor pdfExtractor = new Aspose.Pdf.Facades.PdfExtractor();
-            pdfExtractor.BindPdf(filename);
-
-            // Set page range for image extraction.
-            pdfExtractor.StartPage = 1;
-            pdfExtractor.EndPage = 1;
-
-            pdfExtractor.ExtractImage();
+            // Render the first page to PNG instead of extracting the image from the PDF,
+            // because PdfExtractor image extraction is not reliable on Linux.
+            ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Png)
+            {
+                PageSet = new PageSet(0),
+                Resolution = 300
+            };
 
             MemoryStream imageStream = new MemoryStream();
-            pdfExtractor.GetNextImage(imageStream);
+            doc.Save(imageStream, saveOptions);
             imageStream.Position = 0;
 
             // Recognize the barcode from the image stream above.

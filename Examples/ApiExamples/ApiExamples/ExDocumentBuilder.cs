@@ -3449,7 +3449,7 @@ namespace ApiExamples
 
             using (MemoryStream stream = new MemoryStream(thumbnailImageBytes))
             {
-                using (Image image = Image.FromStream(stream))
+                using (SKBitmap image = SKBitmap.Decode(stream))
                 {
                     // Below are two ways of creating a shape with a custom thumbnail, which links to an online video
                     // that will play when we click on the shape in Microsoft Word.

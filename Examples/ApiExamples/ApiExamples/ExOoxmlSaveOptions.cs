@@ -7,7 +7,6 @@
 
 using System;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using Aspose.Words;
 using Aspose.Words.DigitalSignatures;
@@ -17,6 +16,7 @@ using Aspose.Words.Loading;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
 using NUnit.Framework;
+using SkiaSharp;
 
 namespace ApiExamples
 {
@@ -391,15 +391,12 @@ namespace ApiExamples
 
             for (int i = 0; i < 10000; i++)
             {
-                using (Bitmap bmp = new Bitmap(5, 5))
-                using (Graphics g = Graphics.FromImage(bmp))
+                using (SKBitmap bmp = new SKBitmap(5, 5))
+                using (SKCanvas canvas = new SKCanvas(bmp))
                 {
-                    g.Clear(Color.FromArgb(random.Next(0, 254), random.Next(0, 254), random.Next(0, 254)));
-                    using (MemoryStream ms = new MemoryStream())
-                    {
-                        bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
-                        builder.InsertImage(ms.ToArray());
-                    }
+                    canvas.Clear(new SKColor((byte)random.Next(0, 254), (byte)random.Next(0, 254), (byte)random.Next(0, 254)));
+                    using (SKData data = bmp.Encode(SKEncodedImageFormat.Png, 100))
+                        builder.InsertImage(data.ToArray());
                 }
             }
             OoxmlSaveOptions saveOptions =  new OoxmlSaveOptions { Zip64Mode = Zip64Mode.Always };
