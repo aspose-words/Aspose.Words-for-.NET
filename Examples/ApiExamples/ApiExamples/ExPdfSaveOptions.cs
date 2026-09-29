@@ -664,7 +664,6 @@ namespace ApiExamples
         {
             ImageCompression(pdfImageCompression);
 
-
             Aspose.Pdf.Document pdfDocument =
                 new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.ImageCompression.pdf");
             XImage image = pdfDocument.Pages[1].Resources.Images[1];
@@ -673,24 +672,18 @@ namespace ApiExamples
                 image.Save(stream);
 
             TestUtil.VerifyImage(400, 400, imagePath);
+            Assert.That(image.FilterType, Is.EqualTo(ImageFilterType.Jpeg));
 
             image = pdfDocument.Pages[1].Resources.Images[2];
             imagePath = ArtifactsDir + $"PdfSaveOptions.ImageCompression.Image2.{image.FilterType}";
             using (FileStream stream = new FileStream(imagePath, FileMode.Create))
                 image.Save(stream);
 
-            var testedFileLength = new FileInfo(ArtifactsDir + "PdfSaveOptions.ImageCompression.pdf").Length;
-            switch (pdfImageCompression)
-            {
-                case PdfImageCompression.Auto:
-                    Assert.That(testedFileLength < 54000, Is.True);
-                    TestUtil.VerifyImage(400, 400, imagePath);
-                    break;
-                case PdfImageCompression.Jpeg:
-                    Assert.That(testedFileLength < 40000, Is.True);
-                    TestUtil.VerifyImage(400, 400, imagePath);
-                    break;
-            }
+            TestUtil.VerifyImage(400, 400, imagePath);
+            // Check the image encoding rather than the PDF file size, which depends on the embedded font subset.
+            Assert.That(image.FilterType, Is.EqualTo(pdfImageCompression == PdfImageCompression.Jpeg
+                ? ImageFilterType.Jpeg
+                : ImageFilterType.Flate));
         }
 
         [TestCase(PdfImageColorSpaceExportMode.Auto)]

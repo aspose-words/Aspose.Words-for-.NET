@@ -23,6 +23,7 @@ using System.Drawing;
 using Aspose.Words.DigitalSignatures;
 using Aspose.Words.Lists;
 using Aspose.Words.Notes;
+using SkiaSharp;
 #if NET5_0_OR_GREATER || __MOBILE__
 using SkiaSharp;
 #endif
