@@ -1,0 +1,7 @@
+{
+  "storageStatus": {
+    "warehouseZone": "Cold Storage B",
+    "currentTemperature": -4.5,
+    "capacityPercentage": 65.2
+  }
+}

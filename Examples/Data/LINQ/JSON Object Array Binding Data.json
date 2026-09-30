@@ -1,0 +1,20 @@
+[
+  {
+    "clientName": "Alice Greenfield",
+    "serviceRequired": "Cloud Migration",
+    "estimatedValue": 4500,
+    "createdAt": "2026-09-29T14:20:00Z"
+  },
+  {
+    "clientName": "David Anderson",
+    "serviceRequired": "Security Audit",
+    "estimatedValue": 8200,
+    "createdAt": "2026-09-29T16:05:12Z"
+  },
+  {
+    "clientName": "Sophia Montgomery",
+    "serviceRequired": "SEO Optimization",
+    "estimatedValue": 1950,
+    "createdAt": "2026-09-29T18:40:45Z"
+  }
+]

@@ -9,6 +9,7 @@ using Aspose.Words;
 using Aspose.Words.Reporting;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace ApiExamples.LinqTemp
@@ -252,6 +253,225 @@ namespace ApiExamples.LinqTemp
 
             // Test the report.
             CompareDocs("Item Index Getting Report.docx", "Item Index Getting Report Gold.docx");
+        }
+
+        [Test]
+        public void BindingJsonObject()
+        {
+            //ExStart:BindingJsonObject
+            //GistId:e68fce5cac305b25e66e1ff67a57e68b
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "JSON Object Binding Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "JSON Object Binding Data.json");
+
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource);
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "JSON Object Binding Report.docx");
+            //ExEnd:BindingJsonObject
+
+            // Test the report.
+            CompareDocs("JSON Object Binding Report.docx", "JSON Object Binding Report Gold.docx");
+        }
+
+        [Test]
+        public void BindingJsonObjectArray()
+        {
+            //ExStart:BindingJsonObjectArray
+            //GistId:d4402845d8124a50162c732f58332e46
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "JSON Object Array Binding Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "JSON Object Array Binding Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "JSON Object Array Binding Report.docx");
+            //ExEnd:BindingJsonObjectArray
+
+            // Test the report.
+            CompareDocs("JSON Object Array Binding Report.docx", "JSON Object Array Binding Report Gold.docx");
+        }
+
+        [Test]
+        public void BindingSimpleJsonArray()
+        {
+            //ExStart:BindingSimpleJsonArray
+            //GistId:e08095bd3706678b733d7620b3cfc683
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Simple JSON Array Binding Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Simple JSON Array Binding Data.json");
+
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource);
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Simple JSON Array Binding Report.docx");
+            //ExEnd:BindingSimpleJsonArray
+
+            // Test the report.
+            CompareDocs("Simple JSON Array Binding Report.docx", "Simple JSON Array Binding Report Gold.docx");
+        }
+
+        [Test]
+        public void PreservingJsonRootObject()
+        {
+            //ExStart:PreservingJsonRootObject
+            //GistId:db726b608f6a79633e4e4eada2f61713
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "JSON Root Object Preserving Template.docx");
+
+            // Open the data source file.
+            JsonDataLoadOptions options = new JsonDataLoadOptions();
+            options.AlwaysGenerateRootObject = true;
+
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "JSON Root Object Preserving Data.json", options);
+
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource);
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "JSON Root Object Preserving Report.docx");
+            //ExEnd:PreservingJsonRootObject
+
+            // Test the report.
+            CompareDocs("JSON Root Object Preserving Report.docx", "JSON Root Object Preserving Report Gold.docx");
+        }
+
+        [Test]
+        public void AllowingLooseJsonTypeParsing()
+        {
+            //ExStart:AllowingLooseJsonTypeParsing
+            //GistId:fe7f309f5079e31c4e483ea77f235dca
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Loose JSON Type Parsing Allowing Template.docx");
+
+            // Open the data source file. The loose mode is applied by default, there is no need to set it explicitly.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Loose JSON Type Parsing Allowing Data.json");
+
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource);
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Loose JSON Type Parsing Allowing Report.docx");
+            //ExEnd:AllowingLooseJsonTypeParsing
+
+            // Test the report.
+            CompareDocs("Loose JSON Type Parsing Allowing Report.docx", "Loose JSON Type Parsing Allowing Report Gold.docx");
+        }
+
+        [Test]
+        public void EnforcingStrictJsonTypeParsing()
+        {
+            //ExStart:EnforcingStrictJsonTypeParsing
+            //GistId:3af8e77ae2e1ecfd46738c1926bd96eb
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Strict JSON Type Parsing Enforcing Template.docx");
+
+            // Open the data source file.
+            JsonDataLoadOptions options = new JsonDataLoadOptions();
+            options.SimpleValueParseMode = JsonSimpleValueParseMode.Strict;
+
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Strict JSON Type Parsing Enforcing Data.json", options);
+
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource);
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Strict JSON Type Parsing Enforcing Report.docx");
+            //ExEnd:EnforcingStrictJsonTypeParsing
+
+            // Test the report.
+            CompareDocs("Strict JSON Type Parsing Enforcing Report.docx", "Strict JSON Type Parsing Enforcing Report Gold.docx");
+        }
+
+        [Test]
+        public void AllowingAutomaticJsonDateTimeParsing()
+        {
+            //ExStart:AllowingAutomaticJsonDateTimeParsing
+            //GistId:260ed73ab50867a8b74e161843ec63e4
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Automatic JSON Date-Time Parsing Allowing Template.docx");
+
+            // Open the data source file. The automatic mode is applied by default, there is no need to set it explicitly.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Automatic JSON Date-Time Parsing Allowing Data.json");
+
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource);
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Automatic JSON Date-Time Parsing Allowing Report.docx");
+            //ExEnd:AllowingAutomaticJsonDateTimeParsing
+
+            // Test the report.
+            CompareDocs("Automatic JSON Date-Time Parsing Allowing Report.docx",
+                "Automatic JSON Date-Time Parsing Allowing Report Gold.docx");
+        }
+
+        [Test]
+        public void EnforcingStrictJsonDateTimeParsing()
+        {
+            //ExStart:EnforcingStrictJsonDateTimeParsing
+            //GistId:42d927287e21b99ca8b574371068111b
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Strict JSON Date-Time Parsing Enforcing Template.docx");
+
+            // Open the data source file.
+            List<string> formats = new List<string>();
+            formats.Add("dd/MM/yyyy");
+
+            JsonDataLoadOptions options = new JsonDataLoadOptions();
+            options.ExactDateTimeParseFormats = formats;
+
+            JsonDataSource dataSource = new JsonDataSource(
+                MyLinqDir + "Strict JSON Date-Time Parsing Enforcing Data.json", options);
+
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource);
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Strict JSON Date-Time Parsing Enforcing Report.docx");
+            //ExEnd:EnforcingStrictJsonDateTimeParsing
+
+            // Test the report.
+            CompareDocs("Strict JSON Date-Time Parsing Enforcing Report.docx",
+                "Strict JSON Date-Time Parsing Enforcing Report Gold.docx");
+        }
+
+        [Test]
+        public void DisablingJsonDateTimeParsing()
+        {
+            //ExStart:DisablingJsonDateTimeParsing
+            //GistId:965f7642185e4321012b63609b19fbb3
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "JSON Date-Time Parsing Disabling Template.docx");
+
+            // Open the data source file.
+            JsonDataLoadOptions options = new JsonDataLoadOptions();
+            options.ExactDateTimeParseFormats = new List<string>();
+
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "JSON Date-Time Parsing Disabling Data.json", options);
+
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource);
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "JSON Date-Time Parsing Disabling Report.docx");
+            //ExEnd:DisablingJsonDateTimeParsing
+
+            // Test the report.
+            CompareDocs("JSON Date-Time Parsing Disabling Report.docx", "JSON Date-Time Parsing Disabling Report Gold.docx");
         }
 
         [Test]
