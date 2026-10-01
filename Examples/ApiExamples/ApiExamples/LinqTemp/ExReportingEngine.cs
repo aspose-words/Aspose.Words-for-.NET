@@ -475,6 +475,33 @@ namespace ApiExamples.LinqTemp
         }
 
         [Test]
+        public void PreservingJsonStringValueWhitespace()
+        {
+            //ExStart:PreservingJsonStringValueWhitespace
+            //GistId:fb9822898e64b7e1b298a87c50059d30
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "JSON String Value Whitespace Preserving Template.docx");
+
+            // Open the data source file.
+            JsonDataLoadOptions options = new JsonDataLoadOptions();
+            options.PreserveSpaces = true;
+
+            JsonDataSource dataSource = new JsonDataSource(
+                MyLinqDir + "JSON String Value Whitespace Preserving Data.json", options);
+
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource);
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "JSON String Value Whitespace Preserving Report.docx");
+            //ExEnd:PreservingJsonStringValueWhitespace
+
+            // Test the report.
+            CompareDocs("JSON String Value Whitespace Preserving Report.docx",
+                "JSON String Value Whitespace Preserving Report Gold.docx");
+        }
+
+        [Test]
         public void FormattingNumbers()
         {
             //ExStart:FormattingNumbers
