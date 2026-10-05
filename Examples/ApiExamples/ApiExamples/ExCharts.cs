@@ -1,4 +1,4 @@
-// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -2701,6 +2701,99 @@ namespace ApiExamples
             Assert.That(chart.Title.Rotation, Is.EqualTo(90));
             Assert.That(chart.AxisX.Title.Orientation, Is.EqualTo(ShapeTextOrientation.Horizontal));
             Assert.That(chart.AxisX.Title.Rotation, Is.EqualTo(-90));
+        }
+
+        [Test]
+        public void ChartSeriesAndDataPointIsTotal()
+        {
+            //ExStart:ChartSeriesAndDataPointIsTotal
+            //GistId:13ac22ab31bbd694d29ab4db2a496206
+            //ExFor:ChartSeries.IsTotal(Int32)
+            //ExFor:ChartDataPoint.IsTotal
+            //ExSummary:Shows how to determine whether a data point is a total in a waterfall chart.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a Waterfall chart.
+            Shape shape = builder.InsertChart(ChartType.Waterfall, 450, 450);
+            Chart chart = shape.Chart;
+            chart.Title.Text = "New Zealand GDP";
+
+            // Delete default generated series.
+            chart.Series.Clear();
+
+            // Add a series where the start value, the subtotal and the final value are totals.
+            ChartSeries series = chart.Series.Add(
+                "New Zealand GDP",
+                new string[] { "2018", "2019 growth", "2020 growth", "2020", "2021 growth", "2022 growth", "2022" },
+                new double[] { 100, 0.57, -0.25, 100.32, 20.22, -2.92, 117.62 },
+                new bool[] { true, false, false, true, false, false, true });
+
+            // Print the type of each data point.
+            for (int i = 0; i < series.YValues.Count; i++)
+            {
+                if (series.IsTotal(i))
+                    Console.WriteLine($"Data point {i} is Subtotal");
+                else if (series.YValues[i].DoubleValue > 0)
+                    Console.WriteLine($"Data point {i} is Increase");
+                else
+                    Console.WriteLine($"Data point {i} is Decrease");
+            }
+
+            // The same flag is available on the data point itself.
+            Console.WriteLine($"Data point 3 is total: {series.DataPoints[3].IsTotal}");
+
+            doc.Save(ArtifactsDir + "Charts.ChartSeriesAndDataPointIsTotal.docx");
+            //ExEnd:ChartSeriesAndDataPointIsTotal
+
+            doc = new Document(ArtifactsDir + "Charts.ChartSeriesAndDataPointIsTotal.docx");
+            series = ((Shape)doc.GetChild(NodeType.Shape, 0, true)).Chart.Series[0];
+
+            bool[] expectedTotals = { true, false, false, true, false, false, true };
+            for (int i = 0; i < expectedTotals.Length; i++)
+            {
+                Assert.That(series.IsTotal(i), Is.EqualTo(expectedTotals[i]));
+                Assert.That(series.DataPoints[i].IsTotal, Is.EqualTo(expectedTotals[i]));
+            }
+        }
+
+        [Test]
+        public void PlotAreaFormat()
+        {
+            //ExStart:PlotAreaFormat
+            //GistId:13ac22ab31bbd694d29ab4db2a496206
+            //ExFor:ChartPlotArea
+            //ExFor:Chart.PlotArea
+            //ExFor:ChartPlotArea.Format
+            //ExSummary:Shows how to set fill and line formatting for the plot area of a chart.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Shape shape = builder.InsertChart(ChartType.Column, 432, 252);
+            Chart chart = shape.Chart;
+
+            // Delete default generated series and add our own.
+            ChartSeriesCollection seriesColl = chart.Series;
+            seriesColl.Clear();
+            string[] categories = new string[] { "Category 1", "Category 2" };
+            seriesColl.Add("Series 1", categories, new double[] { 1, 2 });
+            seriesColl.Add("Series 2", categories, new double[] { 3, 4 });
+
+            // Fill the plot area with a gradient and outline it with a thin blue line.
+            ChartPlotArea plotArea = chart.PlotArea;
+            plotArea.Format.Fill.OneColorGradient(Color.LightBlue, GradientStyle.DiagonalUp, GradientVariant.Variant2, 1);
+            plotArea.Format.Stroke.ForeColor = Color.Blue;
+            plotArea.Format.Stroke.Weight = 0.25;
+
+            doc.Save(ArtifactsDir + "Charts.PlotAreaFormat.docx");
+            //ExEnd:PlotAreaFormat
+
+            doc = new Document(ArtifactsDir + "Charts.PlotAreaFormat.docx");
+            plotArea = ((Shape)doc.GetChild(NodeType.Shape, 0, true)).Chart.PlotArea;
+
+            Assert.That(plotArea.Format.Fill.GradientStyle, Is.EqualTo(GradientStyle.DiagonalUp));
+            Assert.That(plotArea.Format.Stroke.ForeColor.ToArgb(), Is.EqualTo(Color.Blue.ToArgb()));
+            Assert.That(plotArea.Format.Stroke.Weight, Is.EqualTo(0.25));
         }
     }
 }
