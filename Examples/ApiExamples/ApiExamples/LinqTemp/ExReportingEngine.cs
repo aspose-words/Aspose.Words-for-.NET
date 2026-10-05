@@ -266,6 +266,7 @@ namespace ApiExamples.LinqTemp
             // Open the data source file.
             JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "JSON Object Binding Data.json");
 
+            // Build a report.
             ReportingEngine engine = new ReportingEngine();
             engine.BuildReport(doc, dataSource);
 
@@ -312,6 +313,7 @@ namespace ApiExamples.LinqTemp
             // Open the data source file.
             JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Simple JSON Array Binding Data.json");
 
+            // Build a report.
             ReportingEngine engine = new ReportingEngine();
             engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
             engine.BuildReport(doc, dataSource);
@@ -332,12 +334,13 @@ namespace ApiExamples.LinqTemp
             // Open the template document.
             Document doc = new Document(MyLinqDir + "JSON Root Object Preserving Template.docx");
 
-            // Open the data source file.
+            // Open the data source file preserving a JSON root object.
             JsonDataLoadOptions options = new JsonDataLoadOptions();
             options.AlwaysGenerateRootObject = true;
 
             JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "JSON Root Object Preserving Data.json", options);
 
+            // Build a report.
             ReportingEngine engine = new ReportingEngine();
             engine.BuildReport(doc, dataSource);
 
@@ -360,6 +363,7 @@ namespace ApiExamples.LinqTemp
             // Open the data source file. The loose mode is applied by default, there is no need to set it explicitly.
             JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Loose JSON Type Parsing Allowing Data.json");
 
+            // Build a report.
             ReportingEngine engine = new ReportingEngine();
             engine.BuildReport(doc, dataSource);
 
@@ -379,12 +383,13 @@ namespace ApiExamples.LinqTemp
             // Open the template document.
             Document doc = new Document(MyLinqDir + "Strict JSON Type Parsing Enforcing Template.docx");
 
-            // Open the data source file.
+            // Open the data source file enforcing strict JSON type parsing.
             JsonDataLoadOptions options = new JsonDataLoadOptions();
             options.SimpleValueParseMode = JsonSimpleValueParseMode.Strict;
 
             JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Strict JSON Type Parsing Enforcing Data.json", options);
 
+            // Build a report.
             ReportingEngine engine = new ReportingEngine();
             engine.BuildReport(doc, dataSource);
 
@@ -407,6 +412,7 @@ namespace ApiExamples.LinqTemp
             // Open the data source file. The automatic mode is applied by default, there is no need to set it explicitly.
             JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Automatic JSON Date-Time Parsing Allowing Data.json");
 
+            // Build a report.
             ReportingEngine engine = new ReportingEngine();
             engine.BuildReport(doc, dataSource);
 
@@ -427,7 +433,7 @@ namespace ApiExamples.LinqTemp
             // Open the template document.
             Document doc = new Document(MyLinqDir + "Strict JSON Date-Time Parsing Enforcing Template.docx");
 
-            // Open the data source file.
+            // Open the data source file enforcing strict JSON date-time parsing using only specified exact formats.
             List<string> formats = new List<string>();
             formats.Add("dd/MM/yyyy");
 
@@ -437,6 +443,7 @@ namespace ApiExamples.LinqTemp
             JsonDataSource dataSource = new JsonDataSource(
                 MyLinqDir + "Strict JSON Date-Time Parsing Enforcing Data.json", options);
 
+            // Build a report.
             ReportingEngine engine = new ReportingEngine();
             engine.BuildReport(doc, dataSource);
 
@@ -457,12 +464,13 @@ namespace ApiExamples.LinqTemp
             // Open the template document.
             Document doc = new Document(MyLinqDir + "JSON Date-Time Parsing Disabling Template.docx");
 
-            // Open the data source file.
+            // Open the data source file disabling JSON date-time parsing by specifying an empty exact format collection.
             JsonDataLoadOptions options = new JsonDataLoadOptions();
             options.ExactDateTimeParseFormats = new List<string>();
 
             JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "JSON Date-Time Parsing Disabling Data.json", options);
 
+            // Build a report.
             ReportingEngine engine = new ReportingEngine();
             engine.BuildReport(doc, dataSource);
 
@@ -482,13 +490,14 @@ namespace ApiExamples.LinqTemp
             // Open the template document.
             Document doc = new Document(MyLinqDir + "JSON String Value Whitespace Preserving Template.docx");
 
-            // Open the data source file.
+            // Open the data source file preserving JSON string value whitespace.
             JsonDataLoadOptions options = new JsonDataLoadOptions();
             options.PreserveSpaces = true;
 
             JsonDataSource dataSource = new JsonDataSource(
                 MyLinqDir + "JSON String Value Whitespace Preserving Data.json", options);
 
+            // Build a report.
             ReportingEngine engine = new ReportingEngine();
             engine.BuildReport(doc, dataSource);
 
