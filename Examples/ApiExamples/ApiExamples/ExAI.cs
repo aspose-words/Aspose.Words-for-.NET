@@ -204,5 +204,49 @@ namespace ApiExamples
             // Verify the summary was generated (non-empty content).
             Assert.That(summary.GetText().Trim().Length, Is.GreaterThan(0));
         }
+
+        [Test, Explicit("This test should be run manually to manage API requests amount")]
+        public void AsposeLlmSummarize()
+        {
+            //ExStart:AsposeLlmSummarize
+            //GistId:13ac22ab31bbd694d29ab4db2a496206
+            //ExFor:AsposeLlmModel.#ctor(String)
+            //ExFor:AsposeLlmModel.Summarize(Document, SummarizeOptions)
+            //ExFor:AsposeLlmModel.Summarize(Document[], SummarizeOptions)
+            //ExFor:AsposeLlmModel.Dispose
+            //ExSummary:Shows how to summarize documents with a local model, so the content never leaves the machine.
+            // Aspose.LLM is a separate package with its own license, for example:
+            // new Aspose.LLM.License().SetLicense("Aspose.Total.lic");
+            Document firstDoc = new Document(MyDir + "Big document.docx");
+            Document secondDoc = new Document(MyDir + "Document.docx");
+
+            // Disposing the model releases the local model and its native resources.
+            using (AsposeLlmModel model = new AsposeLlmModel("Qwen25_3BPresetCpu"))
+            {
+                Document summary = model.Summarize(firstDoc, new SummarizeOptions { SummaryLength = SummaryLength.Short });
+                summary.Save(ArtifactsDir + "AI.AsposeLlmSummarize.One.docx");
+
+                Document combinedSummary = model.Summarize(new Document[] { firstDoc, secondDoc }, new SummarizeOptions { SummaryLength = SummaryLength.Medium });
+                combinedSummary.Save(ArtifactsDir + "AI.AsposeLlmSummarize.Multiple.docx");
+            }
+            //ExEnd:AsposeLlmSummarize
+        }
+
+        [Test, Explicit("This test should be run manually to manage API requests amount")]
+        public void AsposeLlmTranslate()
+        {
+            //ExStart:AsposeLlmTranslate
+            //GistId:13ac22ab31bbd694d29ab4db2a496206
+            //ExFor:AsposeLlmModel.Translate(Document, AI.Language)
+            //ExSummary:Shows how to translate a document with a local model.
+            Document doc = new Document(MyDir + "Document.docx");
+
+            using (AsposeLlmModel model = new AsposeLlmModel("Qwen25_3BPresetCpu"))
+            {
+                Document translatedDoc = model.Translate(doc, Language.German);
+                translatedDoc.Save(ArtifactsDir + "AI.AsposeLlmTranslate.docx");
+            }
+            //ExEnd:AsposeLlmTranslate
+        }
     }
 }
