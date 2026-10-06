@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<courseList>
+    <courseItem courseId="CRS101">
+        <courseTitle>Effective Project Management</courseTitle>
+        <durationHours>16</durationHours>
+        <isMandatory>false</isMandatory>
+    </courseItem>
+    <courseItem courseId="CRS102">
+        <courseTitle>Data Security Basics</courseTitle>
+        <durationHours>4</durationHours>
+        <isMandatory>true</isMandatory>
+    </courseItem>
+    <courseItem courseId="CRS103">
+        <courseTitle>Leadership Foundations</courseTitle>
+        <durationHours>24</durationHours>
+        <isMandatory>false</isMandatory>
+    </courseItem>
+</courseList>

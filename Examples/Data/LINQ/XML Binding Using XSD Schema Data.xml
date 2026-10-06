@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<productContract>
+    <contractToken>CON88310</contractToken>
+    <maximumTermMonths>36</maximumTermMonths>
+    <monthlyServiceFee>89.95</monthlyServiceFee>
+    <activatedAt>2026-10-06T12:25:00Z</activatedAt>
+    <autoRenews>true</autoRenews>
+</productContract>

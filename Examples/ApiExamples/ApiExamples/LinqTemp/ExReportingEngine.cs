@@ -511,6 +511,127 @@ namespace ApiExamples.LinqTemp
         }
 
         [Test]
+        public void BindingXmlElement()
+        {
+            //ExStart:BindingXmlElement
+            //GistId:a22b259660b0ea00bfbb4e5e14158b29
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "XML Element Binding Template.docx");
+
+            // Open the data source file.
+            XmlDataSource dataSource = new XmlDataSource(MyLinqDir + "XML Element Binding Data.xml");
+
+            // Build a report.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource);
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "XML Element Binding Report.docx");
+            //ExEnd:BindingXmlElement
+
+            // Test the report.
+            CompareDocs("XML Element Binding Report.docx", "XML Element Binding Report Gold.docx");
+        }
+
+        [Test]
+        public void BindingXmlElementList()
+        {
+            //ExStart:BindingXmlElementList
+            //GistId:15ef0ad70259cf6b01a27f42ca74985a
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "XML Element List Binding Template.docx");
+
+            // Open the data source file.
+            XmlDataSource dataSource = new XmlDataSource(MyLinqDir + "XML Element List Binding Data.xml");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "XML Element List Binding Report.docx");
+            //ExEnd:BindingXmlElementList
+
+            // Test the report.
+            CompareDocs("XML Element List Binding Report.docx", "XML Element List Binding Report Gold.docx");
+        }
+
+        [Test]
+        public void BindingSimpleXmlList()
+        {
+            //ExStart:BindingSimpleXmlList
+            //GistId:55df036f4ee5bc1bb49022a7d7b52d95
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Simple XML List Binding Template.docx");
+
+            // Open the data source file.
+            XmlDataSource dataSource = new XmlDataSource(MyLinqDir + "Simple XML List Binding Data.xml");
+
+            // Build a report.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource);
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Simple XML List Binding Report.docx");
+            //ExEnd:BindingSimpleXmlList
+
+            // Test the report.
+            CompareDocs("Simple XML List Binding Report.docx", "Simple XML List Binding Report Gold.docx");
+        }
+
+        [Test]
+        public void PreservingXmlRootElement()
+        {
+            //ExStart:PreservingXmlRootElement
+            //GistId:4cc66ae9c72c4b030fa523050f4dec8f
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "XML Root Element Preserving Template.docx");
+
+            // Open the data source file preserving an XML root element.
+            XmlDataLoadOptions options = new XmlDataLoadOptions();
+            options.AlwaysGenerateRootObject = true;
+
+            XmlDataSource dataSource = new XmlDataSource(MyLinqDir + "XML Root Element Preserving Data.xml", options);
+
+            // Build a report.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource);
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "XML Root Element Preserving Report.docx");
+            //ExEnd:PreservingXmlRootElement
+
+            // Test the report.
+            CompareDocs("XML Root Element Preserving Report.docx", "XML Root Element Preserving Report Gold.docx");
+        }
+
+        [Test]
+        public void BindingXmlUsingXsdSchema()
+        {
+            //ExStart:BindingXmlUsingXsdSchema
+            //GistId:e7b4169e9e21995b0d8ad1985e5a774a
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "XML Binding Using XSD Schema Template.docx");
+
+            // Open the data source file together with its schema.
+            XmlDataSource dataSource = new XmlDataSource(
+                MyLinqDir + "XML Binding Using XSD Schema Data.xml", MyLinqDir + "XML Binding Using XSD Schema Data.xsd");
+
+            // Build a report.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource);
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "XML Binding Using XSD Schema Report.docx");
+            //ExEnd:BindingXmlUsingXsdSchema
+
+            // Test the report.
+            CompareDocs("XML Binding Using XSD Schema Report.docx", "XML Binding Using XSD Schema Report Gold.docx");
+        }
+
+        [Test]
         public void FormattingNumbers()
         {
             //ExStart:FormattingNumbers

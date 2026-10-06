@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<milestoneCelebration honoredAt="2026-10-06T11:35:00Z">
+    <employeeName>Alice Greenfield</employeeName>
+    <yearsOfService>5</yearsOfService>
+    <anniversaryBonus>1500.00</anniversaryBonus>
+    <isEligibleForExtraVacation>true</isEligibleForExtraVacation>
+</milestoneCelebration>

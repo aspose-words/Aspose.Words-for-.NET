@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="productContract">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="contractToken" type="xs:string"/>
+                <xs:element name="maximumTermMonths" type="xs:int"/>
+                <xs:element name="monthlyServiceFee" type="xs:double"/>
+                <xs:element name="activatedAt" type="xs:dateTime"/>
+                <xs:element name="autoRenews" type="xs:boolean"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
