@@ -632,6 +632,139 @@ namespace ApiExamples.LinqTemp
         }
 
         [Test]
+        public void BindingCsvRows()
+        {
+            //ExStart:BindingCsvRows
+            //GistId:80990de1c4162054ef02f33d7aec5d9c
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "CSV Rows Binding Template.docx");
+
+            // Open the data source file.
+            CsvDataSource dataSource = new CsvDataSource(MyLinqDir + "CSV Rows Binding Data.csv");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "CSV Rows Binding Report.docx");
+            //ExEnd:BindingCsvRows
+
+            // Test the report.
+            CompareDocs("CSV Rows Binding Report.docx", "CSV Rows Binding Report Gold.docx");
+        }
+
+        [Test]
+        public void ReadingColumnNamesFromCsvHeader()
+        {
+            //ExStart:ReadingColumnNamesFromCsvHeader
+            //GistId:f0f54ac5df2780151d7f5148ae70f99d
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Column Names from CSV Header Reading Template.docx");
+
+            // Open the data source file reading column names from a CSV header.
+            CsvDataLoadOptions options = new CsvDataLoadOptions();
+            options.HasHeaders = true;
+
+            CsvDataSource dataSource = new CsvDataSource(MyLinqDir + "Column Names from CSV Header Reading Data.csv", options);
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Column Names from CSV Header Reading Report.docx");
+            //ExEnd:ReadingColumnNamesFromCsvHeader
+
+            // Test the report.
+            CompareDocs("Column Names from CSV Header Reading Report.docx",
+                "Column Names from CSV Header Reading Report Gold.docx");
+        }
+
+        [Test]
+        public void ConfiguringCsvDelimiters()
+        {
+            //ExStart:ConfiguringCsvDelimiters
+            //GistId:e55df15555061c5738ce20393851b48d
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "CSV Delimiters Configuring Template.docx");
+
+            // Open the data source file configuring CSV delimiters.
+            CsvDataLoadOptions options = new CsvDataLoadOptions();
+            options.Delimiter = ';';
+
+            CsvDataSource dataSource = new CsvDataSource(MyLinqDir + "CSV Delimiters Configuring Data.csv", options);
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "CSV Delimiters Configuring Report.docx");
+            //ExEnd:ConfiguringCsvDelimiters
+
+            // Test the report.
+            CompareDocs("CSV Delimiters Configuring Report.docx", "CSV Delimiters Configuring Report Gold.docx");
+        }
+
+        [Test]
+        public void HandlingCsvQuotes()
+        {
+            //ExStart:HandlingCsvQuotes
+            //GistId:ff64f13aae0c74e733bdf0932dfa885b
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "CSV Quotes Handling Template.docx");
+
+            // Open the data source file configuring CSV quotes.
+            CsvDataLoadOptions options = new CsvDataLoadOptions();
+            options.QuoteChar = '\'';
+
+            CsvDataSource dataSource = new CsvDataSource(MyLinqDir + "CSV Quotes Handling Data.csv", options);
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "CSV Quotes Handling Report.docx");
+            //ExEnd:HandlingCsvQuotes
+
+            // Test the report.
+            CompareDocs("CSV Quotes Handling Report.docx", "CSV Quotes Handling Report Gold.docx");
+        }
+
+        [Test]
+        public void SkippingCsvComments()
+        {
+            //ExStart:SkippingCsvComments
+            //GistId:038a707cce568bcb5edf2a67a8b65d7f
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "CSV Comments Skipping Template.docx");
+
+            // Open the data source file configuring a CSV comment character.
+            CsvDataLoadOptions options = new CsvDataLoadOptions();
+            options.CommentChar = '!';
+
+            CsvDataSource dataSource = new CsvDataSource(MyLinqDir + "CSV Comments Skipping Data.csv", options);
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "CSV Comments Skipping Report.docx");
+            //ExEnd:SkippingCsvComments
+
+            // Test the report.
+            CompareDocs("CSV Comments Skipping Report.docx", "CSV Comments Skipping Report Gold.docx");
+        }
+
+        [Test]
         public void FormattingNumbers()
         {
             //ExStart:FormattingNumbers

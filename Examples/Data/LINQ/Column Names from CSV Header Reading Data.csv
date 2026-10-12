@@ -1,0 +1,5 @@
+date,region,productCategory,revenue,unitsSold,targetAchieved
+2026-02-01,North,Electronics,45139.85,300,TRUE
+2026-02-01,North,Furniture,12011.95,85,FALSE
+2026-02-01,South,Electronics,38145,240,TRUE
+2026-02-01,South,Furniture,19500.6,130,TRUE
