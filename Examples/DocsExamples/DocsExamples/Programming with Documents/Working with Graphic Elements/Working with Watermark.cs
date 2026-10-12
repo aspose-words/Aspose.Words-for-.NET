@@ -12,18 +12,18 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
         {
             //ExStart:AddTextWatermark
             //GistId:1f690a31c188a851d80d7aed4ff7e44c
-            Document doc = new Document(MyDir + "Document.docx");
+            Document doc = new Document(MyDir + "Big document.docx");
 
             TextWatermarkOptions options = new TextWatermarkOptions()
             {
                 FontFamily = "Arial",
                 FontSize = 36,
                 Color = Color.Black,
-                Layout = WatermarkLayout.Horizontal,
+                Layout = WatermarkLayout.Diagonal,
                 IsSemitrasparent = false
             };
 
-            doc.Watermark.SetText("Test", options);
+            doc.Watermark.SetText("Aspose.Words", options);
 
             doc.Save(ArtifactsDir + "WorkWithWatermark.AddTextWatermark.docx");
             //ExEnd:AddTextWatermark

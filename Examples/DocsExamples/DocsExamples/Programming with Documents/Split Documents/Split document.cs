@@ -89,11 +89,6 @@ namespace DocsExamples.Programming_with_Documents.Split_Documents
             // Find documents using for merge.
             FileSystemInfo[] documentPaths = new DirectoryInfo(ArtifactsDir)
                 .GetFileSystemInfos("SplitDocument.PageByPage_*.docx").OrderBy(f => f.CreationTime).ToArray();
-            string sourceDocumentPath =
-                Directory.GetFiles(ArtifactsDir, "SplitDocument.PageByPage_1.docx", SearchOption.TopDirectoryOnly)[0];
-
-            // Open the first part of the resulting document.
-            Document sourceDoc = new Document(sourceDocumentPath);
 
             // Create a new resulting document.
             Document mergedDoc = new Document();
@@ -102,12 +97,8 @@ namespace DocsExamples.Programming_with_Documents.Split_Documents
             // Merge document parts one by one.
             foreach (FileSystemInfo documentPath in documentPaths)
             {
-                if (documentPath.FullName == sourceDocumentPath)
-                    continue;
-
                 mergedDocBuilder.MoveToDocumentEnd();
-                mergedDocBuilder.InsertDocument(sourceDoc, ImportFormatMode.KeepSourceFormatting);
-                sourceDoc = new Document(documentPath.FullName);
+                mergedDocBuilder.InsertDocument(new Document(documentPath.FullName), ImportFormatMode.KeepSourceFormatting);
             }
 
             mergedDoc.Save(ArtifactsDir + "SplitDocument.MergeDocuments.docx");
