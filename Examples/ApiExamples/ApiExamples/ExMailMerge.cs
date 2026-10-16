@@ -17,15 +17,66 @@ using Aspose.Words;
 using Aspose.Words.MailMerging;
 using Aspose.Words.Settings;
 using NUnit.Framework;
+using Microsoft.Data.Sqlite;
+#if NET461_OR_GREATER || JAVA
 using System.Web;
-using System.Data.OleDb;
+#endif
 
 namespace ApiExamples
 {
     [TestFixture]
     public class ExMailMerge : ApiExampleBase
     {
-#if NETFRAMEWORK || JAVA
+        [Test]
+        public void ExecuteDataReader()
+        {
+            //ExStart
+            //ExFor:MailMerge.Execute(IDataReader)
+            //ExSummary:Shows how to run a mail merge using data from a data reader.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Write("Product:\t");
+            builder.InsertField(" MERGEFIELD ProductName");
+            builder.Write("\nSupplier:\t");
+            builder.InsertField(" MERGEFIELD CompanyName");
+            builder.Writeln();
+            builder.InsertField(" MERGEFIELD QuantityPerUnit");
+            builder.Write(" for $");
+            builder.InsertField(" MERGEFIELD UnitPrice");
+
+            // Create a connection string that points to the "Northwind" database file
+            // in our local file system, open a connection, and set up an SQL query.
+            string connectionString = @"Data Source=" + DatabaseDir + "Northwind.db";
+            string query =
+                @"SELECT Products.ProductName, Suppliers.CompanyName, Products.QuantityPerUnit, Products.UnitPrice
+                FROM Products
+                INNER JOIN Suppliers
+                ON Products.SupplierID = Suppliers.SupplierID";
+
+            using (SqliteConnection connection = new SqliteConnection(connectionString))
+            {
+                // Create an SQL command that will source data for our mail merge.
+                // The names of the table's columns that this SELECT statement will return
+                // will need to correspond to the merge fields we placed above.
+                connection.Open();
+                using (SqliteCommand command = new SqliteCommand(query, connection))
+                using (SqliteDataReader reader = command.ExecuteReader())
+                {
+                    // Take the data from the reader and use it in the mail merge.
+                    doc.MailMerge.Execute(reader);
+                }
+            }
+
+            doc.Save(ArtifactsDir + "MailMerge.ExecuteDataReader.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "MailMerge.ExecuteDataReader.docx");
+
+            TestUtil.MailMergeMatchesQueryResult(DatabaseDir + "Northwind.db", query, doc, true);
+        }
+
+#if NET461_OR_GREATER || JAVA
         [Test]
         public void ExecuteArray()
         {
@@ -63,63 +114,6 @@ namespace ApiExamples
             TestUtil.MailMergeMatchesArray(new[] { new[] { "James Bond", "MI5 Headquarters", "Milbank", "London" } }, doc, true);
         }
 
-        [Test, Category("IgnoreOnJenkins")]
-        public void ExecuteDataReader()
-        {
-            //ExStart
-            //ExFor:MailMerge.Execute(IDataReader)
-            //ExSummary:Shows how to run a mail merge using data from a data reader.
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            builder.Write("Product:\t");
-            builder.InsertField(" MERGEFIELD ProductName");
-            builder.Write("\nSupplier:\t");
-            builder.InsertField(" MERGEFIELD CompanyName");
-            builder.Writeln();
-            builder.InsertField(" MERGEFIELD QuantityPerUnit");
-            builder.Write(" for $");
-            builder.InsertField(" MERGEFIELD UnitPrice");
-
-            // Create a connection string that points to the "Northwind" database file
-            // in our local file system, open a connection, and set up an SQL query.
-            string connectionString = @"Provider = Microsoft.ACE.OLEDB.12.0; Data Source=" + DatabaseDir + "Northwind.accdb";
-            string query =
-                @"SELECT Products.ProductName, Suppliers.CompanyName, Products.QuantityPerUnit, Products.UnitPrice
-                FROM Products 
-                INNER JOIN Suppliers 
-                ON Products.SupplierID = Suppliers.SupplierID";
-
-            using (OleDbConnection connection = new OleDbConnection(connectionString))
-            {
-                // Create an SQL command that will source data for our mail merge.
-                // The names of the table's columns that this SELECT statement will return
-                // will need to correspond to the merge fields we placed above.
-                OleDbCommand command = new OleDbCommand(query, connection);
-                command.CommandText = query;
-                try
-                {
-                    connection.Open();
-                    using (OleDbDataReader reader = command.ExecuteReader())
-                    {
-                        // Take the data from the reader and use it in the mail merge.
-                        doc.MailMerge.Execute(reader);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-            }
-
-            doc.Save(ArtifactsDir + "MailMerge.ExecuteDataReader.docx");
-            //ExEnd
-
-            doc = new Document(ArtifactsDir + "MailMerge.ExecuteDataReader.docx");
-
-            TestUtil.MailMergeMatchesQueryResult(DatabaseDir + "Northwind.accdb", query, doc, true);
-        }
-
         //ExStart
         //ExFor:MailMerge.ExecuteADO(Object)
         //ExSummary:Shows how to run a mail merge with data from an ADO dataset.
@@ -148,7 +142,7 @@ namespace ApiExamples
             // Execute the mail merge and save the document.
             doc.MailMerge.ExecuteADO(recordset);
             doc.Save(ArtifactsDir + "MailMerge.ExecuteADO.docx");
-            TestUtil.MailMergeMatchesQueryResult(DatabaseDir + "Northwind.accdb", command, doc, true); //ExSkip
+            TestUtil.MailMergeMatchesQueryResult(DatabaseDir + "Northwind.db", command, doc, true); //ExSkip
         }
 
         /// <summary>
@@ -209,7 +203,7 @@ namespace ApiExamples
             
             doc.Save(ArtifactsDir + "MailMerge.ExecuteWithRegionsADO.docx");
 
-            TestUtil.MailMergeMatchesQueryResultMultiple(DatabaseDir + "Northwind.accdb", new[] { "SELECT FirstName, LastName, City FROM Employees", "SELECT ContactName, Address, City FROM Customers" }, new Document(ArtifactsDir + "MailMerge.ExecuteWithRegionsADO.docx"), false); //ExSkip
+            TestUtil.MailMergeMatchesQueryResultMultiple(DatabaseDir + "Northwind.db", new[] { "SELECT FirstName, LastName, City FROM Employees", "SELECT ContactName, Address, City FROM Customers" }, new Document(ArtifactsDir + "MailMerge.ExecuteWithRegionsADO.docx"), false); //ExSkip
         }
 
         /// <summary>

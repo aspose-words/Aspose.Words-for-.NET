@@ -400,5 +400,25 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "TxtSaveOptions.MaxCharactersPerLine.txt", saveOptions);
             //ExEnd
         }
+
+        [Test]
+        public void ExportOfficeMathAsLatex()
+        {
+            //ExStart:ExportOfficeMathAsLatexToText
+            //GistId:67ab3fcab43d41e5dc207060f8f5faba
+            //ExFor:TxtSaveOptions.OfficeMathExportMode
+            //ExFor:TxtOfficeMathExportMode
+            //ExSummary:Shows how to export OfficeMath object as Latex in TXT.
+            Document doc = new Document(MyDir + "Office math.docx");
+
+            TxtSaveOptions saveOptions = new TxtSaveOptions();
+            saveOptions.OfficeMathExportMode = TxtOfficeMathExportMode.Latex;
+
+            doc.Save(ArtifactsDir + "TxtSaveOptions.ExportOfficeMathAsLatexToText.txt", saveOptions);
+            //ExEnd:ExportOfficeMathAsLatexToText
+
+            Assert.That(DocumentHelper.CompareDocs(ArtifactsDir + "TxtSaveOptions.ExportOfficeMathAsLatexToText.txt",
+                GoldsDir + "TxtSaveOptions.ExportOfficeMathAsLatexToText.Gold.txt"), Is.True);
+        }
     }
 }

@@ -637,16 +637,16 @@ namespace ApiExamples
             if (allowNegativeIndent)
             {
                 Assert.That(outDocContents.Contains(
-                    "<table cellspacing=\"0\" cellpadding=\"0\" style=\"margin-left:-41.65pt; border:0.75pt solid #000000; -aw-border:0.5pt single; -aw-border-insideh:0.5pt single #000000; -aw-border-insidev:0.5pt single #000000; border-collapse:collapse\">"), Is.True);
+                    "<table cellspacing=\"0\" cellpadding=\"0\" style=\"margin-left:-41.65pt; border:0.75pt solid #000000; -aw-border:0.5pt single #000000; -aw-border-insideh:0.5pt single #000000; -aw-border-insidev:0.5pt single #000000; border-collapse:collapse\">"), Is.True);
                 Assert.That(outDocContents.Contains(
-                    "<table cellspacing=\"0\" cellpadding=\"0\" style=\"margin-left:30.35pt; border:0.75pt solid #000000; -aw-border:0.5pt single; -aw-border-insideh:0.5pt single #000000; -aw-border-insidev:0.5pt single #000000; border-collapse:collapse\">"), Is.True);
+                    "<table cellspacing=\"0\" cellpadding=\"0\" style=\"margin-left:30.35pt; border:0.75pt solid #000000; -aw-border:0.5pt single #000000; -aw-border-insideh:0.5pt single #000000; -aw-border-insidev:0.5pt single #000000; border-collapse:collapse\">"), Is.True);
             }
             else
             {
                 Assert.That(outDocContents.Contains(
-                    "<table cellspacing=\"0\" cellpadding=\"0\" style=\"border:0.75pt solid #000000; -aw-border:0.5pt single; -aw-border-insideh:0.5pt single #000000; -aw-border-insidev:0.5pt single #000000; border-collapse:collapse\">"), Is.True);
+                    "<table cellspacing=\"0\" cellpadding=\"0\" style=\"border:0.75pt solid #000000; -aw-border:0.5pt single #000000; -aw-border-insideh:0.5pt single #000000; -aw-border-insidev:0.5pt single #000000; border-collapse:collapse\">"), Is.True);
                 Assert.That(outDocContents.Contains(
-                    "<table cellspacing=\"0\" cellpadding=\"0\" style=\"margin-left:30.35pt; border:0.75pt solid #000000; -aw-border:0.5pt single; -aw-border-insideh:0.5pt single #000000; -aw-border-insidev:0.5pt single #000000; border-collapse:collapse\">"), Is.True);
+                    "<table cellspacing=\"0\" cellpadding=\"0\" style=\"margin-left:30.35pt; border:0.75pt solid #000000; -aw-border:0.5pt single #000000; -aw-border-insideh:0.5pt single #000000; -aw-border-insidev:0.5pt single #000000; border-collapse:collapse\">"), Is.True);
             }
             //ExEnd
         }
@@ -781,12 +781,12 @@ namespace ApiExamples
                 case HtmlVersion.Html5:
                     Assert.That(outDocContents.Contains("<a id=\"_Toc76372689\"></a>"), Is.True);
                     Assert.That(outDocContents.Contains("<a id=\"_Toc76372689\"></a>"), Is.True);
-                    Assert.That(outDocContents.Contains("<table style=\"padding:0pt; -aw-border-insideh:0.5pt single #000000; -aw-border-insidev:0.5pt single #000000; border-collapse:collapse\">"), Is.True);
+                    Assert.That(outDocContents.Contains("<table style=\"padding:0pt; -aw-border:0.5pt single #000000; -aw-border-insideh:0.5pt single #000000; -aw-border-insidev:0.5pt single #000000; border-collapse:collapse\">"), Is.True);
                     break;
                 case HtmlVersion.Xhtml:
                     Assert.That(outDocContents.Contains("<a name=\"_Toc76372689\"></a>"), Is.True);
                     Assert.That(outDocContents.Contains("<ul type=\"disc\" style=\"margin:0pt; padding-left:0pt\">"), Is.True);
-                    Assert.That(outDocContents.Contains("<table cellspacing=\"0\" cellpadding=\"0\" style=\"-aw-border-insideh:0.5pt single #000000; -aw-border-insidev:0.5pt single #000000; border-collapse:collapse\""), Is.True);
+                    Assert.That(outDocContents.Contains("<table cellspacing=\"0\" cellpadding=\"0\" style=\"-aw-border:0.5pt single #000000; -aw-border-insideh:0.5pt single #000000; -aw-border-insidev:0.5pt single #000000; border-collapse:collapse\""), Is.True);
                     break;
             }
             //ExEnd
@@ -1433,8 +1433,8 @@ namespace ApiExamples
 
                 Assert.That(outDocContents.Contains(
                     "td colspan=\"2\" style=\"width:210.6pt; border-style:solid; border-width:0.75pt 6pt 0.75pt 0.75pt; " +
-                    "padding-right:2.4pt; padding-left:5.03pt; vertical-align:top; " +
-                    "-aw-border-bottom:0.5pt single; -aw-border-left:0.5pt single; -aw-border-top:0.5pt single\">"), Is.True);
+                    "padding-right:2.4pt; padding-left:5.03pt; vertical-align:top; -aw-border-bottom:0.5pt single #000000; " +
+                    "-aw-border-left:0.5pt single #000000; -aw-border-right:6pt single #000000; -aw-border-top:0.5pt single #000000\">"), Is.True);
 
                 Assert.That(outDocContents.Contains(
                     "<li style=\"margin-left:30.2pt; padding-left:5.8pt; -aw-font-family:'Courier New'; -aw-font-weight:normal; -aw-number-format:'o'\">"), Is.True);
@@ -1462,7 +1462,7 @@ namespace ApiExamples
                 Assert.That(outDocContents.Contains(
                     "<td colspan=\"2\" style=\"width:210.6pt; border-style:solid; border-width:0.75pt 6pt 0.75pt 0.75pt; " +
                     "padding-right:2.4pt; padding-left:5.03pt; vertical-align:top\">"), Is.True);
-                
+
                 Assert.That(outDocContents.Contains(
                     "<li style=\"margin-left:30.2pt; padding-left:5.8pt\">"), Is.True);
 
@@ -1743,9 +1743,9 @@ namespace ApiExamples
             var testedImageLength = new FileInfo(ArtifactsDir + "HtmlSaveOptions.ScaleImageToShapeSize.001.png").Length;
 
             if (scaleImageToShapeSize)
-#if NETFRAMEWORK || JAVA || CPLUSPLUS
+#if NET461_OR_GREATER || JAVA || CPLUSPLUS
                 Assert.That(testedImageLength < 3000, Is.True);
-#elif NET6_0_OR_GREATER
+#elif NET5_0_OR_GREATER
                 Assert.That(testedImageLength < 6200, Is.True);
 #endif
             else

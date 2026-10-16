@@ -393,6 +393,58 @@ namespace ApiExamples
             Assert.That(DocumentHelper.CompareDocs(ArtifactsDir + "MarkdownSaveOptions.ExportOfficeMathAsLatex.md",
                 GoldsDir + "MarkdownSaveOptions.ExportOfficeMathAsLatex.Gold.md"), Is.True);
         }
+
+        [Test]
+        //ExStart:MarkdownResourceSavingCallback
+        //GistId:67ab3fcab43d41e5dc207060f8f5faba
+        //ExFor:MarkdownSaveOptions.ResourceSavingCallback
+        //ExFor:IResourceSavingCallback
+        //ExSummary:Shows how to use a callback to change the resource URI.
+        public void ResourceSavingCallback()
+        {
+            string outputPath = ArtifactsDir + "MarkdownSaveOptions.ResourceSavingCallback.md";
+
+            Document doc = new Document(MyDir + "Rendering.docx");
+
+            MarkdownSaveOptions saveOptions = new MarkdownSaveOptions();
+            saveOptions.ResourceSavingCallback = new ChangeUriPath();
+
+            doc.Save(outputPath, saveOptions);
+
+            DocumentHelper.FindTextInFile(outputPath, "/uri/for/");
+        }
+
+        /// <summary>
+        /// Class implementing <see cref="IResourceSavingCallback"/>.
+        /// </summary>
+        private class ChangeUriPath : IResourceSavingCallback
+        {
+            public void ResourceSaving(ResourceSavingArgs args)
+            {
+                args.ResourceFileUri = string.Format("/uri/for/{0}", args.ResourceFileName);
+            }
+        }
+        //ExEnd:MarkdownResourceSavingCallback
+
+        [Test]
+        public void ExportOfficeMathAsMarkItDown()
+        {
+            //ExStart:ExportOfficeMathAsMarkItDown
+            //GistId:bd7947d9ad5eb092f532604cb15f593b
+            //ExFor:MarkdownSaveOptions.OfficeMathExportMode
+            //ExFor:MarkdownOfficeMathExportMode
+            //ExSummary:Shows how to export OfficeMath object as MarkItDown.
+            Document doc = new Document(MyDir + "Office math.docx");
+
+            MarkdownSaveOptions saveOptions = new MarkdownSaveOptions();
+            saveOptions.OfficeMathExportMode = MarkdownOfficeMathExportMode.MarkItDown;
+
+            doc.Save(ArtifactsDir + "MarkdownSaveOptions.ExportOfficeMathAsMarkItDown.md", saveOptions);
+            //ExEnd:ExportOfficeMathAsMarkItDown
+
+            Assert.That(DocumentHelper.CompareDocs(ArtifactsDir + "MarkdownSaveOptions.ExportOfficeMathAsMarkItDown.md",
+                GoldsDir + "MarkdownSaveOptions.ExportOfficeMathAsMarkItDown.Gold.md"), Is.True);
+        }
     }
 }
 

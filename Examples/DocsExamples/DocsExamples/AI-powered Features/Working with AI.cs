@@ -40,7 +40,7 @@ namespace DocsExamples.AI_powered_Features
 
             string apiKey = Environment.GetEnvironmentVariable("API_KEY");
             // Use Google generative language models.
-            AiModel model = (GoogleAiModel)AiModel.Create(AiModelType.Gemini15Flash).WithApiKey(apiKey);
+            AiModel model = (GoogleAiModel)AiModel.Create(AiModelType.GeminiFlashLatest).WithApiKey(apiKey);
 
             Document translatedDoc = model.Translate(doc, Language.Arabic);
             translatedDoc.Save(ArtifactsDir + "AI.AiTranslate.docx");

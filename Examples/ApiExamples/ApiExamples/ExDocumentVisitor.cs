@@ -1090,7 +1090,7 @@ namespace ApiExamples
             Assert.That(visitorText.Contains("[OfficeMath start] Math object type: OMathPara"), Is.True);
             Assert.That(visitorText.Contains("[OfficeMath start] Math object type: OMath"), Is.True);
             Assert.That(visitorText.Contains("[OfficeMath start] Math object type: Argument"), Is.True);
-            Assert.That(visitorText.Contains("[OfficeMath start] Math object type: Supercript"), Is.True);
+            Assert.That(visitorText.Contains("[OfficeMath start] Math object type: Superscript"), Is.True);
             Assert.That(visitorText.Contains("[OfficeMath start] Math object type: SuperscriptPart"), Is.True);
             Assert.That(visitorText.Contains("[OfficeMath start] Math object type: Fraction"), Is.True);
             Assert.That(visitorText.Contains("[OfficeMath start] Math object type: Numerator"), Is.True);

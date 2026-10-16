@@ -66,7 +66,7 @@ namespace ApiExamples
 
             string apiKey = Environment.GetEnvironmentVariable("API_KEY");
             // Use Google generative language models.
-            AiModel model = AiModel.Create(AiModelType.Gemini15Flash).WithApiKey(apiKey);
+            AiModel model = AiModel.Create(AiModelType.GeminiFlashLatest).WithApiKey(apiKey);
 
             Document translatedDoc = model.Translate(doc, Language.Arabic);
             translatedDoc.Save(ArtifactsDir + "AI.AiTranslate.docx");
@@ -98,6 +98,7 @@ namespace ApiExamples
         //ExStart:SelfHostedModel
         //GistId:67c1d01ce69d189983b497fd497a7768
         //ExFor:OpenAiModel
+        //ExFor:AiModel.Url
         //ExSummary:Shows how to use self-hosted AI model based on OpenAiModel.
         [Test, Ignore("This test should be run manually when you are configuring your model")] //ExSkip
         public void SelfHostedModel()
@@ -106,7 +107,7 @@ namespace ApiExamples
 
             string apiKey = Environment.GetEnvironmentVariable("API_KEY");
             // Use OpenAI generative language models.
-            AiModel model = new CustomAiModel().WithApiKey(apiKey);
+            AiModel model = new CustomAiModel("my-model-24b", "https://my.a.com/").WithApiKey(apiKey);
 
             Document translatedDoc = model.Translate(doc, Language.Russian);
             translatedDoc.Save(ArtifactsDir + "AI.SelfHostedModel.docx");
@@ -117,22 +118,91 @@ namespace ApiExamples
         /// </summary>
         internal class CustomAiModel : OpenAiModel
         {
-            /// <summary>
-            /// Gets custom URL of the model.
-            /// </summary>
-            protected override string Url
+            internal CustomAiModel(string name, string url) : base(name)
             {
-                get { return "https://localhost/"; }
+                mUrl = url;
             }
 
-            /// <summary>
-            /// Gets model name.
-            /// </summary>
-            protected override string Name
+            public override string Url
             {
-                get { return "my-model-24b"; }
+                get { return mUrl; }
             }
+
+            private readonly string mUrl;
         }
         //ExEnd:SelfHostedModel
+
+        [Test]
+        public void ChangeDefaultUrl()
+        {
+            //ExStart:ChangeDefaultUrl
+            //GistId:bd7947d9ad5eb092f532604cb15f593b
+            //ExFor:AiModel.Url
+            //ExSummary:Shows how to change model default url.
+            string apiKey = Environment.GetEnvironmentVariable("API_KEY");
+            AiModel model = AiModel.Create(AiModelType.Gpt4OMini).WithApiKey(apiKey);
+            // Default value "https://api.openai.com/".
+            model.Url = "https://my.a.com/";
+            //ExEnd:ChangeDefaultUrl
+
+            Assert.That(model.Url, Is.EqualTo("https://my.a.com/"));
+        }
+
+        [Test]
+        public void ChangeDefaultTimeout()
+        {
+            //ExStart:ChangeDefaultTimeout
+            //GistId:bd7947d9ad5eb092f532604cb15f593b
+            //ExFor:AiModel.Timeout
+            //ExSummary:Shows how to change model default timeout.
+            string apiKey = Environment.GetEnvironmentVariable("API_KEY");
+            AiModel model = AiModel.Create(AiModelType.Gpt4OMini).WithApiKey(apiKey);
+            // Default value 100000ms.
+            model.Timeout = 250000;
+            //ExEnd:ChangeDefaultTimeout
+
+            Assert.That(model.Timeout, Is.EqualTo(250000));
+        }
+
+        [Test, Explicit("This test should be run manually to manage API requests amount")]
+        public void Gemini()
+        {
+            //ExStart:Gemini
+            //GistId:0da8468118377c4860b28603bc95ffe6
+            //ExFor:GoogleAiModel
+            //ExFor:GoogleAiModel.#ctor(String)
+            //ExFor:GoogleAiModel.#ctor(String, String)
+            //ExSummary:Shows how to use google AI model.
+            string apiKey = Environment.GetEnvironmentVariable("API_KEY");
+            GoogleAiModel model = new GoogleAiModel("gemini-flash-latest", apiKey);
+
+            Document doc = new Document(MyDir + "Big document.docx");
+            SummarizeOptions summarizeOptions = new SummarizeOptions() { SummaryLength = SummaryLength.VeryShort };
+            Document summary = model.Summarize(doc, summarizeOptions);
+            //ExEnd:Gemini
+        }
+
+        [Test, Explicit("This test should be run manually to manage API requests amount")]
+        public void OpenAiModelConstructor()
+        {
+            //ExStart:OpenAiModelConstructor
+            //GistId:8c640b84550c83678329a9a92f10bcdd
+            //ExFor:OpenAiModel.#ctor(String,String)
+            //ExSummary:Shows how to create an OpenAI model instance directly using an API key and model name.
+            string apiKey = Environment.GetEnvironmentVariable("API_KEY");
+            // Create an OpenAI model instance using the constructor with model name and API key.
+            OpenAiModel model = new OpenAiModel("gpt-4o-mini", apiKey);
+
+            Document doc = new Document(MyDir + "Big document.docx");
+            // Summarize the document using the OpenAI model with short summary length.
+            SummarizeOptions summarizeOptions = new SummarizeOptions() { SummaryLength = SummaryLength.VeryShort };
+            Document summary = model.Summarize(doc, summarizeOptions);
+
+            summary.Save(ArtifactsDir + "OpenAiModel.OpenAiModelConstructor.docx");
+            //ExEnd:OpenAiModelConstructor
+
+            // Verify the summary was generated (non-empty content).
+            Assert.That(summary.GetText().Trim().Length, Is.GreaterThan(0));
+        }
     }
 }
