@@ -7,10 +7,13 @@
 
 using Aspose.Words;
 using Aspose.Words.Reporting;
+using Microsoft.Data.Sqlite;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
+using System.Linq;
 
 namespace ApiExamples.LinqTemp
 {
@@ -253,6 +256,267 @@ namespace ApiExamples.LinqTemp
 
             // Test the report.
             CompareDocs("Item Index Getting Report.docx", "Item Index Getting Report Gold.docx");
+        }
+
+        [Test]
+        public void BindingDataSet()
+        {
+            //ExStart:BindingDataSet
+            //GistId:2efdc8a8bdef943fe13c323a32a42d3b
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "DataSet Binding Template.docx");
+
+            // Initialize a DataSet upon the database.
+            DataSet dataSet = new DataSet();
+            using (SqliteConnection connection = new SqliteConnection("Data Source=" + MyLinqDir + "DataSet Binding Data.db"))
+            {
+                connection.Open();
+                foreach (string tableName in new string[] { "logisticsFacilityProfiles", "regionalCampaignClusters" })
+                {
+                    DataTable table = dataSet.Tables.Add(tableName);
+                    using (SqliteCommand command = new SqliteCommand("SELECT * FROM " + tableName, connection))
+                    using (SqliteDataReader reader = command.ExecuteReader())
+                        table.Load(reader);
+                }
+            }
+
+            // Build a report.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSet);
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "DataSet Binding Report.docx");
+            //ExEnd:BindingDataSet
+
+            // Test the report.
+            CompareDocs("DataSet Binding Report.docx", "DataSet Binding Report Gold.docx");
+        }
+
+        [Test]
+        public void BindingDataTable()
+        {
+            //ExStart:BindingDataTable
+            //GistId:010a5ac7577d2ed56d1176a58a796ef4
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "DataTable Binding Template.docx");
+
+            // Initialize a DataTable upon the database. A DataSet is needed, if working with data relations.
+            DataSet dataSet = new DataSet();
+            using (SqliteConnection connection = new SqliteConnection("Data Source=" + MyLinqDir + "DataTable Binding Data.db"))
+            {
+                connection.Open();
+                foreach (string tableName in new string[] { "distributionCenters", "cargoShipments", "trackingMilestones" })
+                {
+                    DataTable table = dataSet.Tables.Add(tableName);
+                    using (SqliteCommand command = new SqliteCommand("SELECT * FROM " + tableName, connection))
+                    using (SqliteDataReader reader = command.ExecuteReader())
+                        table.Load(reader);
+                }
+            }
+
+            DataTable entryTable = dataSet.Tables["cargoShipments"];
+            dataSet.Relations.Add(dataSet.Tables["distributionCenters"].Columns["centerId"], entryTable.Columns["centerId"]);
+            dataSet.Relations.Add(entryTable.Columns["shipmentId"], dataSet.Tables["trackingMilestones"].Columns["shipmentId"]);
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, entryTable, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "DataTable Binding Report.docx");
+            //ExEnd:BindingDataTable
+
+            // Test the report.
+            CompareDocs("DataTable Binding Report.docx", "DataTable Binding Report Gold.docx");
+        }
+
+        [Test]
+        public void BindingDataRow()
+        {
+            //ExStart:BindingDataRow
+            //GistId:9baad2cd048e7361a6694426aa685eea
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "DataRow Binding Template.docx");
+
+            // Initialize a DataRow upon the database. A DataSet is needed, if working with data relations.
+            DataSet dataSet = new DataSet();
+            using (SqliteConnection connection = new SqliteConnection("Data Source=" + MyLinqDir + "DataRow Binding Data.db"))
+            {
+                connection.Open();
+                foreach (string tableName in new string[] { "corporateHoldings", "currentChiefExecutives", "executiveDirectives" })
+                {
+                    DataTable table = dataSet.Tables.Add(tableName);
+                    using (SqliteCommand command = new SqliteCommand("SELECT * FROM " + tableName, connection))
+                    using (SqliteDataReader reader = command.ExecuteReader())
+                        table.Load(reader);
+                }
+            }
+
+            DataTable entryTable = dataSet.Tables["currentChiefExecutives"];
+            dataSet.Relations.Add(dataSet.Tables["corporateHoldings"].Columns["holdingId"], entryTable.Columns["holdingId"]);
+            dataSet.Relations.Add(entryTable.Columns["ceoId"], dataSet.Tables["executiveDirectives"].Columns["ceoId"]);
+
+            DataRow entryRow = entryTable.Rows.Cast<DataRow>().Single();
+
+            // Build a report.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, entryRow);
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "DataRow Binding Report.docx");
+            //ExEnd:BindingDataRow
+
+            // Test the report.
+            CompareDocs("DataRow Binding Report.docx", "DataRow Binding Report Gold.docx");
+        }
+
+        [Test]
+        public void BindingDataView()
+        {
+            //ExStart:BindingDataView
+            //GistId:3002c7c4cf55d14e9430fc7bc9a9bb1e
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "DataView Binding Template.docx");
+
+            // Initialize a DataView upon the database. A DataSet is needed, if working with data relations.
+            DataSet dataSet = new DataSet();
+            using (SqliteConnection connection = new SqliteConnection("Data Source=" + MyLinqDir + "DataView Binding Data.db"))
+            {
+                connection.Open();
+                foreach (string tableName in new string[] { "vendorAccounts", "procurementContracts", "contractMilestones" })
+                {
+                    DataTable table = dataSet.Tables.Add(tableName);
+                    using (SqliteCommand command = new SqliteCommand("SELECT * FROM " + tableName, connection))
+                    using (SqliteDataReader reader = command.ExecuteReader())
+                        table.Load(reader);
+                }
+            }
+
+            DataTable entryTable = dataSet.Tables["procurementContracts"];
+            dataSet.Relations.Add(dataSet.Tables["vendorAccounts"].Columns["vendorId"], entryTable.Columns["vendorId"]);
+            dataSet.Relations.Add(entryTable.Columns["contractId"], dataSet.Tables["contractMilestones"].Columns["contractId"]);
+
+            DataView entryView = new DataView(entryTable);
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, entryView, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "DataView Binding Report.docx");
+            //ExEnd:BindingDataView
+
+            // Test the report.
+            CompareDocs("DataView Binding Report.docx", "DataView Binding Report Gold.docx");
+        }
+
+        [Test]
+        public void BindingDataRowView()
+        {
+            //ExStart:BindingDataRowView
+            //GistId:07cf08316b82bfb30a09b97269ab9a8c
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "DataRowView Binding Template.docx");
+
+            // Initialize a DataRowView upon the database. A DataSet is needed, if working with data relations.
+            DataSet dataSet = new DataSet();
+            using (SqliteConnection connection = new SqliteConnection("Data Source=" + MyLinqDir + "DataRowView Binding Data.db"))
+            {
+                connection.Open();
+                foreach (string tableName in new string[] { "corporateRegistry", "fiscalCalendar", "fiscalPeriods" })
+                {
+                    DataTable table = dataSet.Tables.Add(tableName);
+                    using (SqliteCommand command = new SqliteCommand("SELECT * FROM " + tableName, connection))
+                    using (SqliteDataReader reader = command.ExecuteReader())
+                        table.Load(reader);
+                }
+            }
+
+            DataTable entryTable = dataSet.Tables["fiscalCalendar"];
+            dataSet.Relations.Add(dataSet.Tables["corporateRegistry"].Columns["registryId"], entryTable.Columns["registryId"]);
+            dataSet.Relations.Add(entryTable.Columns["calendarId"], dataSet.Tables["fiscalPeriods"].Columns["calendarId"]);
+
+            DataView entryView = new DataView(entryTable);
+            DataRowView entryRowView = entryView.Cast<DataRowView>().Single();
+
+            // Build a report.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, entryRowView);
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "DataRowView Binding Report.docx");
+            //ExEnd:BindingDataRowView
+
+            // Test the report.
+            CompareDocs("DataRowView Binding Report.docx", "DataRowView Binding Report Gold.docx");
+        }
+
+        [Test]
+        public void BindingDataReader()
+        {
+            //ExStart:BindingDataReader
+            //GistId:18aaed1025701acd01f0e4f81fed1a87
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "DataReader Binding Template.docx");
+
+            // Initialize a DataReader upon the database.
+            using (SqliteConnection connection = new SqliteConnection("Data Source=" + MyLinqDir + "DataReader Binding Data.db"))
+            {
+                connection.Open();
+
+                using (SqliteCommand command = new SqliteCommand("SELECT * FROM corporateProjectBudgets", connection))
+                using (SqliteDataReader reader = command.ExecuteReader())
+                {
+                    // Build a report. The name of the data source should match the one used in the template.
+                    ReportingEngine engine = new ReportingEngine();
+                    engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+                    engine.BuildReport(doc, reader, "items");
+                }
+            }
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "DataReader Binding Report.docx");
+            //ExEnd:BindingDataReader
+
+            // Test the report.
+            CompareDocs("DataReader Binding Report.docx", "DataReader Binding Report Gold.docx");
+        }
+
+        [Test]
+        public void BindingDataRecord()
+        {
+            //ExStart:BindingDataRecord
+            //GistId:c8a3a918e734ab1f3577cee4193ace90
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "DataRecord Binding Template.docx");
+
+            // Initialize a DataRecord upon the database.
+            using (SqliteConnection connection = new SqliteConnection("Data Source=" + MyLinqDir + "DataRecord Binding Data.db"))
+            {
+                connection.Open();
+
+                using (SqliteCommand command = new SqliteCommand("SELECT * FROM activeFiscalTargets", connection))
+                using (SqliteDataReader reader = command.ExecuteReader())
+                {
+                    IDataRecord record = reader.Cast<IDataRecord>().Single();
+
+                    // Build a report.
+                    ReportingEngine engine = new ReportingEngine();
+                    engine.BuildReport(doc, record);
+                }
+            }
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "DataRecord Binding Report.docx");
+            //ExEnd:BindingDataRecord
+
+            // Test the report.
+            CompareDocs("DataRecord Binding Report.docx", "DataRecord Binding Report Gold.docx");
         }
 
         [Test]
