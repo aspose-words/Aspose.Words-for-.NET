@@ -20,6 +20,8 @@ using System.Drawing.Imaging;
 
 namespace DocsExamples
 {
+    //ExStart:CustomBarcodeGenerator
+    //GistId:00d34dba66626dbc0175b60bb3b71c8a
     internal class CustomBarcodeGeneratorUtils
     {
         /// <summary>
@@ -297,4 +299,5 @@ namespace DocsExamples
             throw new NotImplementedException();
         }
     }
+    //ExEnd:CustomBarcodeGenerator
 }

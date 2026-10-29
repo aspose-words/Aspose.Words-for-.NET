@@ -18,12 +18,15 @@ namespace DocsExamples.Rendering_and_Printing
         public void CachePrinterSettings()
         {
             //ExStart:CachePrinterSettings
+            //GistId:4680acb806cd238f3c65869b1fb1370f
             Document doc = new Document(MyDir + "Rendering.docx");
 
             doc.UpdatePageLayout();
 
             PrinterSettings settings = new PrinterSettings { PrinterName = "Microsoft XPS Document Writer" };
 
+            //ExStart:PrintProgressDialog
+            //GistId:4680acb806cd238f3c65869b1fb1370f
             // The standard print controller comes with no UI.
             PrintController standardPrintController = new StandardPrintController();
 
@@ -32,6 +35,7 @@ namespace DocsExamples.Rendering_and_Printing
                 PrinterSettings = settings,
                 PrintController = standardPrintController
             };
+            //ExEnd:PrintProgressDialog
             printDocument.CachePrinterSettings();
 
             printDocument.Print();
@@ -41,9 +45,10 @@ namespace DocsExamples.Rendering_and_Printing
         [Test, Ignore("Run only when the printer driver is installed")]
         public void Print()
         {
+            //ExStart:PrintPreviewSettingsDialog
+            //GistId:4680acb806cd238f3c65869b1fb1370f
             Document doc = new Document(MyDir + "Rendering.docx");
-
-            //ExStart:PrintDialog
+            
             // Initialize the print dialog with the number of pages in the document.
             PrintDialog printDlg = new PrintDialog
             {
@@ -53,22 +58,16 @@ namespace DocsExamples.Rendering_and_Printing
                     MinimumPage = 1, MaximumPage = doc.PageCount, FromPage = 1, ToPage = doc.PageCount
                 }
             };
-            //ExEnd:PrintDialog
 
-            //ExStart:ShowDialog
             if (printDlg.ShowDialog() != DialogResult.OK)
                 return;
-            //ExEnd:ShowDialog
 
-            //ExStart:AsposeWordsPrintDocument
             // Pass the printer settings from the dialog to the print document.
             AsposeWordsPrintDocument awPrintDoc = new AsposeWordsPrintDocument(doc)
             {
                 PrinterSettings = printDlg.PrinterSettings
             };
-            //ExEnd:AsposeWordsPrintDocument
 
-            //ExStart:ActivePrintPreviewDialog
             // Pass the Aspose.Words print document to the Print Preview dialog.
             ActivePrintPreviewDialog previewDlg = new ActivePrintPreviewDialog
             {
@@ -80,16 +79,14 @@ namespace DocsExamples.Rendering_and_Printing
             previewDlg.Document.DocumentName = "PrintDocuments.Print.docx";
             previewDlg.WindowState = FormWindowState.Maximized;
             previewDlg.ShowDialog(); // Show the appropriately configured Print Preview dialog.
-            //ExEnd:ActivePrintPreviewDialog
+            //ExEnd:PrintPreviewSettingsDialog
         }
 
         [Test, Ignore("Run only when the printer driver is installed")]
         public void PrintMultiplePages()
         {
-            //ExStart:PrintMultiplePagesOnOneSheet
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            //ExStart:PrintDialogSettings
             // Initialize the Print Dialog with the number of pages in the document.
             PrintDialog printDlg = new PrintDialog
             {
@@ -99,13 +96,10 @@ namespace DocsExamples.Rendering_and_Printing
                     MinimumPage = 1, MaximumPage = doc.PageCount, FromPage = 1, ToPage = doc.PageCount
                 }
             };
-            //ExEnd:PrintDialogSettings
 
             // Check if the user accepted the print settings and proceed to preview.
-            //ExStart:CheckPrintSettings
             if (printDlg.ShowDialog() != DialogResult.OK)
                 return;
-            //ExEnd:CheckPrintSettings
 
             // Pass the printer settings from the dialog to the print document.
             MultipagePrintDocument awPrintDoc = new MultipagePrintDocument(doc, 4, true)
@@ -113,7 +107,6 @@ namespace DocsExamples.Rendering_and_Printing
                 PrinterSettings = printDlg.PrinterSettings
             };
 
-            //ExStart:ActivePrintPreviewDialog
             // Create and configure the the ActivePrintPreviewDialog class.
             ActivePrintPreviewDialog previewDlg = new ActivePrintPreviewDialog
             {
@@ -124,14 +117,13 @@ namespace DocsExamples.Rendering_and_Printing
             previewDlg.Document.DocumentName = "PrintDocuments.PrintMultiplePages.docx";
             previewDlg.WindowState = FormWindowState.Maximized;
             previewDlg.ShowDialog(); // Show appropriately configured Print Preview dialog.
-            //ExEnd:ActivePrintPreviewDialog
-            //ExEnd:PrintMultiplePagesOnOneSheet
         }
 
         [Test, Ignore("Run only when a printer driver installed")]
         public void UseXpsPrintHelper()
         {
             //ExStart:PrintDocViaXpsPrint
+            //GistId:4680acb806cd238f3c65869b1fb1370f
             Document document = new Document(MyDir + "Rendering.docx");
 
             // Specify the name of the printer you want to print to.
@@ -530,7 +522,8 @@ namespace DocsExamples.Rendering_and_Printing
         WAIT_FAILED = -1
     }
 
-    //ExStart:ActivePrintPreviewDialogClass 
+    //ExStart:ActivePrintPreviewDialog
+    //GistId:4680acb806cd238f3c65869b1fb1370f
     internal class ActivePrintPreviewDialog : PrintPreviewDialog
     {
         /// <summary>
@@ -542,6 +535,6 @@ namespace DocsExamples.Rendering_and_Printing
             base.OnShown(e);
         }
     }
-    //ExEnd:ActivePrintPreviewDialogClass
+    //ExEnd:ActivePrintPreviewDialog
 }
 #endif

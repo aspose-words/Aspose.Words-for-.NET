@@ -21,16 +21,17 @@ namespace DocsExamples.LINQ_Reporting_Engine
         }
 
         [Test]
-        public void SetChartSeriesNameDynamically()
+        public void ChartSeriesNameDynamically()
         {
-            //ExStart:SetChartSeriesNameDynamically
+            //ExStart:ChartSeriesNameDynamically
+            //GistId:396ec359e1983055f29e969c4497dc7b
             Document doc = new Document(MyDir + "Reporting engine template - Chart.docx");
 
             ReportingEngine engine = new ReportingEngine();
             engine.BuildReport(doc, Common.GetManagers(), "managers");
 
-            doc.Save(ArtifactsDir + "ReportingEngine.SetChartSeriesNameDynamically.docx");
-            //ExEnd:SetChartSeriesNameDynamically
+            doc.Save(ArtifactsDir + "ReportingEngine.ChartSeriesNameDynamically.docx");
+            //ExEnd:ChartSeriesNameDynamically
         }
 
         [Test]
@@ -63,6 +64,7 @@ namespace DocsExamples.LINQ_Reporting_Engine
         public void ScatterChart()
         {
             //ExStart:ScatterChart
+            //GistId:688c5a950ba6b1a9c17114eb1260f4c9
             Document doc = new Document(MyDir + "Reporting engine template - Scatter chart.docx");
 
             ReportingEngine engine = new ReportingEngine();

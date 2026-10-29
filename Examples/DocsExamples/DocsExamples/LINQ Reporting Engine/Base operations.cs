@@ -10,9 +10,10 @@ namespace DocsExamples.LINQ_Reporting_Engine
     public class BaseOperations : DocsExamplesBase
     {
         [Test]
-        public void HelloWorld()
+        public void LinqHelloWorld()
         {
-            //ExStart:HelloWorld
+            //ExStart:LinqHelloWorld
+            //GistId:985081558cadc445478b70a52150fccb
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             
@@ -24,7 +25,7 @@ namespace DocsExamples.LINQ_Reporting_Engine
             engine.BuildReport(doc, sender, "sender");
 
             doc.Save(ArtifactsDir + "ReportingEngine.HelloWorld.docx");
-            //ExEnd:HelloWorld
+            //ExEnd:LinqHelloWorld
         }
 
         [Test]
