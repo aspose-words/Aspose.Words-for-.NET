@@ -509,7 +509,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "FieldOptions.BarcodeGenerator.docx");
             //ExEnd
 
-            TestUtil.VerifyImage(223, 223, ArtifactsDir + "FieldOptions.BarcodeGenerator.QR.jpg");
+            TestUtil.VerifyImage(232, 232, ArtifactsDir + "FieldOptions.BarcodeGenerator.QR.jpg");
             TestUtil.VerifyImage(126, 118, ArtifactsDir + "FieldOptions.BarcodeGenerator.EAN13.jpg");
             TestUtil.VerifyImage(204, 70, ArtifactsDir + "FieldOptions.BarcodeGenerator.CODE39.jpg");
             TestUtil.VerifyImage(168, 134, ArtifactsDir + "FieldOptions.BarcodeGenerator.ITF14.jpg");

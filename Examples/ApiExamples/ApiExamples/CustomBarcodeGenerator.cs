@@ -77,29 +77,6 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Converts a string representation of an error correction level to a QRErrorLevel enum value.
-        /// </summary>
-        /// <param name="errorCorrectionLevel">The string representation of the error correction level.</param>
-        /// <param name="def">The default error correction level to return if the input is invalid.</param>
-        /// <returns>The corresponding QRErrorLevel enum value.</returns>
-        public static QRErrorLevel GetQRCorrectionLevel(string errorCorrectionLevel, QRErrorLevel def)
-        {
-            switch (errorCorrectionLevel)
-            {
-                case "0":
-                    return QRErrorLevel.LevelL;
-                case "1":
-                    return QRErrorLevel.LevelM;
-                case "2":
-                    return QRErrorLevel.LevelQ;
-                case "3":
-                    return QRErrorLevel.LevelH;
-                default:
-                    return def;
-            }
-        }
-
-        /// <summary>
         /// Gets the barcode encode type based on the given encode type from Word.
         /// </summary>
         /// <param name="encodeTypeFromWord">The encode type from Word.</param>
@@ -207,7 +184,7 @@ namespace ApiExamples
             }
         }
 
-        public const double DefaultQRXDimensionInPixels = 4.0;
+        public const double WordQRModuleInPoints = 2.85;
         public const double Default1DXDimensionInPixels = 1.0;
 
         /// <summary>
@@ -256,11 +233,6 @@ namespace ApiExamples
                 else
                     gen.Parameters.Barcode.CodeTextParameters.Location = CodeLocation.Below;
 
-                // Set QR Code error correction level.s
-                gen.Parameters.Barcode.QR.ErrorLevel = QRErrorLevel.LevelH;
-                if (!string.IsNullOrEmpty(parameters.ErrorCorrectionLevel))
-                    gen.Parameters.Barcode.QR.ErrorLevel = CustomBarcodeGeneratorUtils.GetQRCorrectionLevel(parameters.ErrorCorrectionLevel, gen.Parameters.Barcode.QR.ErrorLevel);
-
                 // Set rotation angle.
                 if (!string.IsNullOrEmpty(parameters.SymbolRotation))
                     gen.Parameters.RotationAngle = CustomBarcodeGeneratorUtils.GetRotationAngle(parameters.SymbolRotation, gen.Parameters.RotationAngle);
@@ -272,7 +244,19 @@ namespace ApiExamples
 
                 // Set size.
                 if (gen.BarcodeType == EncodeTypes.QR)
-                    gen.Parameters.Barcode.XDimension.Pixels = (float)Math.Max(1.0, Math.Round(CustomBarcodeGeneratorUtils.DefaultQRXDimensionInPixels * scalingFactor));
+                {
+                    // MS Word ignores \q and \h for QR codes: it always uses error correction level Q,
+                    // a 2.85 pt module scaled by \s and a 4-module quiet zone.
+                    // The resolution gives the exact module size in points, which pixels alone cannot.
+                    const float modulePx = 8;
+                    gen.Parameters.Barcode.QR.ErrorLevel = QRErrorLevel.LevelQ;
+                    gen.Parameters.Resolution = (float)(modulePx * 72 / (CustomBarcodeGeneratorUtils.WordQRModuleInPoints * scalingFactor));
+                    gen.Parameters.Barcode.XDimension.Pixels = modulePx;
+                    gen.Parameters.Barcode.Padding.Left.Pixels = 4 * modulePx;
+                    gen.Parameters.Barcode.Padding.Top.Pixels = 4 * modulePx;
+                    gen.Parameters.Barcode.Padding.Right.Pixels = 4 * modulePx;
+                    gen.Parameters.Barcode.Padding.Bottom.Pixels = 4 * modulePx;
+                }
                 else
                     gen.Parameters.Barcode.XDimension.Pixels = (float)Math.Max(1.0, Math.Round(CustomBarcodeGeneratorUtils.Default1DXDimensionInPixels * scalingFactor));
 
