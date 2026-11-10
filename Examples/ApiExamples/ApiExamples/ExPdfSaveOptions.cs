@@ -2691,5 +2691,33 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.GenerateFormFieldScriptsDatetime.pdf", saveOptions);
             //ExEnd:GenerateFormFieldScriptsDatetime
         }
+
+        [Test]
+        public void PdfDigitalSignatureAutoHashAlgorithm()
+        {
+            //ExStart:PdfDigitalSignatureAutoHashAlgorithm
+            //GistId:39543adaf4446adfab3bf796a5e45276
+            //ExFor:PdfDigitalSignatureHashAlgorithm
+            //ExSummary:Shows how to sign a PDF document with a hash algorithm selected automatically based on the private key.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Writeln("Contents of signed PDF.");
+
+            CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
+
+            PdfSaveOptions options = new PdfSaveOptions();
+            options.DigitalSignatureDetails =
+                new PdfDigitalSignatureDetails(certificateHolder, "Test Signing", "My Office", DateTime.Now);
+
+            // "Auto" is the default value. Some newer digital signature algorithms have specific digest requirements,
+            // so Aspose.Words picks a hash algorithm that is compatible with the certificate's private key.
+            Assert.That(options.DigitalSignatureDetails.HashAlgorithm, Is.EqualTo(PdfDigitalSignatureHashAlgorithm.Auto));
+
+            doc.Save(ArtifactsDir + "PdfSaveOptions.PdfDigitalSignatureAutoHashAlgorithm.pdf", options);
+            //ExEnd:PdfDigitalSignatureAutoHashAlgorithm
+
+            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.PdfDigitalSignatureAutoHashAlgorithm.pdf");
+            Assert.That(pdfDocument.Form.SignaturesExist, Is.True);
+        }
     }
 }

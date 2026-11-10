@@ -811,5 +811,37 @@ namespace ApiExamples
             else
                 Assert.That(docA.Revisions.Count, Is.EqualTo(0));
         }
+
+        [Test]
+        public void CommentColorByAuthor()
+        {
+            //ExStart:CommentColorByAuthor
+            //GistId:39543adaf4446adfab3bf796a5e45276
+            //ExFor:RevisionOptions.CommentColor
+            //ExSummary:Shows how to render comments of each author in a different color.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Write("Hello world!");
+            Comment comment = new Comment(doc, "John Doe", "J.D.", DateTime.Now);
+            comment.SetText("Comment from John.");
+            builder.CurrentParagraph.AppendChild(comment);
+
+            builder.Writeln();
+            builder.Write("Hello again!");
+            comment = new Comment(doc, "Jane Doe", "J.D.", DateTime.Now);
+            comment.SetText("Comment from Jane.");
+            builder.CurrentParagraph.AppendChild(comment);
+
+            // Similar to Microsoft Word, the "ByAuthor" color affects regular comments as well as revision comments.
+            // Comment balloons of different authors are rendered in different colors.
+            doc.LayoutOptions.RevisionOptions.CommentColor = RevisionColor.ByAuthor;
+
+            // This option is only applicable to formats such as .pdf or .jpg.
+            doc.Save(ArtifactsDir + "Revision.CommentColorByAuthor.pdf");
+            //ExEnd:CommentColorByAuthor
+
+            Assert.That(doc.LayoutOptions.RevisionOptions.CommentColor, Is.EqualTo(RevisionColor.ByAuthor));
+        }
     }
 }

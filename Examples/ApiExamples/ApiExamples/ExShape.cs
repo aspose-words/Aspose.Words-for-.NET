@@ -1,4 +1,4 @@
-// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -1598,7 +1598,7 @@ namespace ApiExamples
         [TestCase(MsWordVersion.Word2000, ShapeMarkupLanguage.Vml)]
         [TestCase(MsWordVersion.Word2002, ShapeMarkupLanguage.Vml)]
         [TestCase(MsWordVersion.Word2003, ShapeMarkupLanguage.Vml)]
-        [TestCase(MsWordVersion.Word2007, ShapeMarkupLanguage.Vml)]
+        [TestCase(MsWordVersion.Word2007, ShapeMarkupLanguage.Dml)]
         [TestCase(MsWordVersion.Word2010, ShapeMarkupLanguage.Dml)]
         [TestCase(MsWordVersion.Word2013, ShapeMarkupLanguage.Dml)]
         [TestCase(MsWordVersion.Word2016, ShapeMarkupLanguage.Dml)]
@@ -3550,6 +3550,45 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Shape.ShadowFormatTransparency.docx");
             //ExEnd:ShadowFormatTransparency
+        }
+
+        [Test]
+        public void TextureTile()
+        {
+            //ExStart:TextureTile
+            //GistId:39543adaf4446adfab3bf796a5e45276
+            //ExFor:Fill.TextureTile
+            //ExFor:Fill.TextureHorizontalScale
+            //ExFor:Fill.TextureVerticalScale
+            //ExSummary:Shows how to scale a tiled texture fill of a shape.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Shape shape = builder.InsertShape(ShapeType.Rectangle, 200, 200);
+            shape.Fill.PresetTextured(PresetTexture.Canvas);
+
+            Fill fill = shape.Fill;
+
+            // Check whether the shape's fill is a tiled texture before scaling it.
+            if (fill.TextureTile)
+            {
+                // A scale of 1 is equivalent to 100%. Values can exceed 100%.
+                fill.TextureHorizontalScale = 0.5;
+                fill.TextureVerticalScale = 2.15;
+            }
+
+            // Use the compliance option to define the shape using DML
+            // to keep the texture scale properties after the document saves.
+            OoxmlSaveOptions saveOptions = new OoxmlSaveOptions { Compliance = OoxmlCompliance.Iso29500_2008_Strict };
+            doc.Save(ArtifactsDir + "Shape.TextureTile.docx", saveOptions);
+            //ExEnd:TextureTile
+
+            doc = new Document(ArtifactsDir + "Shape.TextureTile.docx");
+            fill = ((Shape)doc.GetChild(NodeType.Shape, 0, true)).Fill;
+
+            Assert.That(fill.TextureTile, Is.True);
+            Assert.That(fill.TextureHorizontalScale, Is.EqualTo(0.5d).Within(0.01d));
+            Assert.That(fill.TextureVerticalScale, Is.EqualTo(2.15d).Within(0.01d));
         }
     }
 }
