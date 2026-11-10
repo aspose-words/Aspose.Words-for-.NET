@@ -5,7 +5,10 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
+using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using Aspose.Words;
 using NUnit.Framework;
 
@@ -111,6 +114,49 @@ namespace ApiExamples
             Assert.That(paragraphs[0].ParagraphFormat.Style, Is.EqualTo(myStyle));
             Assert.That(paragraphs[1].ParagraphFormat.Style, Is.EqualTo(myStyle));
             //ExEnd
+        }
+
+        [Test]
+        public void SymbolicFonts()
+        {
+            //ExStart:SymbolicFonts
+            //GistId:39543adaf4446adfab3bf796a5e45276
+            //ExFor:CleanupOptions.SymbolicFonts
+            //ExSummary:Shows how to replace text formatted with symbolic fonts (Symbol, Wingdings, etc.) with Unicode text.
+            Document doc = new Document(MyDir + "Rendering.docx");
+
+            // Symbolic fonts display characters with glyphs of their own. For example, the "Symbol" font
+            // displays the U+F057 character as "Ω", so the text loses its meaning without the font.
+            string[] symbolicFonts = { "Symbol", "Wingdings" };
+            string Describe(Run run) =>
+                $"\"{run.Text}\" ({string.Join(" ", run.Text.Select(c => $"U+{(int)c:X4}"))}), font \"{run.Font.Name}\"";
+
+            List<Paragraph> paragraphs = new List<Paragraph>();
+            foreach (Run run in doc.GetChildNodes(NodeType.Run, true))
+            {
+                if (!symbolicFonts.Contains(run.Font.Name))
+                    continue;
+
+                Console.WriteLine($"Before: {Describe(run)}");
+                if (!paragraphs.Contains(run.ParentParagraph))
+                    paragraphs.Add(run.ParentParagraph);
+            }
+
+            // Replace the symbolic text with the equivalent Unicode text formatted with appropriate Unicode fonts.
+            CleanupOptions cleanupOptions = new CleanupOptions { SymbolicFonts = true };
+            doc.Cleanup(cleanupOptions);
+
+            // The same paragraphs now show the symbols as regular Unicode characters, for example, "Ω" is U+03A9.
+            foreach (Paragraph paragraph in paragraphs)
+                foreach (Run run in paragraph.Runs)
+                    if (run.Text.Any(c => c > 0x7F))
+                        Console.WriteLine($"After: {Describe(run)}");
+
+            doc.Save(ArtifactsDir + "CleanupOptions.SymbolicFonts.docx");
+            //ExEnd:SymbolicFonts
+
+            Assert.That(paragraphs, Is.Not.Empty);
+            Assert.That(doc.GetChildNodes(NodeType.Run, true).Cast<Run>().Any(r => symbolicFonts.Contains(r.Font.Name)), Is.False);
         }
     }
 }

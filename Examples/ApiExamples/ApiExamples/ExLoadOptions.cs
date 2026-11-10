@@ -1,4 +1,4 @@
-// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -430,6 +430,44 @@ namespace ApiExamples
 
             Document doc = new Document(MyDir + "Corrupted footnotes.docx", loadOptions);
             //ExEnd:RecoveryMode
+        }
+
+        [Test]
+        public void LoadHwp()
+        {
+            //ExStart:LoadHwp
+            //GistId:39543adaf4446adfab3bf796a5e45276
+            //ExFor:LoadFormat
+            //ExSummary:Shows how to load a Hancom Hangul document.
+            FileFormatInfo info = FileFormatUtil.DetectFileFormat(MyDir + "HWP document.hwp");
+            Assert.That(info.LoadFormat, Is.EqualTo(LoadFormat.Hwp));
+
+            LoadOptions loadOptions = new LoadOptions { LoadFormat = LoadFormat.Hwp };
+            Document doc = new Document(MyDir + "HWP document.hwp", loadOptions);
+
+            doc.Save(ArtifactsDir + "LoadOptions.LoadHwp.docx");
+            //ExEnd:LoadHwp
+
+            Assert.That(doc.GetText().Trim(), Is.Not.Empty);
+        }
+
+        [Test]
+        public void LoadWordPerfect()
+        {
+            //ExStart:LoadWordPerfect
+            //GistId:39543adaf4446adfab3bf796a5e45276
+            //ExFor:LoadFormat
+            //ExSummary:Shows how to load a WordPerfect document.
+            FileFormatInfo info = FileFormatUtil.DetectFileFormat(MyDir + "WordPerfect document.wpd");
+            Assert.That(info.LoadFormat, Is.EqualTo(LoadFormat.WordPerfect));
+
+            LoadOptions loadOptions = new LoadOptions { LoadFormat = LoadFormat.WordPerfect };
+            Document doc = new Document(MyDir + "WordPerfect document.wpd", loadOptions);
+
+            doc.Save(ArtifactsDir + "LoadOptions.LoadWordPerfect.docx");
+            //ExEnd:LoadWordPerfect
+
+            Assert.That(doc.GetText().Trim(), Is.Not.Empty);
         }
     }
 }
